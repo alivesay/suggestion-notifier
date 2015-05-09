@@ -1,6 +1,6 @@
 {
-  "name": "hapi-boilerplate-8",
-  "description": "A simple Hapi.js boilerplate.",
+  "name": "suggestion-notifier",
+  "description": "Helps to to notify patrons when suggested items become available.",
   "version": "0.0.1",
   "publish": false,
   "repository": {
