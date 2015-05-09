@@ -1,0 +1,15 @@
+{
+  "name": "hapi-boilerplate-8",
+  "description": "A simple Hapi.js boilerplate.",
+  "version": "0.0.1",
+  "publish": true,
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/alivesay/hapi-boilerplate-8.git"
+  },
+  "dependencies": {
+    "hapi": "^8.4.0",
+    "lodash": "^3.8.0",
+    "require-directory": "^2.1.0"
+  }
+}
