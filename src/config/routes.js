@@ -4,7 +4,7 @@ module.exports = function (handlers) {
   return [
   {
       method: 'GET',
-      path: '/login',
+      path: '/bridges',
       config: {
         handler: handlers.login.GET,
       }

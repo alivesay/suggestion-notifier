@@ -2,6 +2,9 @@
 
 module.exports = {
   GET: function (request, reply) {
-    return reply('You are logged in!');
+    return reply.view('index', {
+      title: 'examples/views/jade/index.js | Hapi ',
+      message: 'Index - Hello World!'
+    });
   }
 };

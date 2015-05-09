@@ -2,14 +2,23 @@
   "name": "hapi-boilerplate-8",
   "description": "A simple Hapi.js boilerplate.",
   "version": "0.0.1",
-  "publish": true,
+  "publish": false,
   "repository": {
     "type": "git",
-    "url": "https://github.com/alivesay/hapi-boilerplate-8.git"
+    "url": "https://github.com/alivesay/suggestion-notifier.git"
   },
   "dependencies": {
     "hapi": "^8.4.0",
+    "jade": "^1.9.2",
+    "joi": "^6.4.1",
     "lodash": "^3.8.0",
-    "require-directory": "^2.1.0"
+    "require-directory": "^2.1.0",
+    "sequelize": "^2.1.3"
+  },
+  "devDependencies": {
+    "gulp": "^3.8.11",
+    "gulp-nodemon": "^2.0.3",
+    "sequelize-cli": "^1.7.0",
+    "sqlite3": "^3.0.8"
   }
 }
