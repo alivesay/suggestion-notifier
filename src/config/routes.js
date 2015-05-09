@@ -2,13 +2,12 @@
 
 module.exports = function (handlers) {
   return [
-/*  {
-      method: 'POST',
+  {
+      method: 'GET',
       path: '/login',
       config: {
-        handler: handlers.login.POST,
-        auth: { mode: 'try' }
+        handler: handlers.login.GET,
       }
-    } */
+    }
   ];
 };
