@@ -1,12 +1,30 @@
 'use strict';
 
 module.exports = function (handlers) {
-  return [
-  {
+    return [
+    {
       method: 'GET',
-      path: '/bridges',
+      path: '/{path*}',
+      handler: {
+        directory: {
+          path: __dirname + '/../../.tmp/public'
+        }
+      }
+    },
+    {
+      method: 'GET',
+      path: '/api/suggestions',
       config: {
-        handler: handlers.login.GET,
+        handler: handlers.api.suggestions.all
+      }
+    },
+    {
+      method: 'POST',
+      path: '/api/suggestions',
+      config: {
+        handler: handlers.api.suggestions.create,
+        validate: {
+        }
       }
     }
   ];
