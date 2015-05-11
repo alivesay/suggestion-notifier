@@ -21,7 +21,9 @@
   },
   "devDependencies": {
     "gulp": "^3.8.11",
+    "gulp-inject": "^1.2.0",
     "gulp-nodemon": "^2.0.3",
+    "gulp-order": "^1.1.1",
     "sequelize-cli": "^1.7.0",
     "sqlite3": "^3.0.8"
   }

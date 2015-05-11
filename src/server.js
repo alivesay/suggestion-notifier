@@ -20,16 +20,17 @@ module.exports.start = function start () {
     host: process.env.IP || '0.0.0.0',
     port: process.env.PORT || '8080'
   }));
-/*
-  server.views(_.defaults(settings.hapi.views || {}, {
-    engines: { jade: require('jade') },
-    relativeTo:  __dirname,
-    path: './views',
-    compileOptions: {
-      pretty: !!(process.env.NODE_ENV !== 'production')
-    }
-  }));
-*/
+
+  if (process.env.NODE_ENV != 'production') {
+    server.on('response', function (request) {
+      console.log("[%s] %s %s - %s",
+        request.info.remoteAddress,
+        request.method.toUpperCase(),
+        request.url.path,
+        request.response.statusCode);
+    });
+  }
+
   var handlers = requireDirectory(module, path.join(__dirname, 'handlers'));
   var routes = require('./config/routes')(handlers);
   
