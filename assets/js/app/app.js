@@ -2,28 +2,13 @@
 
 angular.module('app', [
   'ngResource',
-  'ui.bootstrap'
+  'ui.router',
+  'angular-loading-bar',
+  'ui.bootstrap',
+  'suggestions'
 ]);
 
-angular.module('app').config(['$locationProvider', function($locationProvider) {
- // $locationProvider.html5Mode(true);
+
+angular.module('app').config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $urlRouterProvider) {
+  $urlRouterProvider.otherwise("/suggestions");
 }]);
-
-angular.module('app').controller('AppController', function () {});
-
-angular.module('app.services', []);
-
-angular.module('app.services')
-  .factory('Suggestion', function ($resource) {
-    return $resource('/api/suggestions/:id');
-  });
-
-angular.module('app.controllers', []);
-
-angular.module('app.controllers')
-  .controller('SuggestionsIndexController', function($scope, Suggestion) {
-    console.log('I WUZ HERE');
-    Suggestion.query(function(data) {
-      $scope.suggestions = data;
-    });
-  });

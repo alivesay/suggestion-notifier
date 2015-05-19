@@ -1,0 +1,33 @@
+/* angular-ui-bootstrap fix */
+.nav, .pagination, .carousel, .panel-title a { cursor: pointer; }
+
+
+body {
+    padding-top: 60px;
+    padding-left: 40px;
+    padding-right: 40px;
+    background: url('/images/paper_fibers.png');
+    background-repeat: repeat;
+}
+
+@media screen and (max-width: 768px) {
+    body { padding-top: 0px; }
+}
+
+.navbar-brand {
+    margin-left: 20px !important;
+}
+
+#suggestions-panel {
+    height: 100%;
+}
+
+.suggestions-grid {
+    width: 100%;
+    height: 100%;
+}
+
+.form-group.required .control-label:after {
+    content:"*";
+    color:red;
+}

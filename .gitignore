@@ -28,3 +28,4 @@ node_modules
 
 db.development.sqlite
 .tmp
+.idea

@@ -6,7 +6,8 @@ module.exports = function(sequelize, DataTypes) {
     publisher: DataTypes.STRING,
     isbn: DataTypes.STRING,
     type: DataTypes.STRING,
-    subject: DataTypes.STRING
+    subject: DataTypes.STRING,
+    patron: DataTypes.STRING
   }, {
     classMethods: {
       associate: function(models) {

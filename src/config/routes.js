@@ -26,6 +26,15 @@ module.exports = function (handlers) {
         validate: {
         }
       }
+    },
+    {
+      method: 'GET',
+      path: '/api/itemtypes',
+      config: {
+        handler: handlers.api.itemtypes.all,
+        validate: {
+        }
+      }
     }
   ];
 };

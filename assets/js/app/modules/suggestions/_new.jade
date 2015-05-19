@@ -1,0 +1,30 @@
+div.panel.panel-primary
+  div.panel-heading New Suggestion
+  div.panel-body
+    div(data-ng-controller='SuggestionsNewController')
+      form.form-horizontal(name='newSuggestionForm', role='form')
+        div.form-group.required(data-ng-class='{ "has-error": newSuggestionForm.title.$invalid && newSuggestionForm.title.$dirty }')
+          label.control-label.col-xs-2(for='titleField') Title
+          div.col-xs-10
+            input#titleField.form-control(type='text', name='title', data-ng-model='suggestion.title', required)
+        div.form-group.required(data-ng-class='{ "has-error": newSuggestionForm.author.$invalid && newSuggestionForm.author.$dirty}')
+          label.control-label.col-xs-2(for='authorField') Author
+          div.col-xs-10
+            input#authorField.form-control(type='text', name='author', data-ng-model='suggestion.author', required)
+        div.form-group(data-ng-class='{ "has-error": newSuggestionForm.publisher.$invalid && newSuggestionForm.publisher.$dirty}')
+          label.control-label.col-xs-2(for='publisherField') Publisher
+          div.col-xs-10
+            input#publisherField.form-control(type='text', name='publisher', data-ng-model='suggestion.publisher')
+        div.form-group
+          label.control-label.col-xs-2(for='typeField') Type
+          div.col-xs-10
+            select#typeField.form-control(data-ng-model='suggestion.type', data-ng-init='suggestion.type = "book"', data-ng-options="key as value for (key, value) in itemtypes")
+        div.form-group
+          label.control-label.col-xs-2(for='subjectField') Subject
+          div.col-xs-10
+            input#subjectField.form-control(type='text', name='subject', data-ng-model='suggestion.subject')
+        div.form-group.required(data-ng-class='{ "has-error": newSuggestionForm.patron.$invalid && newSuggestionForm.patron.$dirty }')
+          label.control-label.col-xs-2(for='patronField') Patron Barcode
+          div.col-xs-10
+            input#patronField.form-control(type='text', name='patron', data-ng-model='suggestion.patron', required)
+        button.btn.btn-default.pull-right(data-ng-click='createNewSuggestion()') Create
