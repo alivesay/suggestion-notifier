@@ -1,30 +1,41 @@
-div.panel.panel-primary
-  div.panel-heading New Suggestion
-  div.panel-body
+div.col-sm-8.col-sm-offset-2
+  div.well
     div(data-ng-controller='SuggestionsNewController')
-      form.form-horizontal(name='newSuggestionForm', role='form')
-        div.form-group.required(data-ng-class='{ "has-error": newSuggestionForm.title.$invalid && newSuggestionForm.title.$dirty }')
-          label.control-label.col-xs-2(for='titleField') Title
-          div.col-xs-10
-            input#titleField.form-control(type='text', name='title', data-ng-model='suggestion.title', required)
-        div.form-group.required(data-ng-class='{ "has-error": newSuggestionForm.author.$invalid && newSuggestionForm.author.$dirty}')
-          label.control-label.col-xs-2(for='authorField') Author
-          div.col-xs-10
-            input#authorField.form-control(type='text', name='author', data-ng-model='suggestion.author', required)
-        div.form-group(data-ng-class='{ "has-error": newSuggestionForm.publisher.$invalid && newSuggestionForm.publisher.$dirty}')
-          label.control-label.col-xs-2(for='publisherField') Publisher
-          div.col-xs-10
-            input#publisherField.form-control(type='text', name='publisher', data-ng-model='suggestion.publisher')
-        div.form-group
-          label.control-label.col-xs-2(for='typeField') Type
-          div.col-xs-10
-            select#typeField.form-control(data-ng-model='suggestion.type', data-ng-init='suggestion.type = "book"', data-ng-options="key as value for (key, value) in itemtypes")
-        div.form-group
-          label.control-label.col-xs-2(for='subjectField') Subject
-          div.col-xs-10
-            input#subjectField.form-control(type='text', name='subject', data-ng-model='suggestion.subject')
-        div.form-group.required(data-ng-class='{ "has-error": newSuggestionForm.patron.$invalid && newSuggestionForm.patron.$dirty }')
-          label.control-label.col-xs-2(for='patronField') Patron Barcode
-          div.col-xs-10
-            input#patronField.form-control(type='text', name='patron', data-ng-model='suggestion.patron', required)
-        button.btn.btn-default.pull-right(data-ng-click='createNewSuggestion()') Create
+      form#new-suggestion-form.form-horizontal(name='newSuggestionForm', role='form', novalidate)
+        fieldset
+          legend New Suggestion
+          div.form-group.required(data-ng-class='{ "has-error": newSuggestionForm.title.$invalid && newSuggestionForm.title.$dirty }')
+            label.control-label.col-sm-3(for='title-field') Title
+            div.col-sm-9
+              input#title-field.form-control(type='text', name='title', data-ng-model='suggestion.title', required)
+          div.form-group.required(data-ng-class='{ "has-error": newSuggestionForm.author.$invalid && newSuggestionForm.author.$dirty}')
+            label.control-label.col-sm-3(for='author-field') Author
+            div.col-sm-9
+              input#author--field.form-control(type='text', name='author', data-ng-model='suggestion.author', required)
+          div.form-group
+            label.control-label.col-sm-3(for='publisher-field') Publisher
+            div.col-sm-9
+              input#publisher-field.form-control(type='text', name='publisher', data-ng-model='suggestion.publisher')
+          div.form-group
+            label.control-label.col-sm-3(for='isbn-field') ISBN
+            div.col-sm-9
+              div.input-group
+                span.input-group-addon #
+                input#publisher-field.form-control(type='text', name='isbn', data-ng-model='suggestion.isbn')
+          div.form-group
+            label.control-label.col-sm-3(for='type-field') Type
+            div.col-sm-9
+              select#type-field.form-control(data-ng-model='suggestion.type', data-ng-init='suggestion.type = "book"', data-ng-options="key as value for (key, value) in itemtypes")
+          div.form-group
+            label.control-label.col-sm-3(for='subject-field') Subject
+            div.col-sm-9
+              input#subject-field.form-control(type='text', name='subject', data-ng-model='suggestion.subject')
+          div.form-group.required(data-ng-class='{ "has-error": newSuggestionForm.patron.$invalid && newSuggestionForm.patron.$dirty }')
+            label.control-label.col-sm-3(for='patron-field') Patron Barcode
+            div.col-sm-9
+              div.input-group
+                span.input-group-addon #
+                input#patron-field.form-control(type='text', name='patron', data-ng-model='suggestion.patron', required)
+          div.form-group
+            div.col-sm-12
+              button.btn.btn.pull-right(data-ng-click='createNewSuggestion()', data-ng-disabled='newSuggestionForm.$invalid', data-ng-class='newSuggestionForm.$invalid ? "disabled" : "btn-success"') Create

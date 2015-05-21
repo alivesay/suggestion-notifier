@@ -5,6 +5,7 @@ angular.module('suggestions', [
   'ui.router',
   'ui.grid',
   'ui.grid.selection',
+  'ui.grid.autoResize',
   'ngDialog',
   'itemtypes'
 ]);
@@ -61,13 +62,15 @@ angular.module('suggestions')
       ]
     };
   }])
-    .controller('SuggestionsNewController', ['$scope', 'SuggestionFactory', 'ItemTypesFactory', function($scope, SuggestionFactory, ItemTypesFactory) {
+    .controller('SuggestionsNewController', ['$scope', '$state', 'SuggestionFactory', 'ItemTypesFactory', function($scope, $state, SuggestionFactory, ItemTypesFactory) {
       ItemTypesFactory.get(function(itemtypes) {
         $scope.itemtypes = itemtypes;
       });
 
       $scope.createNewSuggestion = function createNewSuggestion () {
         SuggestionFactory.save($scope.suggestion, function success (value, responseHeaders) {
+          console.log('Hi')
+          $state.go('suggestions#index');
         }, function error (httpResponse) {
           console.log('REST Error: ' + httpResponse.data.message);
         });

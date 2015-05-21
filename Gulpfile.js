@@ -21,8 +21,19 @@ gulp.task('copyjs', function() {
 });
 
 gulp.task('copystyles', function() {
-  return gulp.src('assets/styles/**/*.{css,ttf,woff}')
+  return gulp.src([
+      'assets/styles/**/*.{css,ttf,woff,eot,svg,woff2}',
+      'assets/fonts/**/*.*'
+    ])
+    .pipe(order([
+      'assets/styles/bootstrap.min.css',
+      'assets/styles/**/*.{css,ttf,woff,eot,svg,woff2}'
+    ]))
     .pipe(gulp.dest('.tmp/public/styles'));
+});
+
+gulp.task('copyfonts', function () {
+  return gulp.src('assets/fonts/**/*.*').pipe(gulp.dest('.tmp/public/fonts'));
 });
 
 gulp.task('templates', function () {
@@ -41,13 +52,14 @@ gulp.task('templates', function () {
 gulp.task('index', ['copyjs', 'copystyles'], function () {
   var sources = gulp.src('**/*.{js,css}', { cwd: '.tmp/public' })
     .pipe(order([
+      'js/dependencies/jquery*.js',
       'js/dependencies/angular.min.js',
       'js/dependencies/**.js',
       'js/app/lib/angular-resource.min.js',
       'js/app/lib/*.js',
-      'js/app/app.js',
       'js/app/shared/**/*.js',
       'js/app/modules/**/*.js',
+      'js/app/app.js',
       '**/*.js',
       '**/*.css'
     ]));
@@ -64,12 +76,14 @@ gulp.task('watch', function () {
   gulp.watch('assets/js/app/modules/**/*.jade', ['templates', 'index']);
   gulp.watch('assets/js/**/*.js', ['copyjs', 'index']);
   gulp.watch('assets/styles/**/*.css', ['copystyles', 'index']);
+  gulp.watch('assets/fonts/**/*.js', ['copyfonts']);
 });
 
 gulp.task('default', [
   'copyimages',
   'copyjs',
   'copystyles',
+  'copyfonts',
   'templates',
   'index',
   'hapi',

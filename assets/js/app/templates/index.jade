@@ -1,24 +1,41 @@
 extends layout
 
 block content
-  nav#mainnavbar.navbar.navbar-default.navbar-fixed-top
-    div.container-fluid
-      div.navbar-header
-        div.navbar-brand Suggestion Notifier
-      div.collapse.navbar-collapse
-        ul.nav.navbar-nav
-          li(dropdown)
-            a(dropdown-toggle, href='#', data-toggle='dropdown', role='button', aria-expanded='false') Suggestions
-              span.caret
-            ul.dropdown-menu(role='menu')
-              li #[a(data-ui-sref='suggestions#index') List]
-              li #[a(data-ui-sref='suggestions#new') New]
-          li #[a(data-ui-sref='#') Admin]
 
+  div#app-container.container-fluid.fill(data-ng-cloak)
+    nav#app-navbar.navbar.navbar-default.navbar-fixed-top
+      div.container-fluid
+        div.navbar-header
+          div.navbar-brand
+            i.fa.fa-book.fa-fw
+            | &nbsp;
+            i Acquire
+        div.collapse.navbar-collapse
+          ul.nav.navbar-nav
+            li(dropdown)
+              a(dropdown-toggle, href='#', data-toggle='dropdown', role='button', aria-expanded='false') Suggestions
+                span.caret
+              ul.dropdown-menu(role='menu')
+                li #[a(data-ui-sref='suggestions#index') List]
+                li #[a(data-ui-sref='suggestions#new') New]
+            li(dropdown)
+              a(dropdown-toggle, href='#', data-toggle='dropdown', role='button', aria-expanded='false') Admin
+                span.caret
+              ul.dropdown-menu(role='menu')
+                li #[a(data-ui-sref='suggestions#index') Templates]
 
-  div(data-ng-controller='AlertController')
-    alert(data-ng-repeat='alert in alerts', data-type='{{alert.type}}', close='closeAlert($index)') {{alert.msg}}
-    button.btn.btn-default(data-ng-click='addAlert()') Add Alert
-  br
+    //div(data-ng-controller='AlertController')
+    //  alert(data-ng-repeat='alert in alerts', data-type='{{alert.type}}', close='closeAlert($index)') {{alert.msg}}
+    //br
 
-  div(data-ui-view)
+    div#app-body.fill
+      div#suggestions-view(data-ui-view)
+      div#console-view
+        div#console-panel.panel.panel-default.fill
+          div.panel-heading Console
+          div.panel-body
+            div.chatroom-message-list.fill
+              ui-chatroom(data-messages='messages',
+                          data-input='message',
+                          data-username='name',
+                          data-on-submit='sendMessage')

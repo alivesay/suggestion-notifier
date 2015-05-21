@@ -5,7 +5,8 @@ angular.module('app', [
   'ui.router',
   'angular-loading-bar',
   'ui.bootstrap',
-  'suggestions'
+  'suggestions',
+  'ui.chatroom'
 ]);
 
 
