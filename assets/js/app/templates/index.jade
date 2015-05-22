@@ -7,24 +7,13 @@ block content
       div.container-fluid
         div.navbar-header
           div.navbar-brand
-            i.fa.fa-book.fa-fw
-            | &nbsp;
-            i Acquire
+            img(src='images/logo.png')
         div.collapse.navbar-collapse
-          ul.nav.navbar-nav
-            li(dropdown)
-              a(dropdown-toggle, href='#', data-toggle='dropdown', role='button', aria-expanded='false') Suggestions
-                span.caret
-              ul.dropdown-menu(role='menu')
-                li #[a(data-ui-sref='suggestions#index') List]
-                li #[a(data-ui-sref='suggestions#new') New]
-            li(dropdown)
-              a(dropdown-toggle, href='#', data-toggle='dropdown', role='button', aria-expanded='false') Admin
-                span.caret
-              ul.dropdown-menu(role='menu')
-                li #[a(data-ui-sref='suggestions#index') Templates]
           ul.nav.navbar-nav.pull-right
             p.navbar-btn
+              a#logout-btn.btn.btn-xs.btn-danger(href='#')
+                i.fa.fa-cog
+                | &nbsp;Settings
               a#logout-btn.btn.btn-xs.btn-default(href='#')
                 i.fa.fa-sign-out
                 | &nbsp;Logout

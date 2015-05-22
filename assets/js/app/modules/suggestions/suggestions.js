@@ -36,8 +36,12 @@ angular.module('suggestions')
 
 angular.module('suggestions')
   .controller('SuggestionsIndexController', ['$scope', 'uiGridConstants', function($scope, uiGridConstants) {
+    $scope.suggestionsGridSelectionCount = 0;
+
     $scope.suggestionsGrid = {
       enableFiltering: true,
+      enableRowSelection: true,
+      multiSelect: true,
       //   enableSelectAll: false,
       columnDefs: [
         { name: 'id', visible: false, type: 'number'},
@@ -61,6 +65,18 @@ angular.module('suggestions')
         { name: 'patron', type: 'string' }
       ]
     };
+
+    $scope.suggestionsGrid.onRegisterApi = function(gridApi) {
+      $scope.suggestionsGridApi = gridApi;
+      gridApi.selection.on.rowSelectionChanged($scope, function(row){
+        $scope.suggestionsGridSelectionCount = gridApi.selection.getSelectedRows().length;
+      });
+
+      gridApi.selection.on.rowSelectionChangedBatch($scope,function(rows){
+        $scope.suggestionsGridSelectionCount = gridApi.selection.getSelectedRows().length;
+      });
+    };
+
   }])
     .controller('SuggestionsNewController', ['$scope', '$state', 'SuggestionFactory', 'ItemTypesFactory', function($scope, $state, SuggestionFactory, ItemTypesFactory) {
       ItemTypesFactory.get(function(itemtypes) {

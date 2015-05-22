@@ -18,8 +18,21 @@ html, body, #app-container {
     padding: 0;
 }
 
+::selection {
+    background: #e8c7d6;
+    color: #ffffff;
+}
+::-moz-selection {
+    background: #e8c7d6;
+    color: #ffffff;
+}
+
 .ui-grid-header-cell {
     height: 60px;
+}
+
+.ui-grid-row.ui-grid-row-selected > [ui-grid-row] > .ui-grid-cell {
+  background: #e8c7d6 !important;
 }
 
 .well {
@@ -35,7 +48,7 @@ html, body, #app-container {
 }
 
 #logout-btn {
-  margin-right: 13px;
+  margin-right: 4px;
 }
 
 #test {
@@ -121,6 +134,7 @@ html, body, #app-container {
 
 .navbar-brand {
   margin-left: 0px !important;
+  padding: 3px 0px 0px 4px !important;
 }
 
 .navbar-btn {
@@ -137,3 +151,6 @@ html, body, #app-container {
   padding-right: 0px !important;
 }
 
+.badge {
+    background: #777777 !important;
+}

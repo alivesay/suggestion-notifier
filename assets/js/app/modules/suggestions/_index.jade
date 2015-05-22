@@ -6,10 +6,12 @@ div.container-fluid.fill(data-ng-controller='SuggestionsIndexController')
           span#suggestions-count-badge.badge {{ suggestionsGrid.data.length }}
           div.input-group.pull-right
               div.btn-group
-                a.btn.btn-xs.btn-default(href='#')
+                a.btn.btn-xs.btn-default(data-ui-sref='suggestions#new')
                   i.fa.fa-plus-square
                   | &nbsp;New Suggestion
-                a.btn.btn-xs.btn-default.pull-right(data-ng-click='notifyClick()')
+                a.btn.btn-xs.btn-default.pull-right(data-ng-click='notifyClick()',
+                                                    data-ng-disabled='suggestionsGridSelectionCount == 0',
+                                                    data-ng-class='suggestionsGridSelectionCount == 0 ? "btn-default" : "btn-success"')
                   i.fa.fa-envelope
                   | &nbsp;Send Notice
         div.panel-body
