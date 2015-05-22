@@ -18,13 +18,8 @@ html, body, #app-container {
     padding: 0;
 }
 
-.udi-grid {
-    position: absolute;
-    height: auto;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
+.ui-grid-header-cell {
+    height: 60px;
 }
 
 .well {
@@ -37,6 +32,10 @@ html, body, #app-container {
   top: 0;
   left: 0;
   z-index: 2;
+}
+
+#logout-btn {
+  margin-right: 13px;
 }
 
 #test {
@@ -95,7 +94,7 @@ html, body, #app-container {
 #console-panel .panel-body {
     position: absolute;
     width: 100%;
-    top: 41px;
+    top: 0px;
     bottom: 32px;
     padding: 8px;
 }
@@ -122,6 +121,10 @@ html, body, #app-container {
 
 .navbar-brand {
   margin-left: 0px !important;
+}
+
+.navbar-btn {
+    margin-top: 14px !important;
 }
 
 .form-group.required .control-label:after {

@@ -23,7 +23,11 @@ block content
                 span.caret
               ul.dropdown-menu(role='menu')
                 li #[a(data-ui-sref='suggestions#index') Templates]
-
+          ul.nav.navbar-nav.pull-right
+            p.navbar-btn
+              a#logout-btn.btn.btn-xs.btn-default(href='#')
+                i.fa.fa-sign-out
+                | &nbsp;Logout
     //div(data-ng-controller='AlertController')
     //  alert(data-ng-repeat='alert in alerts', data-type='{{alert.type}}', close='closeAlert($index)') {{alert.msg}}
     //br
@@ -32,7 +36,6 @@ block content
       div#suggestions-view(data-ui-view)
       div#console-view
         div#console-panel.panel.panel-default.fill
-          div.panel-heading Console
           div.panel-body
             div.chatroom-message-list.fill
               ui-chatroom(data-messages='messages',
