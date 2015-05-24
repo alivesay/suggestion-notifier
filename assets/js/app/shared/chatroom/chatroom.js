@@ -16,6 +16,7 @@ angular.module('ui.chatroom')
         onSubmit: '=' },
 
       controller: function($scope) {
+
         $scope.getMessageClasses = function(message) {
           return { 'chatroom-message-list-alert': message.source == 'chatroom',
             'chatroom-message-list-directed': message.source !== $scope.username && message.text.match(new RegExp($scope.username, "i")) };

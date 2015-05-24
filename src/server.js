@@ -8,6 +8,7 @@ var requireDirectory = require('require-directory');
 var settings = require('./config/settings');
 var methods = require('./config/methods')(settings);
 var models = require('./db/models');
+var socket = require('./lib/socket');
 
 module.exports.start = function start () {
   var server = new Hapi.Server(process.env.NODE_ENV !== 'production' ? {
@@ -20,6 +21,10 @@ module.exports.start = function start () {
     host: process.env.IP || '0.0.0.0',
     port: process.env.PORT || '8080'
   }));
+
+  // socket.io
+  server.app.io = require('socket.io')(server.listener);
+  server.app.io.on('connection', socket);
 
   if (process.env.NODE_ENV != 'production') {
     server.on('response', function (request) {

@@ -11,7 +11,7 @@ block content
         div.collapse.navbar-collapse
           ul.nav.navbar-nav.pull-right
             p.navbar-btn
-              a#logout-btn.btn.btn-xs.btn-danger(href='#')
+              a#logout-btn.btn.btn-xs.btn-default(href='#')
                 i.fa.fa-cog
                 | &nbsp;Settings
               a#logout-btn.btn.btn-xs.btn-default(href='#')
@@ -23,7 +23,7 @@ block content
 
     div#app-body.fill
       div#suggestions-view(data-ui-view)
-      div#console-view
+      div#console-view(data-ng-controller='ConsoleIndexController')
         div#console-panel.panel.panel-default.fill
           div.panel-body
             div.chatroom-message-list.fill

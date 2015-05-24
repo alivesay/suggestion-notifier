@@ -45,6 +45,8 @@ html, body, #app-container {
   top: 0;
   left: 0;
   z-index: 2;
+  background: #585858;
+  border-color: #333;
 }
 
 #logout-btn {
@@ -134,7 +136,7 @@ html, body, #app-container {
 
 .navbar-brand {
   margin-left: 0px !important;
-  padding: 3px 0px 0px 4px !important;
+  padding: 9px 0px 0px 4px !important;
 }
 
 .navbar-btn {
@@ -152,5 +154,9 @@ html, body, #app-container {
 }
 
 .badge {
-    background: #777777 !important;
+  background: #777777 !important;
+}
+
+.panel-default > .panel-heading {
+  background-color: #f6f2ef !important;
 }

@@ -6,6 +6,7 @@ angular.module('suggestions', [
   'ui.grid',
   'ui.grid.selection',
   'ui.grid.autoResize',
+  'ui.grid.resizeColumns',
   'ngDialog',
   'itemtypes'
 ]);
