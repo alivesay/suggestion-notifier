@@ -9,12 +9,14 @@ block content
           div.navbar-brand
             img(src='images/logo.png')
         div.collapse.navbar-collapse
+          ul.nav.navbar-nav.pull-left
+            p.navbar-text notify
           ul.nav.navbar-nav.pull-right
             p.navbar-btn
-              a#logout-btn.btn.btn-xs.btn-default(href='#')
+              a#logout-btn.btn.btn-xs.btn-default(data-ng-click='settingsClick()')
                 i.fa.fa-cog
                 | &nbsp;Settings
-              a#logout-btn.btn.btn-xs.btn-default(href='#')
+              a#logout-btn.btn.btn-xs.btn-default(data-ng-click='logoutClick()')
                 i.fa.fa-sign-out
                 | &nbsp;Logout
     //div(data-ng-controller='AlertController')
@@ -22,7 +24,7 @@ block content
     //br
 
     div#app-body.fill
-      div#suggestions-view(data-ui-view)
+      data-ui-view
       div#console-view(data-ng-controller='ConsoleIndexController')
         div#console-panel.panel.panel-default.fill
           div.panel-body

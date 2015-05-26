@@ -22,12 +22,16 @@ gulp.task('copyjs', function() {
 
 gulp.task('copystyles', function() {
   return gulp.src([
-      'assets/styles/**/*.{css,ttf,woff,eot,svg,woff2}',
-      'assets/fonts/**/*.*'
+      'assets/styles/lib/**/*.{css,ttf,woff,eot,svg,woff2}',
+      'assets/fonts/**/*.*',
+      'assets/styles/app.css',
+      'assets/styles/**/*.*'
     ])
     .pipe(order([
-      'assets/styles/bootstrap.min.css',
-      'assets/styles/**/*.{css,ttf,woff,eot,svg,woff2}'
+      'assets/styles/lib/bootstrap.min.css',
+      'assets/styles/lib/**/*.{css,ttf,woff,eot,svg,woff2}',
+      'assets/styles/app.css',
+      'assets/styles/**/*.*'
     ]))
     .pipe(gulp.dest('.tmp/public/styles'));
 });
@@ -53,7 +57,7 @@ gulp.task('index', ['copyjs', 'copystyles'], function () {
   var sources = gulp.src('**/*.{js,css}', { cwd: '.tmp/public' })
     .pipe(order([
       'js/dependencies/jquery*.js',
-      'js/dependencies/angular.min.js',
+      'js/dependencies/angular.js',
       'js/dependencies/**.js',
       'js/app/lib/angular-resource.min.js',
       'js/app/lib/*.js',

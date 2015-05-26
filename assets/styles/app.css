@@ -16,6 +16,7 @@ html, body, #app-container {
     min-height: 100%;
     margin: 0;
     padding: 0;
+    font-size: 14px;
 }
 
 ::selection {
@@ -27,12 +28,20 @@ html, body, #app-container {
     color: #ffffff;
 }
 
+.ui-grid-row {
+  height: 24px !important;
+}
+
 .ui-grid-header-cell {
     height: 60px;
 }
 
 .ui-grid-row.ui-grid-row-selected > [ui-grid-row] > .ui-grid-cell {
   background: #e8c7d6 !important;
+}
+
+.ui-grid-column-menu-button-last-col {
+  margin-right: 0px !important;
 }
 
 .well {
@@ -45,8 +54,9 @@ html, body, #app-container {
   top: 0;
   left: 0;
   z-index: 2;
-  background: #585858;
-  border-color: #333;
+  background: url('/images/headerbg.png') no-repeat;
+  background-color: #f6f2ef;
+  border-color: #dddddd;
 }
 
 #logout-btn {
@@ -121,7 +131,7 @@ html, body, #app-container {
 }
 
 #app-body {
-    padding: 54px 4px 4px 4px;
+    padding: 55px 4px 4px 4px;
     background-color: #585858 !important;
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
@@ -136,7 +146,19 @@ html, body, #app-container {
 
 .navbar-brand {
   margin-left: 0px !important;
-  padding: 9px 0px 0px 4px !important;
+  padding: 11px 0px 0px 10px !important;
+}
+
+.navbar-text {
+  background-color: #585858 !important;
+  color: #f6f2ef !important;
+  padding:  16px 10px 0px 10px !important;
+  font-size: 13px !important;
+  font-weight: bold !important;
+  margin-top: 0px !important;
+  margin-bottom: 0px !important;
+  margin-left: 10px !important;
+  height: 50px;
 }
 
 .navbar-btn {
@@ -159,4 +181,24 @@ html, body, #app-container {
 
 .panel-default > .panel-heading {
   background-color: #f6f2ef !important;
+}
+
+.ngdialog.ngdialog-theme-default {
+  padding-top: 96px !important;
+  padding-bottom: 0px !important;
+}
+@media screen and (max-width: 768px) {
+    .ngdialog.ngdialog-theme-default {
+        padding-top: 0px !important;
+    }
+
+    .ngdialog.ngdialog-theme-default .ngdialog-content {
+        padding: 1em 1em 0em 1em !important;
+        margin: 0px !important;
+        width: 100% !important;
+    }
+}
+
+#toast-container > div {
+    width: 300px;
 }

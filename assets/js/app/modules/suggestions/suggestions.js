@@ -36,7 +36,7 @@ angular.module('suggestions')
   }]);
 
 angular.module('suggestions')
-  .controller('SuggestionsIndexController', ['$scope', 'uiGridConstants', function($scope, uiGridConstants) {
+  .controller('SuggestionsIndexController', ['$scope', 'uiGridConstants', 'ngDialog', function($scope, uiGridConstants, ngDialog) {
     $scope.suggestionsGridSelectionCount = 0;
 
     $scope.suggestionsGrid = {
@@ -78,7 +78,16 @@ angular.module('suggestions')
       });
     };
 
-  }])
+    $scope.newSuggestionClick = function newSuggestionClick() {
+      ngDialog.open({
+        template: '/js/app/modules/suggestions/_new.html',
+        className: 'ngdialog-theme-default',
+        scope: $scope
+      });
+    };
+
+
+}])
     .controller('SuggestionsNewController', ['$scope', '$state', 'SuggestionFactory', 'ItemTypesFactory', function($scope, $state, SuggestionFactory, ItemTypesFactory) {
       ItemTypesFactory.get(function(itemtypes) {
         $scope.itemtypes = itemtypes;
