@@ -1,2 +1,3 @@
-# hapi-boilerplate-8
-A simple Hapi.js boilerplate.
+# suggestion-notifier
+
+Notify patrons when their purchase suggestions are order, denied, etc.
