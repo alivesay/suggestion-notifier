@@ -22,17 +22,9 @@ gulp.task('copyjs', function() {
 
 gulp.task('copystyles', function() {
   return gulp.src([
-      'assets/styles/lib/**/*.{css,ttf,woff,eot,svg,woff2}',
-      'assets/fonts/**/*.*',
-      'assets/styles/app.css',
-      'assets/styles/**/*.*'
-    ])
-    .pipe(order([
-      'assets/styles/lib/bootstrap.min.css',
-      'assets/styles/lib/**/*.{css,ttf,woff,eot,svg,woff2}',
-      'assets/styles/app.css',
-      'assets/styles/**/*.*'
-    ]))
+    'assets/styles/**/*.{css,ttf,woff,eot,svg,woff2}',
+    'assets/fonts/**/*.*'
+  ])
     .pipe(gulp.dest('.tmp/public/styles'));
 });
 
@@ -65,7 +57,9 @@ gulp.task('index', ['copyjs', 'copystyles'], function () {
       'js/app/modules/**/*.js',
       'js/app/app.js',
       '**/*.js',
-      '**/*.css'
+      'styles/lib/bootstrap.min.css',
+      'styles/lib/*.css',
+      'styles/app.css'
     ]));
 
   return gulp.src('.tmp/public/index.html')
