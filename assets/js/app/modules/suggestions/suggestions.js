@@ -45,7 +45,14 @@ angular.module('suggestions')
       multiSelect: true,
       //   enableSelectAll: false,
       columnDefs: [
-        { name: 'id', visible: false, type: 'number'},
+        { name: 'id',
+          visible: false,
+          type: 'number',
+          sort: {
+            direction: uiGridConstants.DESC,
+            priority: 1
+          }
+        },
         { name: 'title', type: 'string',
           filter: {
             condition: uiGridConstants.filter.CONTAINS
@@ -85,27 +92,35 @@ angular.module('suggestions')
         scope: $scope
       });
     };
-
-
 }])
-    .controller('SuggestionsNewController', ['$scope', '$state', 'SuggestionFactory', 'ItemTypesFactory', function($scope, $state, SuggestionFactory, ItemTypesFactory) {
+    .controller('SuggestionsNewController', ['$scope', '$state', 'SuggestionFactory', 'ItemTypesFactory', 'toastr', function($scope, $state, SuggestionFactory, ItemTypesFactory, toastr) {
       ItemTypesFactory.get(function(itemtypes) {
         $scope.itemtypes = itemtypes;
       });
 
       $scope.createNewSuggestion = function createNewSuggestion () {
         SuggestionFactory.save($scope.suggestion, function success (value, responseHeaders) {
-          console.log('Hi')
           $state.go('suggestions#index');
         }, function error (httpResponse) {
+          toastr.error('Oops, something went wrong!');
           console.log('REST Error: ' + httpResponse.data.message);
         });
+
+        $scope.closeThisDialog();
       };
   }])
-    .controller('SuggestionsGridController', ['$scope', 'SuggestionFactory', function($scope, SuggestionFactory) {
+    .controller('SuggestionsGridController', ['$scope', 'SuggestionFactory', 'uiGridConstants', 'socket', function($scope, SuggestionFactory, uiGridConstants, socket) {
     // TODO: create list() function and call at load
+
     SuggestionFactory.query(function(data) {
+      console.log(data);
       $scope.suggestionsGrid.data = data;
+    });
+
+    socket.on('suggestions:created', function (suggestion) {
+      $scope.suggestionsGrid.data.push(new SuggestionFactory(suggestion));
+      $scope.suggestionsGridApi.core.notifyDataChange(uiGridConstants.dataChange.EDIT);
+      console.log($scope.suggestionsGrid.data);
     });
   }]);
 

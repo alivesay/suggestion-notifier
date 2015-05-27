@@ -29,6 +29,22 @@ module.exports = function (handlers) {
     },
     {
       method: 'GET',
+      path: '/api/templates',
+      config: {
+        handler: handlers.api.templates.all
+      }
+    },
+    {
+      method: 'POST',
+      path: '/api/templates',
+      config: {
+        handler: handlers.api.templates.create,
+        validate: {
+        }
+      }
+    },
+    {
+      method: 'GET',
       path: '/api/itemtypes',
       config: {
         handler: handlers.api.itemtypes.all,

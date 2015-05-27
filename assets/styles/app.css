@@ -54,7 +54,6 @@ html, body, #app-container {
   top: 0;
   left: 0;
   z-index: 2;
-  background: url('/images/headerbg.png') no-repeat;
   background-color: #f6f2ef;
   border-color: #dddddd;
 }

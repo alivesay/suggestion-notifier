@@ -6,15 +6,14 @@ var models = require('../../db/models');
 
 module.exports = {
   all: function (request, reply) {
-    models.Suggestion.findAll({ order: 'updatedAt DESC' })
-      .then(function(suggestions) {
-        reply(suggestions).code(200);
+    models.Template.findAll()
+      .then(function(templates) {
+        reply(templates).code(200);
       });
   },
   create: function (request, reply) {
-    models.Suggestion.create(request.payload)
-      .then(function (result) {
-        request.server.app.io.sockets.emit('suggestions:created', result);
+    models.Template.create(request.payload)
+      .then(function () {
         reply('Created.').code(200);
       })
       .catch(function (err) {
