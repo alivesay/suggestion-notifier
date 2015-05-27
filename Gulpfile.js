@@ -29,7 +29,7 @@ gulp.task('copystyles', function() {
 });
 
 gulp.task('copyfonts', function () {
-  return gulp.src('assets/fonts/**/*.*').pipe(gulp.dest('.tmp/public/fonts'));
+  return gulp.src('assets/fonts/**/*.*').pipe(gulp.dest('.tmp/public/styles/fonts'));
 });
 
 gulp.task('templates', function () {
