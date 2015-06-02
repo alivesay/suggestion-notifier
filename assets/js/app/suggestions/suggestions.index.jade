@@ -1,0 +1,34 @@
+div#suggestions-view(data-ng-controller='SuggestionsIndexController as vm')
+  div.container-fluid.fill
+    div.fill
+      div#suggestions-panel.panel.panel-default.fill
+        div.panel-heading Suggestions
+          span#suggestions-count-badge.badge {{ vm.suggestionsGrid.data.length }}
+          div.input-group.pull-right
+              div.btn-group
+                a.btn.btn-xs.btn-default(data-ng-click='vm.newSuggestionClick()')
+                  i.fa.fa-plus-square
+                  | &nbsp;New Suggestion
+                a.btn.btn-xs.btn-default.pull-right(data-ng-click='vm.notifyClick()',
+                                                    data-ng-disabled='vm.suggestionsGridSelectionCount == 0',
+                                                    data-ng-class='vm.suggestionsGridSelectionCount == 0 ? "btn-default" : "btn-success"')
+                  i.fa.fa-envelope
+                  | &nbsp;Send Notice
+        div.panel-body
+          div.fill
+            div.fill
+              div.fill(data-ui-grid='vm.suggestionsGrid',
+                       data-ui-grid-selection,
+                       ui-grid-auto-resize,
+                       ui-grid-resize-columns)
+div#console-view(data-ng-controller='ConsoleIndexController')
+  div#console-panel.panel.panel-default.fill
+    div.panel-body
+      div.chatroom-message-list.fill
+        ui-chatroom(data-messages='messages',
+        data-input='message',
+        data-username='name',
+        data-on-submit='sendMessage')
+             // div.form-group
+                button.btn.btn-default.pull-right(data-ng-click='notifyClick()') Notify
+

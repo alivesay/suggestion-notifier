@@ -25,11 +25,3 @@ block content
 
     div#app-body.fill
       data-ui-view
-      div#console-view(data-ng-controller='ConsoleIndexController')
-        div#console-panel.panel.panel-default.fill
-          div.panel-body
-            div.chatroom-message-list.fill
-              ui-chatroom(data-messages='messages',
-                          data-input='message',
-                          data-username='name',
-                          data-on-submit='sendMessage')

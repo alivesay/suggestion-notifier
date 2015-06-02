@@ -1,0 +1,6 @@
+div#console-view(data-ng-controller='ConsoleIndexController')
+  div#console-panel.panel.panel-default.fill
+    div.panel-body
+      div.chatroom-message-list.fill
+        ui-chatroom(data-messages='messages',
+                    data-username='name')

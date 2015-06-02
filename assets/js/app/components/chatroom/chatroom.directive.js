@@ -1,12 +1,32 @@
-'use strict';
+(function(){
+  'use strict';
 
-angular.module('console', [
-  'ui.chatroom'
-]);
+  angular.module('ui.chatroom', [
+    'app.config',
+    'ui.message-list'
+  ]);
 
-angular.module('console')
-  .controller('ConsoleIndexController', [ '$scope', 'socket', function ($scope, socket) {
+  angular.module('ui.chatroom')
+    .directive('uiChatroom', uiChatroom);
 
+  uiChatroom.$inject = ['APP_CONFIG'];
+
+  function uiChatroom(APP_CONFIG) {
+    return {
+      restrict: 'E',
+      replace: true,
+      scope: {
+        messages: '=',
+        username: '='
+      },
+      controller: UiChatroomController,
+      templateUrl: APP_CONFIG.COMPONENT_PATH + 'chatroom/chatroom.html'
+    };
+  }
+
+  UiChatroomController.$inject = ['$scope', 'socket'];
+
+  function UiChatroomController ($scope, socket) {
     $scope.messages = [];
 
     socket.on('init', function (data) {
@@ -42,7 +62,7 @@ angular.module('console')
       });
     });
 
-    $scope.sendMessage = function () {
+    $scope.sendMessage = function sendMessage () {
       socket.emit('send:message', {
         message: $scope.message
       });
@@ -55,4 +75,16 @@ angular.module('console')
 
       $scope.message = '';
     };
-  }]);
+
+    $scope.getMessageClasses = function getMessageClasses (message) {
+      var isDirectedMessage = message.source !== $scope.username &&
+          message.text.match(new RegExp($scope.username, 'i'));
+
+      return {
+        'chatroom-message-list-alert': message.source === 'chatroom',
+        'chatroom-message-list-directed': isDirectedMessage
+      };
+    };
+  }
+
+})();

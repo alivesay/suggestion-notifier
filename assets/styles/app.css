@@ -17,6 +17,7 @@ html, body, #app-container {
     margin: 0;
     padding: 0;
     font-size: 14px;
+    color: #585858;
 }
 
 ::selection {
@@ -32,16 +33,40 @@ html, body, #app-container {
   height: 24px !important;
 }
 
-.ui-grid-header-cell {
-    height: 60px;
-}
-
 .ui-grid-row.ui-grid-row-selected > [ui-grid-row] > .ui-grid-cell {
   background: #e8c7d6 !important;
 }
 
 .ui-grid-column-menu-button-last-col {
   margin-right: 0px !important;
+}
+
+.ui-grid-top-panel {
+  background: #f6f2ef !important;
+}
+
+.ui-grid-pinned-container.ui-grid-pinned-container-left .ui-grid-header-cell:last-child {
+  border-right: 0px !important;
+}
+
+.ui-grid-row .ui-grid-cell.ui-grid-row-header-cell {
+  background-color: #f6f2ef !important;
+}
+
+.ui-grid-header-cell {
+  border-right: 0px !important;
+}
+
+.ui-grid-header-cell:last-child .ui-grid-column-resizer.right {
+  border-right: 0px !important;
+}
+
+.ui-grid-pinned-container.ui-grid-pinned-container-left .ui-grid-cell:last-child {
+  border-right-color: #d4d4d4 !important;
+}
+
+.ui-grid-cell {
+  border-right: 0px;
 }
 
 .well {
@@ -196,8 +221,4 @@ html, body, #app-container {
         margin: 0px !important;
         width: 100% !important;
     }
-}
-
-#toast-container > div {
-    width: 300px;
 }

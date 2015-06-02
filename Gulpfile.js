@@ -53,9 +53,11 @@ gulp.task('index', ['copyjs', 'copystyles'], function () {
       'js/dependencies/**.js',
       'js/app/lib/angular-resource.min.js',
       'js/app/lib/*.js',
+      'js/app/app.config.js',
+      'js/app/shared.module.js',
       'js/app/shared/**/*.js',
-      'js/app/modules/**/*.js',
-      'js/app/app.js',
+      'js/app/components/**/*.js',
+      'js/app/app.module.js',
       '**/*.js',
       'styles/lib/bootstrap.min.css',
       'styles/lib/*.css',
@@ -69,9 +71,7 @@ gulp.task('index', ['copyjs', 'copystyles'], function () {
 
 gulp.task('watch', function () {
   gulp.watch('assets/images/**/*.*', ['copyimages']);
-  gulp.watch('assets/js/app/templates/**/*.jade', ['templates', 'index']);
-  gulp.watch('assets/js/app/shared/**/*.jade', ['templates', 'index']);
-  gulp.watch('assets/js/app/modules/**/*.jade', ['templates', 'index']);
+  gulp.watch('assets/js/app/**/*.jade', ['templates', 'index']);
   gulp.watch('assets/js/**/*.js', ['copyjs', 'index']);
   gulp.watch('assets/styles/**/*.css', ['copystyles', 'index']);
   gulp.watch('assets/fonts/**/*.js', ['copyfonts']);

@@ -1,5 +1,5 @@
 /*!
- * ui-grid - v3.0.0-rc.21-c0d9b48 - 2015-05-19
+ * ui-grid - v3.0.0-rc.21-d68dcc6 - 2015-05-27
  * Copyright (c) 2015 ; License: MIT 
  */
 .ui-grid {
@@ -44,6 +44,11 @@
 }
 .ui-grid-invisible {
   visibility: hidden;
+}
+.ui-grid-contents-wrapper {
+  position: relative;
+  height: 100%;
+  width: 100%;
 }
 .ui-grid-top-panel-background {
   background: #f3f3f3;
@@ -950,12 +955,8 @@ div.ui-grid-cell input.ng-valid {
 * @section font library path
 */
 /*-- END VARIABLES (DO NOT REMOVE THESE COMMENTS) --*/
-.ui-grid-group-header-row {
+.ui-grid-tree-header-row {
   font-weight: bold !important;
-}
-.ui-grid-grouping-row-header-buttons.ui-grid-group-header {
-  cursor: pointer;
-  opacity: 1;
 }
 
 /* This file contains variable declarations (do not remove this line) */
