@@ -15,12 +15,10 @@ div#suggestions-view(data-ng-controller='SuggestionsIndexController as vm')
                   i.fa.fa-envelope
                   | &nbsp;Send Notice
         div.panel-body
-          div.fill
-            div.fill
-              div.fill(data-ui-grid='vm.suggestionsGrid',
-                       data-ui-grid-selection,
-                       ui-grid-auto-resize,
-                       ui-grid-resize-columns)
+          div.fill(data-ui-grid='vm.suggestionsGrid',
+                   data-ui-grid-selection,
+                   ui-grid-auto-resize,
+                   ui-grid-resize-columns)
 div#console-view(data-ng-controller='ConsoleIndexController')
   div#console-panel.panel.panel-default.fill
     div.panel-body

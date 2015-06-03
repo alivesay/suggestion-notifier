@@ -105,7 +105,7 @@
     function onRegisterApi(gridApi) {
       vm.suggestionsGridApi = gridApi;
       gridApi.selection.on.rowSelectionChanged($scope, function (row) {
-        $scope.suggestionsGridSelectionCount = gridApi.selection.getSelectedRows().length;
+        vm.suggestionsGridSelectionCount = gridApi.selection.getSelectedRows().length;
         console.log(   vm.suggestionsGridSelectionCount)
 
       });
