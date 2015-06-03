@@ -44,13 +44,11 @@
 
   function SuggestionsIndexController($scope, socket, uiGridConstants,
                                       ngDialog, SuggestionFactory, APP_CONFIG) {
-    var vm = this;
+    $scope.suggestionsGridSelectionCount = 0;
+    $scope.newSuggestionClick = newSuggestionClick;
+    $scope.notifyClick = notifyClick;
 
-    vm.suggestionsGridSelectionCount = 0;
-    vm.newSuggestionClick = newSuggestionClick;
-    vm.notifyClick = notifyClick;
-
-    vm.suggestionsGrid = {
+    $scope.suggestionsGrid = {
       enableFiltering: true,
       enableRowSelection: true,
       enableRowHeaderSelection: false,
@@ -93,21 +91,19 @@
 
     function onLoad() {
       SuggestionFactory.query(function (data) {
-        vm.suggestionsGrid.data = data;
+        $scope.suggestionsGrid.data = data;
       });
 
       socket.on('suggestions:created', function (suggestion) {
-        vm.suggestionsGrid.data.push(new SuggestionFactory(suggestion));
-        vm.suggestionsGridApi.core.notifyDataChange(uiGridConstants.dataChange.EDIT);
+        $scope.suggestionsGrid.data.push(new SuggestionFactory(suggestion));
+        $scope.suggestionsGridApi.core.notifyDataChange(uiGridConstants.dataChange.EDIT);
       });
     }
 
     function onRegisterApi(gridApi) {
-      vm.suggestionsGridApi = gridApi;
+      $scope.suggestionsGridApi = gridApi;
       gridApi.selection.on.rowSelectionChanged($scope, function (row) {
-        vm.suggestionsGridSelectionCount = gridApi.selection.getSelectedRows().length;
-        console.log(   vm.suggestionsGridSelectionCount)
-
+        $scope.suggestionsGridSelectionCount = gridApi.selection.getSelectedRows().length;
       });
 
       gridApi.selection.on.rowSelectionChangedBatch($scope, function (rows) {
@@ -119,7 +115,7 @@
       ngDialog.open({
         template: APP_CONFIG.APP_PATH + 'suggestions/suggestions.new.html',
         className: 'ngdialog-theme-default',
-        scope: vm
+        scope: $scope
       });
     }
 
@@ -127,7 +123,7 @@
       ngDialog.open({
         template: APP_CONFIG.APP_PATH + 'notifier/notifier.index.html',
         className: 'ngdialog-theme-default',
-        scope: vm
+        scope: $scope
       });
     }
   }
@@ -135,28 +131,27 @@
   angular.module('app.suggestions')
     .controller('SuggestionsNewController', SuggestionsNewController);
 
-  SuggestionsNewController.$inject = ['$state', 'SuggestionFactory',
+  SuggestionsNewController.$inject = ['$scope', '$state', 'SuggestionFactory',
                                       'ItemTypesFactory', 'toastr'];
 
-  function SuggestionsNewController($state, SuggestionFactory,
+  function SuggestionsNewController($scope, $state, SuggestionFactory,
                                     ItemTypesFactory, toastr) {
-    var vm = this;
 
-    vm.createNewSuggestion = createNewSuggestion;
+    $scope.createNewSuggestion = createNewSuggestion;
 
     ItemTypesFactory.get(function (itemtypes) {
-      vm.itemtypes = itemtypes;
+      $scope.itemtypes = itemtypes;
     });
 
     function createNewSuggestion() {
-      SuggestionFactory.save(vm.suggestion, function success(value, responseHeaders) {
+      SuggestionFactory.save($scope.suggestion, function success(value, responseHeaders) {
         $state.go('suggestions#index');
       }, function error(httpResponse) {
         toastr.error('Oops, something went wrong!');
         console.log('REST Error: ' + httpResponse.data.message);
       });
 
-      vm.closeThisDialog();
+      $scope.closeThisDialog();
     }
   }
 
