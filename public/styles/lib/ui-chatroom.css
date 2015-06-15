@@ -1,0 +1,115 @@
+
+
+.ui-message-list {
+    background-color: #585858;
+    background-repeat: repeat-x;
+    overflow-y: auto;
+    overflow-x: hidden;
+    color: #eae4dd;
+}
+
+.ui-message-list ul {
+    list-style-type: none;
+
+}
+
+.ui-message-list li {
+    word-wrap: break-word;
+    font-size: 14px;
+    line-height: 18px;
+    /* height: 18px; */
+    /* opacity: 0; */
+    /* -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)"; */
+    /* filter: alpha(opacity=0) */
+}
+
+.ui-message-list-container {
+    display: table;
+    table-layout: fixed;
+    margin: 0;
+    line-height: 18px;
+    width: 100%;
+}
+
+.ui-message-list div:nth-child(even) {
+    background-color: #5d5d5d
+}
+
+.ui-message-list-source:before {
+    content: "<"
+}
+
+.ui-message-list-source:after {
+    content: "> "
+}
+
+.ui-message-list-source {
+    display: table-cell;
+    width: 120px;
+    min-width: 120px;
+    vertical-align: top;
+    text-align: right;
+    padding-right: 12px;
+}
+
+.ui-message-list-timestamp {
+    color: #969696;
+    display: table-cell;
+    width: 120px;
+    vertical-align: top;
+}
+
+.ui-message-list-text {
+    display: inline-block;
+}
+
+.ui-message-list-timestamp:after {
+    content: " ";
+}
+
+.chatroom-message-list-alert {
+    color: #c25d5d;
+}
+
+.chatroom-message-list-alert .ui-message-list-source {
+    display: none;
+    visibility: hidden;
+}
+
+.chatroom-message-list-alert .ui-message-list-text {
+    font-style: italic;
+    display: inline-block;
+}
+
+.chatroom-message-list-directed .ui-message-list-source {
+    color: #ff0;
+    display: table-cell;
+    width: 70px;
+    min-width: 70px;
+    vertical-align: top;
+}
+
+.chatroom-input-box-text {
+    width: 100%;
+    line-height: 24px;
+    height: 28px;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    margin: 4px 0 4px 0;
+    padding: 0 6px 0 6px;
+    border: 1px solid #cccdc7;
+    -webkit-border-radius: 0 0 5px 5px;
+    border-radius: 0 0 5px 5px;
+    background-color: #f6f2ef
+}
+
+.ui-message-list-fade.ng-enter {
+  -webkit-transition: 300ms linear all;
+  transition: 300ms linear all;
+  opacity: 0;
+}
+
+.ui-message-list-fade.ng-enter-active {
+  opacity: 1;
+}

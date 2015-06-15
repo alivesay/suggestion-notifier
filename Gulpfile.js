@@ -9,35 +9,35 @@ gulp.task('hapi', function() {
 });
 
 gulp.task('copyimages', function() {
-  return gulp.src(['assets/images/**/*.*'])
+  return gulp.src(['public/images/**/*.*'])
     .pipe(gulp.dest('.tmp/public/images'));
 });
 
 gulp.task('copyjs', function() {
-  return gulp.src(['assets/js/**/*.js', 'assets/js/**/*.map'])
-    .pipe(order(['assets/js/**/*.js',
-                 'assets/js/**/*.map']))
+  return gulp.src(['public/js/**/*.js', 'public/js/**/*.map'])
+    .pipe(order(['public/js/**/*.js',
+                 'public/js/**/*.map']))
     .pipe(gulp.dest('.tmp/public/js'))
 });
 
 gulp.task('copystyles', function() {
   return gulp.src([
-    'assets/styles/**/*.{css,ttf,woff,eot,svg,woff2}',
-    'assets/fonts/**/*.*'
+    'public/styles/**/*.{css,ttf,woff,eot,svg,woff2}',
+    'public/fonts/**/*.*'
   ])
     .pipe(gulp.dest('.tmp/public/styles'));
 });
 
 gulp.task('copyfonts', function () {
-  return gulp.src('assets/fonts/**/*.*').pipe(gulp.dest('.tmp/public/styles/fonts'));
+  return gulp.src('public/fonts/**/*.*').pipe(gulp.dest('.tmp/public/styles/fonts'));
 });
 
-gulp.task('templates', function () {
+gulp.task('layout', function () {
   return gulp.src([
-      'assets/js/app/templates/**/*.jade',
-      'assets/**/*.jade',
-      '!assets/js/app/templates/includes/**/*.jade',
-      '!assets/js/app/templates/layout.jade'
+      'public/js/app/layout/**/*.jade',
+      'public/**/*.jade',
+      '!public/js/app/layout/includes/**/*.jade',
+      '!public/js/app/layout/layout.jade'
     ])
     .pipe(jade({
       pretty: true
@@ -53,15 +53,19 @@ gulp.task('index', ['copyjs', 'copystyles'], function () {
       'js/dependencies/**.js',
       'js/app/lib/angular-resource.min.js',
       'js/app/lib/*.js',
+      'js/app/app.module.js',
       'js/app/app.config.js',
       'js/app/shared.module.js',
       'js/app/shared/**/*.js',
-      'js/app/components/**/*.js',
-      'js/app/app.module.js',
-      '**/*.js',
+      'js/app/directives/**/*.js',
+      'js/app/modules/**/*.module.js',
+      'js/app/modules/**/*.config.js',
+      'js/app/modules/**/*.controller.js',
+      'js/app/modules/**/*.factory.js',
+      'js/app/modules/**/*.service.js',
       'styles/lib/bootstrap.min.css',
       'styles/lib/*.css',
-      'styles/app.css'
+      'styles/lib/app.css'
     ]));
 
   return gulp.src('.tmp/public/index.html')
@@ -70,11 +74,11 @@ gulp.task('index', ['copyjs', 'copystyles'], function () {
 });
 
 gulp.task('watch', function () {
-  gulp.watch('assets/images/**/*.*', ['copyimages']);
-  gulp.watch('assets/js/app/**/*.jade', ['templates', 'index']);
-  gulp.watch('assets/js/**/*.js', ['copyjs', 'index']);
-  gulp.watch('assets/styles/**/*.css', ['copystyles', 'index']);
-  gulp.watch('assets/fonts/**/*.js', ['copyfonts']);
+  gulp.watch('public/images/**/*.*', ['copyimages']);
+  gulp.watch('public/js/app/**/*.jade', ['layout', 'index']);
+  gulp.watch('public/js/**/*.js', ['copyjs', 'index']);
+  gulp.watch('public/styles/**/*.css', ['copystyles', 'index']);
+  gulp.watch('public/fonts/**/*.js', ['copyfonts']);
 });
 
 gulp.task('default', [
@@ -82,7 +86,7 @@ gulp.task('default', [
   'copyjs',
   'copystyles',
   'copyfonts',
-  'templates',
+  'layout',
   'index',
   'hapi',
   'watch'

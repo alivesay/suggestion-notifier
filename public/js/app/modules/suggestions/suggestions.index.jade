@@ -1,0 +1,40 @@
+div#suggestions-view.container-fluid.fill(ng-controller='SuggestionsIndexController')
+  div#suggestions-panel.panel.panel-default.fill
+    div.panel-heading.clearfix
+      ul.nav.nav-pills(ng-init='suggestionTabActive = true')
+        li(role='presentation') Suggestions
+        li(role='presentation',
+           ng-class='{ "active": suggestionTabActive }')
+          a(ng-click='suggestionTabActive = true')
+            | New
+            span#suggestions-count-badge.badge {{ suggestionsGrid.data.length }}
+        li(role='presentation',
+           ng-class='{ "active": referredTabActive }')
+          a(ng-click='referredTabActive = true')
+            | Referred
+            span#suggestions-count-badge.badge {{ 42 }}
+        li.pull-right(role='presentation')
+          div.btn-toolbar
+            div.btn-group
+              a.btn.btn-xs.btn-default(ng-click='refreshClick()')
+                i.fa.fa-refresh
+            div.btn-group
+              a.btn.btn-xs.btn-default(ng-click='newSuggestionClick()')
+                | &nbsp;New Suggestion
+              a.btn.btn-xs.btn-default(ng-click='newSuggestionClick()',
+                                       ng-disabled='suggestionsGridSelectionCount == 0')
+                | &nbsp;Refer
+    div.panel-body
+      div.fill(ui-grid='suggestionsGrid',
+               ui-grid-selection,
+               ui-grid-auto-resize,
+               ui-grid-resize-columns)
+    div.panel-footer
+      ul.nav
+        li.pull-right(role='presentation')
+          div.input-group
+            a.btn.btn-xs.btn-default.pull-right(ng-click='notifyClick()',
+                                                ng-disabled='suggestionsGridSelectionCount == 0',
+                                                ng-class='suggestionsGridSelectionCount == 0 ? "btn-default" : "btn-primary"')
+              i.fa.fa-envelope
+              | &nbsp;Send Notice

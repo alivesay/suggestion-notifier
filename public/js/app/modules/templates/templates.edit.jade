@@ -1,0 +1,34 @@
+div(ng-controller='TemplatesEditController')
+  form#edit-template-form.form-horizontal(name='editTemplateForm',
+                                          role='form',
+                                          novalidate)
+    fieldset
+      legend Edit Template
+      div.form-group.required(ng-class='{ "has-error": editTemplateForm.title.$invalid && editTemplateForm.title.$dirty }')
+        label.control-label.col-sm-2(for='title-field') Title
+        div.col-sm-10
+          input#title-field.form-control(type='text',
+                                         name='title',
+                                         ng-model='template.title',
+                                         required)
+      div.form-group
+        div.col-sm-10.col-sm-offset-2
+          div.checkbox
+            label
+              input#bibrequired-field(type='checkbox',
+                                      name='bibrequired',
+                                      ng-model='template.bibRequired',
+                                      ng-init='template.bibRequired = template.bibRequired || false')
+              | Require bib # when sending this notice?
+      div.form-group.required(ng-class='{ "has-error": editTemplateForm.body.$invalid && editTemplateForm.body.$dirty }')
+        label.control-label.col-sm-2(for='body-field') Body
+        div.col-sm-10
+          textarea#body-field.form-control(name='body',
+                                           ng-model='template.body',
+                                           rows='12',
+                                           required)
+      div.form-group
+        div.col-sm-12
+          button.btn.btn.pull-right(ng-click='saveTemplateClicked()',
+                                    ng-disabled='editTemplateForm.$invalid',
+                                    ng-class='editTemplateForm.$invalid ? "disabled" : "btn-success"') Save

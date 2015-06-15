@@ -1,0 +1,7 @@
+div.fill
+  div.ui-message-list.fill
+    div.ui-message-list-container.ui-message-list-fade(ng-repeat='message in messages',
+                                  ng-class='getMessageClasses(message)')
+      span.ui-message-list-timestamp(ng-bind='message.timestamp | date: timestampFormat')
+      span.ui-message-list-source(ng-bind='message.source')
+      span.ui-message-list-text(ng-bind='message.text')

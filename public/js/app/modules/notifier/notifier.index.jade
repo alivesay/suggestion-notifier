@@ -1,0 +1,41 @@
+div(ng-controller='NotifierIndexController')
+  form#send-notice-form.form-horizontal(name='sendNoticeForm',
+                                        role='form',
+                                        novalidate,
+                                        ng-hide='sendClicked')
+    fieldset
+      legend Send Notice
+      div.form-group.required(ng-class='{ "has-error": sendNoticeForm.title.$invalid && sendNoticeForm.title.$dirty }')
+        label.control-label.col-sm-2(for='template-field') Template
+        div.col-sm-10
+          select#template-field.form-control(ng-model='notice.template',
+                                             ng-options='template.title for template in templates',
+                                             required)
+      div.form-group.required(ng-class='{ "has-error": sendNoticeForm.patron.$invalid && sendNoticeForm.patron.$dirty }'
+                              ng-show='notice.template.bibRequired == true')
+        label.control-label.col-sm-2(for='patron-field') Bib #
+        div.col-sm-10
+          div.input-group
+            span.input-group-addon #
+            input#patron-field.form-control(type='text',
+                                                name='bibNumber',
+                                                ng-model='notice.bibNumber',
+                                                ng-required='notice.template.bibRequired == true')
+      div.form-group.required(ng-class='{ "has-error": sendNoticeForm.body.$invalid && sendNoticeForm.body.$dirty }')
+        label.control-label.col-sm-2(for='body-field') Body
+        div.col-sm-10
+          textarea#body-field.form-control(name='body',
+                                           ng-model='notice.template.body',
+                                           rows='12',
+                                           required)
+      div.form-group
+        div.col-sm-12
+          button.btn.btn.pull-right(ng-click='sendNoticeClicked()',
+                                    ng-disabled='sendNoticeForm.$invalid',
+                                    ng-class='sendNoticeForm.$invalid ? "disabled" : "btn-success"') Send
+  div(ng-show='sendClicked')
+    h2 Sending...
+      progressbar(max='ngDialogData.length',
+                  value='noticesSentCount')
+        span(style='color:black; white-space:nowrap;')
+          | {{noticesSentCount}} / {{ngDialogData.length}}
