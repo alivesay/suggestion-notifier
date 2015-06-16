@@ -5,11 +5,15 @@ html(data-ng-app='app')
     base(href='/')
     title= title
     style [ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak { display: none !important; }
+    // bower:css
+    // endbower
     // inject:css
     // endinject
 
   body(data-ng-controller='AppController')
     block content
     script(src='/socket.io/socket.io.js')
+    // bower:js
+    // endbower
     // inject:js
     // endinject

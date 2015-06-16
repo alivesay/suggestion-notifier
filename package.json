@@ -23,13 +23,14 @@
   },
   "devDependencies": {
     "gulp": "^3.8.11",
-    "gulp-bower": "0.0.10",
     "gulp-inject": "^1.2.0",
     "gulp-jade": "^1.0.0",
     "gulp-livereload": "^3.8.0",
     "gulp-nodemon": "^2.0.3",
     "gulp-order": "^1.1.1",
+    "main-bower-files": "^2.8.0",
     "sequelize-cli": "^1.7.0",
-    "sqlite3": "^3.0.8"
+    "sqlite3": "^3.0.8",
+    "wiredep": "^2.2.2"
   }
 }

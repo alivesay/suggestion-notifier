@@ -4,15 +4,15 @@
   angular.module('app.shared', [
     'ngResource',
     'toastr',
-    'ui.bootstrap'
-  ]);
-
-  angular.module('app', [
+    'ui.bootstrap',
+    'angular-loading-bar',
     'ngResource',
     'ngAnimate',
     'ngDialog',
-    'ui.router',
-    'angular-loading-bar',
+    'ui.router'
+  ]);
+
+  angular.module('app', [
     'app.shared',
     'app.console',
     'app.suggestions',

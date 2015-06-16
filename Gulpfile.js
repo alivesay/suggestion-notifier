@@ -3,22 +3,32 @@ var jade = require('gulp-jade');
 var inject = require('gulp-inject');
 var order = require('gulp-order');
 var nodemon = require('gulp-nodemon');
-var bower = require('gulp-bower');
+var mainBowerFiles = require('main-bower-files');
+var wiredep = require('wiredep').stream;
+
+var config = {
+  publicDir: '.tmp/public'
+};
 
 gulp.task('hapi', function() {
   nodemon({ script : './app.js', ext : 'js' });
 });
 
+gulp.task('bowerFiles', function () {
+  return gulp.src(mainBowerFiles())
+    .pipe(gulp.dest(config.publicDir + '/bower_components'))
+});
+
 gulp.task('copyimages', function() {
   return gulp.src(['public/images/**/*.*'])
-    .pipe(gulp.dest('.tmp/public/images'));
+    .pipe(gulp.dest(config.publicDir + '/images'));
 });
 
 gulp.task('copyjs', function() {
   return gulp.src(['public/js/**/*.js', 'public/js/**/*.map'])
     .pipe(order(['public/js/**/*.js',
                  'public/js/**/*.map']))
-    .pipe(gulp.dest('.tmp/public/js'))
+    .pipe(gulp.dest(config.publicDir + '/js'))
 });
 
 gulp.task('copystyles', function() {
@@ -26,11 +36,11 @@ gulp.task('copystyles', function() {
     'public/styles/**/*.{css,ttf,woff,eot,svg,woff2}',
     'public/fonts/**/*.*'
   ])
-    .pipe(gulp.dest('.tmp/public/styles'));
+    .pipe(gulp.dest(config.publicDir + '/styles'));
 });
 
 gulp.task('copyfonts', function () {
-  return gulp.src('public/fonts/**/*.*').pipe(gulp.dest('.tmp/public/styles/fonts'));
+  return gulp.src('public/fonts/**/*.*').pipe(gulp.dest(config.publicDir + '/styles/fonts'));
 });
 
 gulp.task('layout', function () {
@@ -43,17 +53,28 @@ gulp.task('layout', function () {
     .pipe(jade({
       pretty: true
     }))
-    .pipe(gulp.dest('.tmp/public'));
+    .pipe(gulp.dest(config.publicDir));
 });
 
-gulp.task('index', ['copyjs', 'copystyles'], function () {
-  var sources = gulp.src('**/*.{js,css}', { cwd: '.tmp/public' })
+gulp.task('wiredep', ['bowerFiles'], function () {
+  return gulp.src(config.publicDir + '/index.html')
+    .pipe(wiredep())
+    .pipe(gulp.dest(config.publicDir));
+});
+
+gulp.task('index', ['copyjs', 'copystyles', 'layout'], function () {
+  var sources = gulp.src('**/*.{js,css}', { cwd: config.publicDir })
     .pipe(order([
+      /*
       'js/dependencies/jquery*.js',
       'js/dependencies/angular.js',
       'js/dependencies/**.js',
       'js/app/lib/angular-resource.min.js',
       'js/app/lib/*.js',
+      */
+      'bower_components/jquery.js',
+      'bower_components/angular.js',
+      'bower_components/**/*.js',
       'js/app/app.module.js',
       'js/app/app.config.js',
       'js/app/shared.module.js',
@@ -69,17 +90,13 @@ gulp.task('index', ['copyjs', 'copystyles'], function () {
       'styles/lib/app.css'
     ]));
 
-  return gulp.src('.tmp/public/index.html')
+  return gulp.src(config.publicDir + '/index.html')
     .pipe(inject(sources))
-    .pipe(gulp.dest('.tmp/public'))
-});
-
-gulp.task('bower', function () {
-  return bower()
-    .pipe(gulp.dest('./bower_components'));
+    .pipe(gulp.dest(config.publicDir))
 });
 
 gulp.task('watch', function () {
+  gulp.watch('bower_components/**/*', ['bowerFiles', 'wiredep']);
   gulp.watch('public/images/**/*.*', ['copyimages']);
   gulp.watch('public/js/app/**/*.jade', ['layout', 'index']);
   gulp.watch('public/js/**/*.js', ['copyjs', 'index']);
@@ -88,12 +105,13 @@ gulp.task('watch', function () {
 });
 
 gulp.task('default', [
-  'bower',
+  'bowerFiles',
   'copyimages',
   'copyjs',
   'copystyles',
   'copyfonts',
   'layout',
+  'wiredep',
   'index',
   'hapi',
   'watch'
