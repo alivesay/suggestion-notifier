@@ -53,10 +53,6 @@ gulp.task('copystyles', function() {
     .pipe(gulp.dest(config.publicDir + '/styles'));
 });
 
-gulp.task('copyfonts', function () {
-  return gulp.src('public/fonts/**/*.*').pipe(gulp.dest(config.publicDir + '/styles/fonts'));
-});
-
 gulp.task('layout', function () {
   return gulp.src([
       'public/js/app/layout/**/*.jade',
@@ -120,10 +116,9 @@ gulp.task('index', ['copyjs', 'copystyles', 'layout'], function () {
 gulp.task('watch', function () {
   gulp.watch('bower_components/**/*', ['bowerfiles', 'bowerjs', 'bowercss', 'wiredep']);
   gulp.watch('public/images/**/*.*', ['copyimages']);
-  gulp.watch('public/js/app/**/*.jade', ['layout', 'index']);
-  gulp.watch('public/js/**/*.js', ['copyjs', 'index']);
-  gulp.watch('public/styles/**/*.css', ['copystyles', 'index']);
-  gulp.watch('public/fonts/**/*.js', ['copyfonts']);
+  gulp.watch('public/js/app/**/*.jade', ['layout', 'index', 'wiredep']);
+  gulp.watch('public/js/**/*.js', ['copyjs', 'index', 'wiredep']);
+  gulp.watch('public/styles/**/*.css', ['copystyles', 'index', 'wiredep']);
 });
 
 gulp.task('default', [
@@ -131,7 +126,6 @@ gulp.task('default', [
   'copyimages',
   'copyjs',
   'copystyles',
-  'copyfonts',
   'layout',
   'wiredep',
   'index',
