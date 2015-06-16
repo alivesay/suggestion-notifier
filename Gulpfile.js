@@ -3,8 +3,8 @@ var jade = require('gulp-jade');
 var inject = require('gulp-inject');
 var order = require('gulp-order');
 var nodemon = require('gulp-nodemon');
+var wiredep = require('wiredep');
 var mainBowerFiles = require('main-bower-files');
-var wiredep = require('wiredep').stream;
 
 var config = {
   publicDir: '.tmp/public'
@@ -14,9 +14,23 @@ gulp.task('hapi', function() {
   nodemon({ script : './app.js', ext : 'js' });
 });
 
-gulp.task('bowerFiles', function () {
-  return gulp.src(mainBowerFiles())
-    .pipe(gulp.dest(config.publicDir + '/bower_components'))
+gulp.task('bowerjs', function () {
+  return gulp.src(wiredep().js)
+    .pipe(gulp.dest(config.publicDir + '/js/vendor'))
+});
+
+gulp.task('bowercss', function () {
+  return gulp.src(wiredep().css)
+    .pipe(gulp.dest(config.publicDir + '/styles/vendor'))
+});
+
+gulp.task('bowerfiles', function () {
+  // Workaround for: https://github.com/zont/gulp-bower/issues/30
+  gulp.src(mainBowerFiles('**/font-awesome/fonts/*'))
+    .pipe(gulp.dest(config.publicDir + '/styles/fonts'));
+
+  return gulp.src(mainBowerFiles('**/angular-ui-grid/{*.eot,*.svg,*.ttf,*.woff,*.woff2}'))
+    .pipe(gulp.dest(config.publicDir + '/styles/vendor'));
 });
 
 gulp.task('copyimages', function() {
@@ -56,25 +70,33 @@ gulp.task('layout', function () {
     .pipe(gulp.dest(config.publicDir));
 });
 
-gulp.task('wiredep', ['bowerFiles'], function () {
+gulp.task('wiredep', ['bowerjs', 'bowercss'], function () {
   return gulp.src(config.publicDir + '/index.html')
-    .pipe(wiredep())
+    .pipe(wiredep.stream({
+      fileTypes: {
+        html: {
+          replace: {
+            js: function (filePath) {
+              return '<script src="/js/vendor/' + filePath.split('/').pop() + '"></script>';
+            },
+            css: function (filePath) {
+              return '<link rel="stylesheet" href="/styles/vendor/' + filePath.split('/').pop() + '" />';
+            }
+          }
+        }
+      }
+    }))
     .pipe(gulp.dest(config.publicDir));
 });
 
 gulp.task('index', ['copyjs', 'copystyles', 'layout'], function () {
-  var sources = gulp.src('**/*.{js,css}', { cwd: config.publicDir })
+  var sources = gulp.src([
+      '**/*.{js,css}',
+      '!js/vendor/**/*',
+      '!styles/vendor/**/*'
+    ]
+    , { cwd: config.publicDir })
     .pipe(order([
-      /*
-      'js/dependencies/jquery*.js',
-      'js/dependencies/angular.js',
-      'js/dependencies/**.js',
-      'js/app/lib/angular-resource.min.js',
-      'js/app/lib/*.js',
-      */
-      'bower_components/jquery.js',
-      'bower_components/angular.js',
-      'bower_components/**/*.js',
       'js/app/app.module.js',
       'js/app/app.config.js',
       'js/app/shared.module.js',
@@ -96,7 +118,7 @@ gulp.task('index', ['copyjs', 'copystyles', 'layout'], function () {
 });
 
 gulp.task('watch', function () {
-  gulp.watch('bower_components/**/*', ['bowerFiles', 'wiredep']);
+  gulp.watch('bower_components/**/*', ['bowerfiles', 'bowerjs', 'bowercss', 'wiredep']);
   gulp.watch('public/images/**/*.*', ['copyimages']);
   gulp.watch('public/js/app/**/*.jade', ['layout', 'index']);
   gulp.watch('public/js/**/*.js', ['copyjs', 'index']);
@@ -105,7 +127,7 @@ gulp.task('watch', function () {
 });
 
 gulp.task('default', [
-  'bowerFiles',
+  'bowerfiles',
   'copyimages',
   'copyjs',
   'copystyles',

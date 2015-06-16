@@ -24,7 +24,8 @@
     "angular-loading-bar": "~0.7.1",
     "angular-ui-grid": "~3.0.0-rc.22",
     "ngDialog": "~0.4.0",
-    "angular-bootstrap": "~0.13.0"
+    "angular-bootstrap": "~0.13.0",
+    "font-awesome": "~4.3.0"
   },
   "resolutions": {
     "angular": "~1.4.0"
