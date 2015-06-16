@@ -3,6 +3,7 @@ var jade = require('gulp-jade');
 var inject = require('gulp-inject');
 var order = require('gulp-order');
 var nodemon = require('gulp-nodemon');
+var bower = require('gulp-bower');
 
 gulp.task('hapi', function() {
   nodemon({ script : './app.js', ext : 'js' });
@@ -73,6 +74,11 @@ gulp.task('index', ['copyjs', 'copystyles'], function () {
     .pipe(gulp.dest('.tmp/public'))
 });
 
+gulp.task('bower', function () {
+  return bower()
+    .pipe(gulp.dest('./bower_components'));
+});
+
 gulp.task('watch', function () {
   gulp.watch('public/images/**/*.*', ['copyimages']);
   gulp.watch('public/js/app/**/*.jade', ['layout', 'index']);
@@ -82,6 +88,7 @@ gulp.task('watch', function () {
 });
 
 gulp.task('default', [
+  'bower',
   'copyimages',
   'copyjs',
   'copystyles',

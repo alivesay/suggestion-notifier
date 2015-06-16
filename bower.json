@@ -1,0 +1,32 @@
+{
+  "name": "suggestion-notifier",
+  "version": "0.0.0",
+  "homepage": "https://github.com/alivesay/suggestion-notifier",
+  "authors": [
+    "Andrew Livesay <andrew.livesay@gmail.com>"
+  ],
+  "license": "Unlicense",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "jquery": "~2.1.4",
+    "angular": "~1.4.0",
+    "bootstrap": "~3.3.4",
+    "angular-resource": "~1.4.0",
+    "angular-animate": "~1.4.0",
+    "angular-toastr": "~1.4.1",
+    "angular-ui-router": "~0.2.15",
+    "angular-loading-bar": "~0.7.1",
+    "angular-ui-grid": "~3.0.0-rc.22",
+    "ngDialog": "~0.4.0",
+    "angular-bootstrap": "~0.13.0"
+  },
+  "resolutions": {
+    "angular": "~1.4.0"
+  }
+}
