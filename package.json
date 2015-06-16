@@ -23,6 +23,7 @@
   },
   "devDependencies": {
     "gulp": "^3.8.11",
+    "gulp-flatten": "0.0.4",
     "gulp-inject": "^1.2.0",
     "gulp-jade": "^1.0.0",
     "gulp-livereload": "^3.8.0",

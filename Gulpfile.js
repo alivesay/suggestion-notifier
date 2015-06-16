@@ -5,6 +5,7 @@ var order = require('gulp-order');
 var nodemon = require('gulp-nodemon');
 var wiredep = require('wiredep');
 var mainBowerFiles = require('main-bower-files');
+var flatten = require('gulp-flatten');
 
 var config = {
   publicDir: '.tmp/public'
@@ -26,6 +27,15 @@ gulp.task('bowercss', function () {
 
 gulp.task('bowerfiles', function () {
   // Workaround for: https://github.com/zont/gulp-bower/issues/30
+
+  gulp.src('./bower_components/**/*.css.map')
+    .pipe(flatten())
+    .pipe(gulp.dest(config.publicDir + '/styles/vendor'));
+
+  gulp.src('./bower_components/**/*.js.map')
+    .pipe(flatten())
+    .pipe(gulp.dest(config.publicDir + '/js/vendor'));
+
   gulp.src(mainBowerFiles('**/font-awesome/fonts/*'))
     .pipe(gulp.dest(config.publicDir + '/styles/fonts'));
 
