@@ -6,7 +6,7 @@ var models = require('../../db/models');
 
 module.exports = {
   all: function (request, reply) {
-    models.Suggestion.findAll({ order: 'updatedAt DESC' })
+    models.Suggestion.findAll({ order: 'createdAt ASC' })
       .then(function(suggestions) {
         reply(suggestions).code(200);
       });

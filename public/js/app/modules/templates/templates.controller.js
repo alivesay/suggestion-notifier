@@ -63,7 +63,7 @@
         toastr.success('Template deleted.');
       }, function error(httpResponse) {
         toastr.error('Oops, something went wrong!');
-        console.log('REST Error: ' + httpResponse.data.message);
+        console.error('REST Error: ' + httpResponse.data.message);
       });
     }
   }
@@ -84,7 +84,7 @@
         toastr.success('New template created.');
       }, function error(httpResponse) {
         toastr.error('Oops, something went wrong!');
-        console.log('REST Error: ' + httpResponse.data.message);
+        console.error('REST Error: ' + httpResponse.data.message);
       });
 
       $scope.closeThisDialog();
@@ -116,7 +116,7 @@
 
       function getTemplateError(httpResponse) {
         toastr.error('Oops, something went wrong!');
-        console.log('REST Error: ' + httpResponse.data.message);
+        console.error('REST Error: ' + httpResponse.data.message);
       }
     }
 
@@ -125,7 +125,7 @@
         toastr.success('Template updated.');
       }, function error(httpResponse) {
         toastr.error('Oops, something went wrong!');
-        console.log('REST Error: ' + httpResponse.data.message);
+        console.error('REST Error: ' + httpResponse.data.message);
       });
 
       $scope.closeThisDialog();

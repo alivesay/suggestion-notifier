@@ -37,4 +37,4 @@ div#suggestions-view.container-fluid.fill(ng-controller='SuggestionsIndexControl
                                                 ng-disabled='suggestionsGridSelectionCount == 0',
                                                 ng-class='suggestionsGridSelectionCount == 0 ? "btn-default" : "btn-primary"')
               i.fa.fa-envelope
-              | &nbsp;Send Notice
+              | &nbsp;Send Notice{{ suggestionsGridSelectionCount > 1 ? 's' : '' }}

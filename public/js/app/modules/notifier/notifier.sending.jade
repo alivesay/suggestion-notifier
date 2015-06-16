@@ -1,0 +1,6 @@
+div(ng-controller='NotifierSendingController')
+  h2 Sending {{noticesSentCount}} of {{ngDialogData.length}}...
+    div.notifier-progress-bar-container
+      progressbar.progress-striped.active(max='ngDialogData.length',
+                                          value='noticesSentCount',
+                                          type='success')

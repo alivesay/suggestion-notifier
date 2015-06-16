@@ -4,14 +4,13 @@
   angular.module('app.notifier')
     .controller('NotifierIndexController', NotifierIndexController);
 
-  NotifierIndexController.$inject = ['$scope', '$q', 'TemplateFactory',
-                                     'NoticeFactory', 'toastr' ];
+  NotifierIndexController.$inject = ['$scope', 'TemplateFactory', 'ngDialog',
+                                     'APP_CONFIG'];
 
-  function NotifierIndexController($scope, $q, TemplateFactory,
-                                   NoticeFactory, toastr) {
+  function NotifierIndexController($scope, TemplateFactory, ngDialog,
+                                   APP_CONFIG) {
 
     $scope.notice = {};
-    $scope.noticesSentCount = 0;
     $scope.sendNoticeClicked = sendNoticeClicked;
 
     onLoad();
@@ -29,9 +28,34 @@
     }
 
     function sendNoticeClicked() {
-      $scope.sendClicked = true;
 
-      // TODO: needs to be an async scrollbar
+      ngDialog.open({
+        template: APP_CONFIG.MODULE_PATH + 'notifier/notifier.sending.html',
+        className: 'ngdialog-theme-sending',
+        scope: $scope,
+        data: $scope.ngDialogData,
+        showClose: false,
+        closeByEscape: false,
+        closeByDocument: false
+      });
+    }
+
+  }
+
+  angular.module('app.notifier')
+    .controller('NotifierSendingController', NotifierSendingController);
+
+  NotifierSendingController.$inject = ['$scope', '$q', 'NoticeFactory',
+                                       'toastr' ];
+
+  function NotifierSendingController($scope, $q, NoticeFactory,
+                                     toastr) {
+
+    $scope.noticesSentCount = 0;
+
+    onLoad();
+
+    function onLoad() {
       var promise = $q.all(null);
 
       angular.forEach($scope.ngDialogData, function (suggestion){
@@ -43,18 +67,23 @@
               $scope.noticesSentCount++;
             })
             .catch(function error(httpResponse) {
-              toastr.error('Oops, something went wrong!');
-              console.log('REST Error: ' + httpResponse.data.message);
+              return $q.reject(httpResponse.data.message)
             });
         });
       });
 
-      promise.then(function() {
-        toastr.success('All sent!');
-        $scope.closeThisDialog();
-      });
+      promise
+        .then(function() {
+          toastr.success('All sent!');
+        })
+        .catch(function(reason) {
+          toastr.error('Oops, something went wrong.');
+          console.error(reason);
+        })
+        .finally(function() {
+          $scope.closeThisDialog();
+        });
     }
-
   }
 
-})();
+  })();

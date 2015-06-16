@@ -2,7 +2,14 @@
 
 module.exports = {
   hapi: {
-    connection: {
+    serverOptions: {
+      app: {
+        notices: {
+          fromAddress: 'example@gmail.com'
+        }
+      }
+    },
+    connectionOptions: {
       host: '0.0.0.0',
       port: 8080,
       routes: {
@@ -10,18 +17,19 @@ module.exports = {
           space: 2
         }
       }
-    },
-    app: {
-      notices: {
-        fromAddress: 'noreply@example.com'
-      }
     }
   },
   nodemailerOptions: {
     service: 'Gmail',
     auth: {
-      user: 'sender@example.com',
+      user: 'example@gmail.com',
       pass: 'password'
+    }
+  },
+  ilsOptions: {
+    catalog: {
+      hostname: 'localhost',
+      patronAPISSLPort: 54620
     }
   }
 };

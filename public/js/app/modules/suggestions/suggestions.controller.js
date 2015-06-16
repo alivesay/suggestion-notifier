@@ -37,8 +37,8 @@
         {
           name: 'id', type: 'number', visible: false,
           sort: {
-            direction: uiGridConstants.DESC,
-            priority: 1
+            direction: uiGridConstants.ASC,
+            priority: 0
           }
         },
         {
@@ -86,7 +86,7 @@
           type: 'date',
           displayName: 'Date',
           cellFilter: 'date:"yyyy-MM-dd"',
-          width: 90
+          width: 90,
         }
       ],
       onRegisterApi: onRegisterApi
@@ -105,7 +105,6 @@
 
       socket.on('notices:sent', function () {
         $scope.suggestionsGridApi.selection.clearSelectedRows();
-        fetchSuggestions();
         fetchSuggestions();
       });
     }
@@ -172,7 +171,7 @@
         $state.go('suggestions#index');
       }, function error(httpResponse) {
         toastr.error('Oops, something went wrong!');
-        console.log('REST Error: ' + httpResponse.data.message);
+        console.error('REST Error: ' + httpResponse.data.message);
       });
 
       $scope.closeThisDialog();

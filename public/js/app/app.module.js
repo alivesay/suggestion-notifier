@@ -3,7 +3,8 @@
 
   angular.module('app.shared', [
     'ngResource',
-    'toastr'
+    'toastr',
+    'ui.bootstrap'
   ]);
 
   angular.module('app', [
