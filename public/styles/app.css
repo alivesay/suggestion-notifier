@@ -46,6 +46,11 @@ body {
   padding: 0 4px 4px 4px !important;
 }
 
+.ui-grid-filter-container .ui-grid-filter-button [class^="ui-grid-icon"] {
+  right: 5px !important;
+  margin-top: -17px !important;
+}
+
 .ui-grid-cell-contents {
   padding: 5px 5px 2px 5px !important;
 }
