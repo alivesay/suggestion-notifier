@@ -4,21 +4,10 @@
   angular.module('app.suggestions')
     .controller('SuggestionsIndexController', SuggestionsIndexController);
 
-  var customSuggestionFilters = {
-    contains: function contains (term, value, row, col) {
-      return value.toLowerCase().indexOf(term.toLowerCase()) > -1
-          || row.isSelected;
-    },
-    startsWith: function startsWith (term, value, row, col) {
-      return value.toLowerCase().indexOf(term.toLowerCase()) === 0
-          || row.isSelected;
-    }
-  };
-
-  SuggestionsIndexController.$inject = ['$scope', 'socket', 'uiGridConstants',
+  SuggestionsIndexController.$inject = ['$scope', '$filter', 'socket', 'uiGridConstants',
                                         'ngDialog', 'SuggestionFactory', 'APP_CONFIG'];
 
-  function SuggestionsIndexController($scope, socket, uiGridConstants,
+  function SuggestionsIndexController($scope, $filter, socket, uiGridConstants,
                                       ngDialog, SuggestionFactory, APP_CONFIG) {
     $scope.suggestionsGridSelectionCount = 0;
     $scope.MODULE_PATH = APP_CONFIG.MODULE_PATH;
@@ -44,7 +33,7 @@
         {
           name: 'title', type: 'string',
           filter: {
-            condition: customSuggestionFilters.contains
+            condition: columnFilterContains
           },
           width: '*',
           minWidth: 30
@@ -52,7 +41,7 @@
         {
           name: 'author', type: 'string',
           filter: {
-            condition: customSuggestionFilters.contains
+            condition: columnFilterContains
           }
         },
         {
@@ -61,13 +50,13 @@
           displayName: 'ISBN',
           maxWidth: 130,
           filter: {
-            condition: customSuggestionFilters.contains
+            condition: columnFilterContains
           }
         },
         {
           name: 'subject', type: 'string', visible: false,
           filter: {
-            condition: customSuggestionFilters.contains
+            condition: columnFilterContains
           }
         },
         {
@@ -75,7 +64,7 @@
           type: 'string',
           displayName: 'Format',
           filter: {
-            condition: customSuggestionFilters.startsWith
+            condition: columnFilterStartsWith
           },
           width: 95
         },
@@ -84,7 +73,7 @@
           type: 'string',
           axWidth: 130,
           filter: {
-            condition: customSuggestionFilters.contains
+            condition: columnFilterContains
           }
         },
         {
@@ -94,7 +83,7 @@
           cellFilter: 'date:"yyyy-MM-dd"',
           width: 90,
           filter: {
-            condition: customSuggestionFilters.contains
+            condition: columnFilterContains
           }
         }
       ],
@@ -122,6 +111,41 @@
       SuggestionFactory.query(function (data) {
         $scope.suggestionsGrid.data = data;
       });
+    }
+
+    // uiGrid's custom filter 'term' has been escaped for special regex chars
+    // See: https://github.com/angular-ui/ng-grid/issues/2475
+
+    function getSafeFilterTermString(term) {
+      return term.replace(/\\/g, '');
+    }
+
+    function getSafeFilterValueString(value) {
+      var filterValue = value;
+
+      if (value instanceof Date) {
+        filterValue = $filter('date')(value, 'yyyy-MM-dd');
+      } else if (value === null || value === undefined) {
+        filterValue = '';
+      }
+
+      return filterValue;
+    }
+
+    function columnFilterContains (term, value, row, col) {
+      var filterTerm = getSafeFilterTermString(term);
+      var filterValue = getSafeFilterValueString(value);
+
+      return filterValue.toLowerCase().indexOf(filterTerm.toLowerCase()) > -1
+        || row.isSelected;
+    }
+    
+    function columnFilterStartsWith (term, value, row, col) {
+      var filterTerm = getSafeFilterTermString(term);
+      var filterValue = getSafeFilterValueString(value);
+
+      return filterValue.toLowerCase().indexOf(filterTerm.toLowerCase()) === 0
+        || row.isSelected;
     }
 
     function onRegisterApi(gridApi) {
