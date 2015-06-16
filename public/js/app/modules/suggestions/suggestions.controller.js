@@ -59,7 +59,10 @@
           name: 'isbn',
           type: 'string',
           displayName: 'ISBN',
-          maxWidth: 130
+          maxWidth: 130,
+          filter: {
+            condition: customSuggestionFilters.contains
+          }
         },
         {
           name: 'subject', type: 'string', visible: false,
@@ -79,7 +82,10 @@
         {
           name: 'patron',
           type: 'string',
-          maxWidth: 130
+          axWidth: 130,
+          filter: {
+            condition: customSuggestionFilters.contains
+          }
         },
         {
           name: 'createdAt',
@@ -87,6 +93,9 @@
           displayName: 'Date',
           cellFilter: 'date:"yyyy-MM-dd"',
           width: 90,
+          filter: {
+            condition: customSuggestionFilters.contains
+          }
         }
       ],
       onRegisterApi: onRegisterApi
