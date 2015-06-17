@@ -58,7 +58,12 @@ var NotifierServer = {
       });
     }
 
-    var handlers = requireDirectory(module, path.join(__dirname, 'handlers'));
+    var handlers = requireDirectory(module, path.join(__dirname, 'handlers'), {
+      rename: function (name) {
+        return name.split('.')[0];
+      }
+    });
+
     var routes = require('./config/routes')(handlers);
 
     self.server.route(routes);
