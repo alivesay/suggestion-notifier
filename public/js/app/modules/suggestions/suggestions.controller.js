@@ -71,7 +71,7 @@
         {
           name: 'patron',
           type: 'string',
-          axWidth: 130,
+          maxWidth: 130,
           filter: {
             condition: columnFilterContains
           }

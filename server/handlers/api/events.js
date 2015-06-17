@@ -2,25 +2,24 @@
 
 var Boom = require('boom');
 
-var models = require('../../db/models');
+var controllers = require('../../controllers');
 
 module.exports = {
+
   all: function (request, reply) {
-    models.Event.findAll({
-      limit: request.query.limit,
-      order: 'updatedAt DESC'
-    })
-    .then(function(events) {
-      reply(events).code(200);
-    });
-  },
-  create: function (request, reply) {
-    models.Event.create(request.payload)
-      .then(function (result) {
-        reply('Created.').code(200);
-      })
-      .catch(function (err) {
-        reply(Boom.badRequest(err));
-      });
+    controllers.EventsController.getEvents({
+      queryOptions: {
+        limit: request.query.limit,
+        order: 'updatedAt DESC'
+      }
+    }, getEventsDone);
+
+    function getEventsDone (err, result) {
+      if (err) {
+        return reply(Boom.badRequest(err));
+      }
+
+      return reply(result).code(200);
+    }
   }
 };

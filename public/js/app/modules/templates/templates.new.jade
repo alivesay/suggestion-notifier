@@ -29,6 +29,6 @@ div(ng-controller='TemplatesNewController')
                                            required)
       div.form-group
         div.col-sm-12
-          button.btn.btn.pull-right(ng-click='createTemplateClicked()',
-                                    ng-disabled='newTemplateForm.$invalid',
-                                    ng-class='newTemplateForm.$invalid ? "disabled" : "btn-success"') Create
+          button.btn.pull-right(ng-click='createTemplateClicked()',
+                                ng-disabled='newTemplateForm.$invalid',
+                                ng-class='newTemplateForm.$invalid ? "btn-default" : "btn-primary"') Create

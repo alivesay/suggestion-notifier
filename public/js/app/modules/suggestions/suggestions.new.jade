@@ -55,6 +55,6 @@ div(ng-controller='SuggestionsNewController')
                                             required)
       div.form-group
         div.col-sm-12
-          button.btn.btn-primary.pull-right(ng-click='createNewSuggestion()',
-                                            ng-disabled='newSuggestionForm.$invalid',
-                                            ng-class='newSuggestionForm.$invalid ? "disabled" : "btn-success"') Create
+          button.btn.pull-right(ng-click='createNewSuggestion()',
+                                ng-disabled='newSuggestionForm.$invalid',
+                                ng-class='newSuggestionForm.$invalid ? "btn-default" : "btn-primary"') Create

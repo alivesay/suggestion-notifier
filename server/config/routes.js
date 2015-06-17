@@ -62,13 +62,6 @@ module.exports = function (handlers) {
       }
     },
     {
-      method: 'POST', path: '/api/events',
-      config: {
-        handler: handlers.api.events.create,
-        validate: {}
-      }
-    },
-    {
       method: 'GET', path: '/api/itemtypes',
       config: {
         handler: handlers.api.itemtypes.all,

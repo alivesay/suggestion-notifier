@@ -29,6 +29,6 @@ div(ng-controller='TemplatesEditController')
                                            required)
       div.form-group
         div.col-sm-12
-          button.btn.btn-primary.pull-right(ng-click='saveTemplateClicked()',
-                                    ng-disabled='editTemplateForm.$invalid',
-                                    ng-class='editTemplateForm.$invalid ? "disabled" : "btn-success"') Save
+          button.btn.pull-right(ng-click='saveTemplateClicked()',
+                                ng-disabled='editTemplateForm.$invalid',
+                                ng-class='editTemplateForm.$invalid ? "btn-default" : "btn-primary"') Save
