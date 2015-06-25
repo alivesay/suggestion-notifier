@@ -1,3 +1,3 @@
-var server = require('./server');
+var Mentat = require('mentat');
 
-server.start();
+Mentat.start();

@@ -1,84 +1,41 @@
 'use strict';
 
-var Boom = require('boom');
+var Mentat = require('mentat');
 
-var models = require('../../db/models');
+module.exports = new Mentat.Handler('Templates', {
+  routes: [
+    { method: 'GET', path: '/api/templates/{id?}' },
+    { method: 'POST', path: '/api/templates/{id?}' },
+    { method: 'DELETE', path: '/api/templates/{id}' }
+  ],
 
-module.exports = {
-  all: function (request, reply) {
-    models.Template.findAll()
-      .then(function(templates) {
-        reply(templates).code(200);
-      })
-      .catch(function (err) {
-        reply(Boom.badRequest(err));
-      });
+  GET: function (request, reply) {
+    if (request.params.id) {
+      return Mentat.controllers.TemplatesController
+        .getTemplateById(request.params.id, {},
+          Mentat.Handler.buildDefaultResponder(reply));
+    }
+
+    return Mentat.controllers.TemplatesController
+      .getTemplates({}, Mentat.Handler.buildDefaultResponder(reply));
   },
 
-  one: function (request, reply) {
-    models.Template.findById(request.params.id)
-      .then(function(template) {
-        reply(template).code(200);
-      })
-      .catch(function (err) {
-        reply(Boom.badRequest(err));
-      });
+  POST: function (request, reply) {
+    if (request.params.id) {
+      return Mentat.controllers.TemplatesController
+        .updateTemplate(request.payload, {},
+          Mentat.Handler.buildDefaultResponder(reply));
+    }
+
+    return Mentat.controllers.TemplatesController
+      .createTemplate(request.payload, {},
+        Mentat.Handler.buildDefaultResponder(reply));
   },
 
-  update: function (request, reply) {
-    models.Template.upsert(request.payload)
-      .then(function () {
-        models.Event.create({
-          type: 'templates:updated',
-          body: JSON.stringify({ title: request.payload.title })
-        }).then(function (event) {
-          request.server.app.io.sockets.emit(event.type, JSON.parse(event.body));
-          reply('Updated.').code(200);
-        });
-      })
-      .catch(function (err) {
-        reply(Boom.badRequest(err));
-      });
-  },
-
-  create: function (request, reply) {
-    models.Template.create(request.payload)
-      .then(function (template) {
-        // TODO: gross
-        models.Event.create({
-          type: 'templates:created',
-          body: JSON.stringify({ title: template.title })
-        }).then(function (event) {
-          request.server.app.io.sockets.emit(event.type, JSON.parse(event.body));
-          reply('Created.').code(200);
-        });
-      })
-      .catch(function (err) {
-        reply(Boom.badRequest(err));
-      });
-  },
-
-  destroy: function (request, reply) {
-    models.Template
-      .findById(request.params.id)
-      .then(function (template) {
-        template
-          .destroy()
-          .then(function () {
-            models.Event
-              .create({
-                type: 'templates:deleted',
-                body: JSON.stringify({ title: template.title })
-              })
-              .then(function (event) {
-                request.server.app.io.sockets.emit(event.type, JSON.parse(event.body));
-                reply('Deleted.').code(200);
-            });
-          })
-      })
-      .catch(function (err) {
-        reply(Boom.badRequest(err));
-      });
+  DELETE: function (request, reply) {
+    return Mentat.controllers.TemplatesController
+      .deleteTemplateById(request.params.id, {},
+        Mentat.Handler.buildDefaultResponder(reply));
   }
 
-};
+});

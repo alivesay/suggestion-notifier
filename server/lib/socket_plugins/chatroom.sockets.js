@@ -1,3 +1,5 @@
+var Mentat = require('mentat');
+
 var userNames = (function () {
   var names = {};
 
@@ -47,25 +49,33 @@ var userNames = (function () {
 module.exports = function (socket) {
   var name = userNames.getGuestName();
 
-  socket.emit('init', {
+  socket.emit('chatroom:init', {
     name: name,
     users: userNames.get()
   });
 
-  socket.broadcast.emit('user:join', {
+  socket.broadcast.emit('chatroom:user:join', {
     name: name
   });
 
-  socket.on('send:message', function (data) {
-    socket.broadcast.emit('send:message', {
+  socket.on('chatroom:send:message', function (data) {
+    var message = {
       source: name,
       text: data.message,
       timestamp: Date.now()
+    };
+
+    Mentat.controllers.EventsController.log({
+      type: 'chatroom:send:message',
+      body: message
+    }, {
+      logFields: [ 'source', 'text' ]
     });
+
   });
 
-  socket.on('disconnect', function () {
-    socket.broadcast.emit('user:left', {
+  socket.on('chatroom:disconnect', function () {
+    socket.broadcast.emit('chatroom:user:left', {
       name: name
     });
     userNames.free(name);

@@ -1,7 +1,7 @@
 (function(){
   'use strict';
 
-  angular.module('app.console').factory('EventFactory', EventFactory);
+  angular.module('app.shared').factory('EventFactory', EventFactory);
 
   EventFactory.$inject = ['$resource'];
 

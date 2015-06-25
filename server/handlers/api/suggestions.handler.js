@@ -1,36 +1,25 @@
 'use strict';
 
-var Boom = require('boom');
+var Mentat = require('mentat');
 
-var models = require('../../db/models');
-var controllers = require('../../controllers');
+module.exports = new Mentat.Handler('Suggestions', {
+  routes: [
+    { method: 'GET', path: '/api/suggestions' },
+    { method: 'POST', path: '/api/suggestions' }
+  ],
 
-// TODO:
-
-models.Suggestion.hook('afterCreate', function (suggestion, options) {
-  controllers.EventsController.log({
-    type: 'suggestions:created',
-    body: suggestion,
-    logFields: [
-      'title'
-    ]
-  })
-});
-
-module.exports = {
-  all: function (request, reply) {
-    models.Suggestion.findAll({ order: 'createdAt ASC' })
-      .then(function(suggestions) {
-        reply(suggestions).code(200);
-      });
+  GET: function (request, reply) {
+    return Mentat.controllers.SuggestionsController.getSuggestions({
+      queryOptions: {
+        order: 'createdAt ASC'
+      }
+    }, Mentat.Handler.buildDefaultResponder(reply));
   },
-  create: function (request, reply) {
-    models.Suggestion.create(request.payload)
-      .then(function (result) {
-        reply('Created.').code(200);
-      })
-      .catch(function (err) {
-        reply(Boom.badRequest(err));
-      });
+
+  POST: function (request, reply) {
+    return Mentat.controllers.SuggestionsController.createSuggestion(
+      request.payload,
+      Mentat.Handler.buildDefaultResponder(reply)
+    );
   }
-};
+});

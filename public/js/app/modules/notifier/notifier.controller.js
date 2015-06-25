@@ -28,7 +28,6 @@
     }
 
     function sendNoticeClicked() {
-
       ngDialog.open({
         template: APP_CONFIG.MODULE_PATH + 'notifier/notifier.sending.html',
         className: 'ngdialog-theme-sending',
@@ -46,10 +45,10 @@
     .controller('NotifierSendingController', NotifierSendingController);
 
   NotifierSendingController.$inject = ['$scope', '$q', 'NoticeFactory',
-                                       'toastr' ];
+                                       'ngDialog', 'toastr' ];
 
   function NotifierSendingController($scope, $q, NoticeFactory,
-                                     toastr) {
+                                     ngDialog, toastr) {
 
     $scope.noticesSentCount = 0;
 
@@ -61,7 +60,7 @@
       angular.forEach($scope.ngDialogData, function (suggestion){
         promise = promise.then(function () {
           $scope.notice.suggestionId = suggestion.id;
-          $scope.notice.suggestionPatron = suggestion.patron;
+          $scope.notice.patronId = suggestion.patron;
           return NoticeFactory.save($scope.notice).$promise
             .then(function success(value, responseHeaders) {
               $scope.noticesSentCount++;
@@ -81,7 +80,7 @@
           console.error(reason);
         })
         .finally(function() {
-          $scope.closeThisDialog();
+          ngDialog.closeAll();
         });
     }
   }

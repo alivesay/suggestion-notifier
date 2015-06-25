@@ -1,7 +1,8 @@
 div(ng-controller='SuggestionsNewController')
   form#new-suggestion-form.form-horizontal(name='newSuggestionForm',
                                            role='form',
-                                           novalidate)
+                                           novalidate,
+                                           autocomplete='off')
     fieldset
       legend New Suggestion
       div.form-group.required(ng-class='{ "has-error": newSuggestionForm.title.$invalid && newSuggestionForm.title.$dirty }')

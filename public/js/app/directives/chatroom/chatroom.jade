@@ -1,13 +1,18 @@
 div.fill
   div.chatroom-message-list.fill
-    ui-message-list(data-messages='messages'
-                    data-get-message-classes='getMessageClasses',
-                    data-auto-scroll='true',
-                    data-fade-in='true',
-                    data-timestamp-format='dd/MM/yyyy HH:mm')
+    ui-message-list(messages='messages'
+                    get-message-classes='getMessageClasses',
+                    auto-scroll='true',
+                    fade-in='true',
+                    timestamp-format='dd/MM/yyyy HH:mm')
   div.chatroom-input-box
-    form(data-ng-submit='sendMessage()')
+    form#chatroom-form(name='chatroomForm',
+                       ng-submit='sendMessage(chatroomForm.$valid)',
+                       novalidate,
+                       autocomplete='off')
       fieldset
         input.chatroom-input-box-text(ng-model='message',
                                       type='text',
-                                      placeholder='Enter text here to chat')
+                                      placeholder='Enter text here to chat',
+                                      ng-minlength='1',
+                                      required)

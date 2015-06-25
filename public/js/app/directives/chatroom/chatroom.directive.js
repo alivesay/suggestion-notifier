@@ -29,56 +29,57 @@
   function UiChatroomController ($scope, socket) {
     $scope.messages = [];
 
-    socket.on('init', function (data) {
+    socket.on('chatroom:init', function (data) {
       $scope.name = data.name;
       $scope.users = data.users;
     });
 
-    socket.on('send:name', function (data) {
+    socket.on('chatroom:send:name', function (data) {
       $scope.name = data.name;
+      updateMessages();
     });
 
-    socket.on('send:message', function (message) {
+    socket.on('chatroom:send:message', function (message) {
+      console.dir(message);
       $scope.messages.push(message);
+      updateMessages();
     });
 
-    socket.on('user:join', function (data) {
+    socket.on('chatroom:user:join', function (data) {
       $scope.messages.push({
         source: 'chatroom',
         text: 'User ' + data.name + ' has joined.',
         timestamp: Date.now()
       });
       $scope.users.push(data.name);
+      updateMessages();
     });
 
-    socket.on('user:left', function (data) {
+    socket.on('chatroom:user:left', function (data) {
       $scope.messages.push({
         source: 'chatroom',
         text: 'User ' + data.name + ' has left.',
         timestamp: Date.now()
       });
-      $scope.users.remove(function (el) {
-        return el === data.name;
-      });
+
+      $scope.users.splice($scope.users.indexOf(data.name), 1);
+
+      updateMessages();
     });
 
-    $scope.sendMessage = function sendMessage () {
-      socket.emit('send:message', {
-        message: $scope.message
-      });
+    $scope.sendMessage = function sendMessage (isFormValid) {
+      if (isFormValid) {
+        socket.emit('chatroom:send:message', {
+          message: $scope.message
+        });
 
-      $scope.messages.push({
-        source: $scope.name,
-        text: $scope.message,
-        timestamp: Date.now()
-      });
-
-      $scope.$broadcast('ui-message-list:update');
-
-      $scope.message = '';
+        $scope.message = '';
+      }
     };
 
     $scope.getMessageClasses = function getMessageClasses (message) {
+      message.text = message.text || '';
+
       var isDirectedMessage = !!$scope.name && message.source !== $scope.name &&
           message.text.match(new RegExp($scope.name, 'i'));
 
@@ -87,6 +88,10 @@
         'chatroom-message-list-directed': isDirectedMessage
       };
     };
+
+    function updateMessages() {
+      $scope.$broadcast('ui-message-list:update');
+    }
   }
 
 })();

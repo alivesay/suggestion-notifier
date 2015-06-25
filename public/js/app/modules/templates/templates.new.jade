@@ -1,7 +1,8 @@
 div(ng-controller='TemplatesNewController')
   form#new-template-form.form-horizontal(name='newTemplateForm',
                                          role='form',
-                                         novalidate)
+                                         novalidate,
+                                         autocomplete='off')
     fieldset
       legend New Template
       div.form-group.required(ng-class='{ "has-error": newTemplateForm.title.$invalid && newTemplateForm.title.$dirty }')

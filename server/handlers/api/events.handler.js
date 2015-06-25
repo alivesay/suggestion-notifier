@@ -1,25 +1,16 @@
 'use strict';
 
-var Boom = require('boom');
+var Mentat = require('mentat');
 
-var controllers = require('../../controllers');
+module.exports = new Mentat.Handler('Events', {
+  routes: [
+    { method: 'GET', path: '/api/events' }
+  ],
 
-module.exports = {
-
-  all: function (request, reply) {
-    controllers.EventsController.getEvents({
-      queryOptions: {
-        limit: request.query.limit,
-        order: 'updatedAt DESC'
-      }
-    }, getEventsDone);
-
-    function getEventsDone (err, result) {
-      if (err) {
-        return reply(Boom.badRequest(err));
-      }
-
-      return reply(result).code(200);
-    }
+  GET: function (request, reply) {
+    return Mentat.controllers.EventsController.getEvents({
+      limit: request.query.limit,
+      order: 'updatedAt DESC'
+    }, Mentat.Handler.buildDefaultResponder(reply));
   }
-};
+});

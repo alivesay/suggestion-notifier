@@ -2,65 +2,51 @@
 
 var _ = require('lodash');
 var async = require('async');
+var Mentat = require('mentat');
 
-var server = require('..').server;
-var models = require('../db/models');
+function log (event, options) {
+  var self = this;
 
-var EventsController = {
-  name: 'EventsController',
-
-  log: function log (options) {
-    var self = this;
-
-    async.waterfall([
-      function logEvent (callback) {
-        return self.createEvent({
-          type: options.type,
-          body: options.logFields
-            ? _.pick(options.body, options.logFields)
-            : options.body
-        }, callback);
-      },
-      function emitEvent (result, callback) {
-        server.app.io.sockets.emit(options.type, options.body);
-        return callback(null, null);
-      }
-    ], function logDone (err, result) {
-      if (err) {
-        console.error('Error: ' + err);
-      }
-    });
-  },
-
-  getEvents: function getEvents (options, callback) {
-    models.Event
-      .findAll(_.defaults(options.queryOptions || {}, {}))
-      .then(function (result) {
-        if (callback) {
-          return callback(null, result);
-        }
-      })
-      .catch(function (err) {
-        if (callback) {
-          return callback(err, null);
-        }
-      });
-  },
-
-  createEvent: function createEvent (options, callback) {
-    models.Event
-      .create(_.defaults({
-        type: options.type,
-        body: JSON.stringify(options.body)
-      }))
-      .then(function (result) {
-        //request.server.app.io.sockets.emit(result.type, JSON.parse(result.body));
-        return callback(null, result);
-      })
-      .catch(function (err) {
-        return callback(err, null);
-      });
+  function _logEvent(_callback) {
+    return self.createEvent({
+      type: event.type,
+      body: options.logFields
+        ? _.pick(event.body, options.logFields)
+        : event.body
+    }, {}, _callback);
   }
-};
 
-module.exports = EventsController;
+  function _emitEvent(result, _callback) {
+    Mentat.io.sockets.emit(event.type, event.body);
+    return _callback(null, null);
+  }
+
+  function _logDone(err, response, callback) {
+    if (err) {
+      console.error('Error: ' + err);
+    }
+  }
+
+  async.waterfall([ _logEvent, _emitEvent ], _logDone);
+}
+
+function getEvents(options, callback) {
+  Mentat.models.Event
+    .findAll(options)
+    .nodeify(callback);
+}
+
+function createEvent(event, options, callback) {
+  Mentat.models.Event
+    .create({
+      type: event.type,
+      body: JSON.stringify(event.body)
+    }, options)
+    .nodeify(callback);
+}
+
+module.exports = new Mentat.Controller('Events', {
+  log: log,
+  getEvents: getEvents,
+  createEvent: createEvent
+});

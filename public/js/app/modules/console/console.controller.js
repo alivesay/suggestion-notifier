@@ -15,7 +15,7 @@
     $scope.minimizeClick = minimizeClick;
     $scope.closeClick = closeClick;
 
-    $scope.listenEvents = {
+    $scope.consoleEvents = {
       'suggestions:created': {
         toString: function (event) {
           return 'New suggestion: ' + event.body.title;
@@ -35,6 +35,17 @@
         toString: function (event) {
           return 'Template updated: ' + event.body.title;
         }
+      },
+      'notices:sent': {
+        toString: function (event) {
+          return 'Notice sent: ' + event.body.title;
+        }
+      },
+      'chatroom:send:message': {
+        toString: function (event) {
+          return event.body.text;
+        },
+        disableListener: true
       }
     };
 
@@ -46,10 +57,12 @@
         fetchEvents();
       });
 
-      angular.forEach($scope.listenEvents, function listenAndPushEvent (value, key) {
-        socket.on(key, function consoleSocketCallback (body) {
-          displayEventMessage({type: key, body: body}, refreshMessageList);
-        });
+      angular.forEach($scope.consoleEvents, function listenAndPushEvent (value, key) {
+        if (value.disableListener !== true) {
+          socket.on(key, function consoleEventCallback(body) {
+            displayEventMessage({type: key, body: body}, refreshMessageList);
+          });
+        }
       });
     }
 
@@ -61,11 +74,11 @@
 
     function displayEventMessage(event, callback) {
       var message = {
-        source: event.username || 'SYSTEM',
-        text: $scope.listenEvents[event.type]
-          ? $scope.listenEvents[event.type].toString(event)
+        source: event.body.source || 'SYSTEM',
+        text: $scope.consoleEvents[event.type]
+          ? $scope.consoleEvents[event.type].toString(event)
           : '[' + event.type + '] ' + JSON.stringify(event.body),
-        timestamp: event.createdAt
+        timestamp: event.createdAt || Date.now()
       };
 
       $scope.messages.push(message);

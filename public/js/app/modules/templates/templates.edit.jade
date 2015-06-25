@@ -1,7 +1,8 @@
 div(ng-controller='TemplatesEditController')
   form#edit-template-form.form-horizontal(name='editTemplateForm',
                                           role='form',
-                                          novalidate)
+                                          novalidate,
+                                          autocomplete='off')
     fieldset
       legend Edit Template
       div.form-group.required(ng-class='{ "has-error": editTemplateForm.title.$invalid && editTemplateForm.title.$dirty }')

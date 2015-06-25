@@ -44,6 +44,7 @@ var ILSApi = {
     'ADDRESS'       : 'address',
     'TELEPHONE'     : 'telephone',
     'P BARCODE'     : 'patronBarcode',
+    'EMAIL ADDR'    : 'emailAddress',
     'PIN'           : 'pin',
     'HOLD'          : 'hold',
     'FINE'          : 'fine',
@@ -56,21 +57,18 @@ var ILSApi = {
     var self = this;
     var results = {};
 
-    var patronApiDumpUri = util.format('https://%s:%d/PATRONAPI/{%s}/dump',
+    var patronApiDumpUri = util.format('http://%s:%d/PATRONAPI/{%s}/dump',
       settings.ilsOptions.catalog.hostname,
       settings.ilsOptions.catalog.patronAPISSLPort,
       record
     );
 
     request(patronApiDumpUri, function (error, response, body) {
-      console.log('TODO: fetching patron dump')
       if (error) {
         return callback(error, null);
       }
 
-      var response = testData;  // TODO: get real data
-
-      _.each(response.split('\n'), function (line) {
+      _.each(body.split('\n'), function (line) {
         var pos = line.indexOf(']=');
 
         if (pos !== -1) {

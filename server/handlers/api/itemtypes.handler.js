@@ -1,12 +1,17 @@
 'use strict';
 
-var Boom = require('boom');
+var Mentat = require('mentat');
 
-module.exports = {
-  all: function (request, reply) {
+module.exports = new Mentat.Handler('Itemtypes', {
+  routes: [
+    { method: 'GET', path: '/api/itemtypes' }
+  ],
+
+  GET: function (request, reply) {
     var itemtypes = {
       book: 'Book',
       audiobook: 'Audiobook',
+      downloadable_audio: 'Downloadable Audio',
       ebook: 'Ebook',
       largeprint: 'Large Print',
       music: 'Music',
@@ -20,4 +25,4 @@ module.exports = {
 
     reply(itemtypes).code(200);
   }
-};
+});
