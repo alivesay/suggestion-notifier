@@ -9,8 +9,10 @@ module.exports = new Mentat.Handler('Events', {
 
   GET: function (request, reply) {
     return Mentat.controllers.EventsController.getEvents({
-      limit: request.query.limit,
-      order: 'updatedAt DESC'
+      queryOptions: {
+        limit: request.query.limit,
+        order: 'updatedAt DESC'
+      }
     }, Mentat.Handler.buildDefaultResponder(reply));
   }
 });

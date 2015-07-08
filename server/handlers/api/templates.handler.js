@@ -12,7 +12,7 @@ module.exports = new Mentat.Handler('Templates', {
   GET: function (request, reply) {
     if (request.params.id) {
       return Mentat.controllers.TemplatesController
-        .getTemplateById(request.params.id, {},
+        .getTemplateById({ id: request.params.id },
           Mentat.Handler.buildDefaultResponder(reply));
     }
 
@@ -23,18 +23,18 @@ module.exports = new Mentat.Handler('Templates', {
   POST: function (request, reply) {
     if (request.params.id) {
       return Mentat.controllers.TemplatesController
-        .updateTemplate(request.payload, {},
+        .updateTemplate({ template: request.payload },
           Mentat.Handler.buildDefaultResponder(reply));
     }
 
     return Mentat.controllers.TemplatesController
-      .createTemplate(request.payload, {},
+      .createTemplate({ template: request.payload },
         Mentat.Handler.buildDefaultResponder(reply));
   },
 
   DELETE: function (request, reply) {
     return Mentat.controllers.TemplatesController
-      .deleteTemplateById(request.params.id, {},
+      .deleteTemplateById({ id: request.params.id },
         Mentat.Handler.buildDefaultResponder(reply));
   }
 

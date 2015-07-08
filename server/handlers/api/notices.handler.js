@@ -8,16 +8,12 @@ module.exports = new Mentat.Handler('Notices', {
   ],
 
   POST: function (request, reply) {
-    var options = {
-      bibNumber: request.payload.bibNumber
-    };
-
-    return Mentat.controllers.NoticesController.sendNotice(
-      0, //request.payload.patronId,
-      request.payload.suggestionId,
-      request.payload.template,
-      options,
+    return Mentat.controllers.NoticesController.sendNotice({
+        patronId: 0, //request.payload.patronId,
+        suggestionId: request.payload.suggestionId,
+        template: request.payload.template,
+        bibNumber: request.payload.bibNumber
+      },
       Mentat.Handler.buildDefaultResponder(reply));
   }
-
 });

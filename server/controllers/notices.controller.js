@@ -2,16 +2,17 @@
 
 var _ = require('lodash');
 var async = require('async');
+var Handlebars = require('handlebars');
 var Mentat = require('mentat');
 
 var ilsapi = require('../lib/ilsapi');
 
-function sendNotice(patronId, suggestionId, template, options, callback) {
+function sendNotice(options, callback) {
   var noticeScope = {};
 
   var mailOptions = _.defaults({
     from: Mentat.server.settings.app.notices.fromAddress
-  }, options);
+  }, options.mailOptions);
 
   async.parallel({
     patron: _getPatron ,
@@ -19,12 +20,12 @@ function sendNotice(patronId, suggestionId, template, options, callback) {
   }, _parallelTasksDone);
 
   function _getPatron(_callback) {
-    return ilsapi.getPatron(patronId, _callback);
+    return ilsapi.getPatron(options.patronId, _callback);
   }
 
   function _getSuggestion(_callback) {
     return Mentat.models.Suggestion
-      .findById(suggestionId)
+      .findById(options.suggestionId)
       .nodeify(_callback);
   }
 
@@ -33,7 +34,10 @@ function sendNotice(patronId, suggestionId, template, options, callback) {
 
     mailOptions.to = noticeScope.patron.emailAddress;
     mailOptions.subject = subjectPrefix + noticeScope.patron.patronName;
-    mailOptions.body = template.body;
+
+    var textTemplate = Handlebars.compile(options.template.body); // TODO: errors?
+    mailOptions.text = textTemplate(noticeScope);
+    console.log('text: ' + mailOptions.text)
 
     // if template requires bibnumber...
     return Mentat.transporter.sendMail(mailOptions, _callback);
@@ -58,9 +62,10 @@ function sendNotice(patronId, suggestionId, template, options, callback) {
     }
 
     Mentat.controllers.EventsController.log({
-      type: 'notices:sent',
-      body: noticeScope.suggestion
-    }, {
+      event: {
+        type: 'notices:sent',
+        body: noticeScope.suggestion
+      },
       logFields: [ 'title' ]
     });
 
@@ -71,7 +76,16 @@ function sendNotice(patronId, suggestionId, template, options, callback) {
     if (err) {
       return callback(err, null);
     }
+
     noticeScope.patron = results['patron'];
+    if (results['patron'] === null || results['patron'] === undefined) {
+      return callback('Patron not found.', null);
+    }
+
+    if (results['suggestion'] === null || results['suggestion'] === undefined) {
+      return callback('Suggestion not found.', null);
+    }
+
     noticeScope.suggestion = results['suggestion'].dataValues;
 
     async.series([ _sendEmail, _deleteSuggestion ], _sendNoticeDone);

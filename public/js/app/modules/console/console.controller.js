@@ -21,6 +21,16 @@
           return 'New suggestion: ' + event.body.title;
         }
       },
+      'suggestions:deleted': {
+        toString: function (event) {
+          return 'Suggestion removed: ' + event.body.title;
+        }
+      },
+      'suggestions:updated': {
+        toString: function (event) {
+          return 'Suggestion updated: ' + event.body.title;
+        }
+      },
       'templates:created': {
         toString: function (event) {
           return 'New template: ' + event.body.title;

@@ -8,8 +8,9 @@
     "url": "https://github.com/alivesay/suggestion-notifier.git"
   },
   "dependencies": {
-    "mentat": "*",
     "async": "^1.2.1",
+    "handlebars": "^3.0.3",
+    "mentat": "*",
     "request": "^2.57.0",
     "tiny-lr": "^0.1.5"
   },

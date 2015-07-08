@@ -5,7 +5,8 @@ module.exports = {
     serverOptions: {
       app: {
         notices: {
-          fromAddress: 'example@gmail.com'
+          fromAddress: 'example@gmail.com',
+          subjectPrefix: 'Purchase Suggestion Notice:'
         }
       }
     },
@@ -23,7 +24,7 @@ module.exports = {
     service: 'Gmail',
     auth: {
       user: 'example@gmail.com',
-      pass: 'password'
+      pass: '1234'
     }
   },
   ilsOptions: {

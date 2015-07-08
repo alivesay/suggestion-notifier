@@ -15,7 +15,9 @@
   SuggestionFactory.$inject = ['$resource'];
 
   function SuggestionFactory($resource) {
-    return $resource('/api/suggestions/:id', {},
+    return $resource('/api/suggestions/:id', {
+        id: '@id'
+      },
       {
         'query': {
           method: 'GET',

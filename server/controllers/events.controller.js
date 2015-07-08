@@ -4,20 +4,22 @@ var _ = require('lodash');
 var async = require('async');
 var Mentat = require('mentat');
 
-function log (event, options) {
+function log (options) {
   var self = this;
 
   function _logEvent(_callback) {
     return self.createEvent({
-      type: event.type,
-      body: options.logFields
-        ? _.pick(event.body, options.logFields)
-        : event.body
-    }, {}, _callback);
+      event: {
+        type: options.event.type,
+        body: options.logFields
+          ? _.pick(options.event.body, options.logFields)
+          : options.event.body
+      }
+    }, _callback);
   }
 
   function _emitEvent(result, _callback) {
-    Mentat.io.sockets.emit(event.type, event.body);
+    Mentat.io.sockets.emit(options.event.type, options.event.body);
     return _callback(null, null);
   }
 
@@ -32,16 +34,16 @@ function log (event, options) {
 
 function getEvents(options, callback) {
   Mentat.models.Event
-    .findAll(options)
+    .findAll(options.queryOptions)
     .nodeify(callback);
 }
 
-function createEvent(event, options, callback) {
+function createEvent(options, callback) {
   Mentat.models.Event
     .create({
-      type: event.type,
-      body: JSON.stringify(event.body)
-    }, options)
+      type: options.event.type,
+      body: JSON.stringify(options.event.body)
+    }, options.queryOptions)
     .nodeify(callback);
 }
 

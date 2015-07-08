@@ -5,49 +5,52 @@ var Mentat = require('mentat');
 
 Mentat.models.Template.hook('afterCreate', function (template, options) {
   Mentat.controllers.EventsController.log({
-    type: 'templates:created',
-    body: template
-  }, {
+    event: {
+      type: 'templates:created',
+      body: template
+    },
     logFields: [ 'title' ]
   });
 });
 
 Mentat.models.Template.hook('afterUpdate', function (template, options) {
   Mentat.controllers.EventsController.log({
-    type: 'templates:updated',
-    body: template
-  }, {
+    event: {
+      type: 'templates:updated',
+      body: template
+    },
     logFields: [ 'title' ]
   });
 });
 
 Mentat.models.Template.hook('afterDestroy', function (template, options) {
   Mentat.controllers.EventsController.log({
-    type: 'templates:deleted',
-    body: template
-  }, {
+    event: {
+      type: 'templates:deleted',
+      body: template
+    },
     logFields: [ 'title' ]
   });
 });
 
 function getTemplates(options, callback) {
   Mentat.models.Template
-    .findAll(options)
+    .findAll(options.queryOptions)
     .nodeify(callback);
 }
 
-function getTemplateById(id, options, callback) {
+function getTemplateById(options, callback) {
   Mentat.models.Template
-    .findById(id, options)
+    .findById(options.id, options.queryOptions)
     .nodeify(callback);
 }
 
-function updateTemplate(template, options, callback) {
+function updateTemplate(options, callback) {
   Mentat.models.Template
-    .findById(template.id)
-    .then(function (templateInstance) {
-      templateInstance
-        .update(template, options)
+    .findById(options.template.id)
+    .then(function (template) {
+      template
+        .update(options.template, options.queryOptions)
         .nodeify(callback);
     })
     .catch(function (err) {
@@ -55,18 +58,18 @@ function updateTemplate(template, options, callback) {
     });
 }
 
-function createTemplate(template, options, callback) {
+function createTemplate(options, callback) {
   Mentat.models.Template
-    .create(template, options)
+    .create(options.template, options.queryOptions)
     .nodeify(callback);
 }
 
-function deleteTemplateById(id, options, callback) {
+function deleteTemplateById(options, callback) {
   Mentat.models.Template
-    .findById(id)
+    .findById(options.id)
     .then(function (template) {
       template
-        .destroy(options)
+        .destroy(options.queryOptions)
         .nodeify(callback);
     })
     .catch(function (err) {

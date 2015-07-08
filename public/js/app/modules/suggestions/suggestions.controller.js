@@ -4,15 +4,21 @@
   angular.module('app.suggestions')
     .controller('SuggestionsIndexController', SuggestionsIndexController);
 
-  SuggestionsIndexController.$inject = ['$scope', '$filter', 'socket', 'uiGridConstants',
+  SuggestionsIndexController.$inject = ['$scope', '$filter', '$q', 'socket', 'uiGridConstants',
                                         'ngDialog', 'SuggestionFactory', 'APP_CONFIG'];
 
-  function SuggestionsIndexController($scope, $filter, socket, uiGridConstants,
+  function SuggestionsIndexController($scope, $filter, $q, socket, uiGridConstants,
                                       ngDialog, SuggestionFactory, APP_CONFIG) {
     $scope.suggestionsGridSelectionCount = 0;
     $scope.MODULE_PATH = APP_CONFIG.MODULE_PATH;
+    $scope.isViewingReferred = false;
+    $scope.suggestionTabClick = suggestionTabClick;
     $scope.newSuggestionClick = newSuggestionClick;
     $scope.notifyClick = notifyClick;
+    $scope.referClick = referClick;
+    $scope.singleFilter = singleFilter;
+    $scope.newCount = 0;
+    $scope.referredCount = 0;
 
     $scope.suggestionsGrid = {
       enableFiltering: true,
@@ -101,6 +107,34 @@
         $scope.suggestionsGridApi.core.notifyDataChange(uiGridConstants.dataChange.EDIT);
       });
 
+      socket.on('suggestions:updated', function (suggestion) {
+        var foundSuggestion = false;
+
+        for(var i = 0; i < $scope.suggestionsGrid.data.length; ++i) {
+          if ($scope.suggestionsGrid.data[i].id === suggestion.id) {
+            $scope.suggestionsGrid.data[i] = suggestion;
+            foundSuggestion = true;
+            break;
+          }
+        }
+
+        if (!foundSuggestion) {
+          $scope.suggestionsGrid.data.push(new SuggestionFactory(suggestion));
+        }
+
+        $scope.suggestionsGridApi.core.notifyDataChange(uiGridConstants.dataChange.EDIT);
+        console.log($scope.suggestionsGridSelectionCount)
+      });
+
+      socket.on('suggestions:deleted', function (suggestion) {
+        angular.forEach($scope.suggestionsGrid.data, function (suggestionRow, key) {
+          if (suggestionRow.id === suggestion.id) {
+            delete $scope.suggestionsGrid.data[key];
+            $scope.suggestionsGridApi.core.notifyDataChange(uiGridConstants.dataChange.EDIT);
+          }
+        });
+      });
+
       socket.on('notices:sent', function () {
         $scope.suggestionsGridApi.selection.clearSelectedRows();
         fetchSuggestions();
@@ -150,11 +184,11 @@
 
     function onRegisterApi(gridApi) {
       $scope.suggestionsGridApi = gridApi;
+      $scope.suggestionsGridApi.grid.registerRowsProcessor($scope.singleFilter, 75);
+
 
       $scope.refreshClick = function refreshClick () {
-        $scope.suggestionsGridApi.selection.clearSelectedRows();
-        $scope.suggestionsGridApi.core.clearAllFilters();
-        $scope.suggestionsGridApi.grid.resetColumnSorting();
+        refreshGridView();
       };
 
       gridApi.selection.on.rowSelectionChanged($scope, function (row) {
@@ -164,6 +198,41 @@
       gridApi.selection.on.rowSelectionChangedBatch($scope, function (rows) {
         $scope.suggestionsGridSelectionCount = gridApi.selection.getSelectedRows().length;
       });
+    }
+
+    function refreshGridView () {
+      $scope.suggestionsGridApi.selection.clearSelectedRows();
+      $scope.suggestionsGridApi.core.clearAllFilters();
+      $scope.suggestionsGridApi.grid.resetColumnSorting();
+      $scope.suggestionsGridApi.core.queueGridRefresh();
+      $scope.suggestionsGridApi.core.refresh();
+      $scope.suggestionsGridApi.grid.refreshCanvas();
+      $scope.suggestionsGridApi.grid.refreshRows();
+    }
+
+    function singleFilter(renderableRows) {
+      $scope.referredCount = 0;
+      $scope.newCount = 0;
+
+      renderableRows.forEach(function(row) {
+        var isReferred = !!row.entity.isReferred;
+
+        if (isReferred) {
+          $scope.referredCount++;
+        } else {
+          $scope.newCount++;
+        }
+        row.visible = $scope.isViewingReferred
+          ? isReferred === true
+          : isReferred === false
+      });
+
+      return renderableRows;
+    }
+
+    function suggestionTabClick(tab) {
+      $scope.isViewingReferred = tab === 'referred';
+      refreshGridView();
     }
 
     function newSuggestionClick() {
@@ -181,6 +250,27 @@
         scope: $scope,
         data: $scope.suggestionsGridApi.selection.getSelectedRows()
       });
+    }
+
+    function referClick() {
+      var promises = [];
+
+      angular.forEach($scope.suggestionsGridApi.selection.getSelectedRows(), function (row) {
+        SuggestionFactory.get({id: row.id}, function (suggestion) {
+          suggestion.isReferred = true;
+          promises.push(suggestion.$save());
+        })
+      });
+
+      $q
+        .all(promises)
+        .catch(function error(httpResponse) {
+          toastr.error('Oops, something went wrong!');
+          console.error('REST Error: ' + httpResponse.data.message);
+        })
+        .finally(function () {
+          $scope.suggestionsGridApi.selection.clearSelectedRows();
+        });
     }
   }
 

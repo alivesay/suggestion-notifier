@@ -337,6 +337,10 @@ body {
     background-color: #f6f2ef !important;
 }
 
+.panel-footer ul.nav {
+  cursor: default !important;
+}
+
 .panel-heading .nav {
   cursor: default !important;
 }
