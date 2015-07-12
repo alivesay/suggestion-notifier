@@ -129,6 +129,7 @@
       socket.on('suggestions:deleted', function (suggestion) {
         angular.forEach($scope.suggestionsGrid.data, function (suggestionRow, key) {
           if (suggestionRow.id === suggestion.id) {
+            $scope.suggestionsGridApi.selection.unSelectRow(suggestionRow);
             delete $scope.suggestionsGrid.data[key];
             $scope.suggestionsGridApi.core.notifyDataChange(uiGridConstants.dataChange.EDIT);
           }

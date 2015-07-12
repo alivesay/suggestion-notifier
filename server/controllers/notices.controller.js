@@ -37,7 +37,6 @@ function sendNotice(options, callback) {
 
     var textTemplate = Handlebars.compile(options.template.body); // TODO: errors?
     mailOptions.text = textTemplate(noticeScope);
-    console.log('text: ' + mailOptions.text)
 
     // if template requires bibnumber...
     return Mentat.transporter.sendMail(mailOptions, _callback);
