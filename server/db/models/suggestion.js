@@ -8,7 +8,11 @@ module.exports = function(sequelize, DataTypes) {
     type: DataTypes.STRING,
     subject: DataTypes.STRING,
     patron: DataTypes.STRING,
-    isReferred: DataTypes.BOOLEAN
+    isReferred: DataTypes.BOOLEAN,
+    price: DataTypes.STRING,
+    notes: DataTypes.STRING,
+    email: DataTypes.STRING,
+    location: DataTypes.STRING
   }, {
     classMethods: {
       associate: function(models) {
