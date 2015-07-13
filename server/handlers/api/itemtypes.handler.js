@@ -1,6 +1,7 @@
 'use strict';
 
 var Mentat = require('mentat');
+var _ = require('lodash');
 
 module.exports = new Mentat.Handler('Itemtypes', {
   routes: [
@@ -8,20 +9,9 @@ module.exports = new Mentat.Handler('Itemtypes', {
   ],
 
   GET: function (request, reply) {
-    var itemtypes = {
-      book: 'Book',
-      audiobook: 'Audiobook',
-      downloadable_audio: 'Downloadable Audio',
-      ebook: 'Ebook',
-      largeprint: 'Large Print',
-      music: 'Music',
-      dvd: 'DVD',
-      bluray: 'Blu-ray',
-      periodical: 'Periodical',
-      zine: 'Zine',
-      database: 'Database',
-      other: 'Other'
-    };
+    var itemtypes = _.get(Mentat.settings, 'ilsOptions.itemTypes', {
+      error: 'Set ilsOptions.itemTypes in settings.js!'
+    });
 
     reply(itemtypes).code(200);
   }
