@@ -23,14 +23,50 @@ module.exports = {
   nodemailerOptions: {
     service: 'Gmail',
     auth: {
-      user: 'example@gmail.com',
-      pass: '1234'
+      user: 'something@example.com  ',
+      pass: 'somepassword'
     }
   },
   ilsOptions: {
     catalog: {
       hostname: 'localhost',
       patronAPISSLPort: 54620
+    },
+    itemTypes: {
+      book: 'Book',
+      audiobook: 'Audiobook',
+      downloadable_audio: 'Downloadable Audio',
+      ebook: 'Ebook',
+      largeprint: 'Large Print',
+      music: 'Music',
+      dvd: 'DVD',
+      bluray: 'Blu-ray',
+      periodical: 'Periodical',
+      zine: 'Zine',
+      database: 'Database',
+      other: 'Other'
+    },
+    locations: {
+      albina: 'Albina',
+      belmont: 'Belmont',
+      capitol_hill: 'Capitol Hill',
+      central: 'Central',
+      fairview: 'Fairview',
+      gregory_heights: 'Gregory Heights',
+      gresham: 'Gresham',
+      hillsdale: 'Hillsdale',
+      holgate: 'Holgate',
+      hollywood: 'Hollywood',
+      kenton: 'Kenton',
+      los: 'Library Outreach Services',
+      midland: 'Midland',
+      north_portland: 'North Portland',
+      northwest: 'Northwest',
+      rockwood: 'Rockwood',
+      st_johns: 'St. Johns',
+      sellwood: 'Sellwood',
+      troutdale: 'Troutdale',
+      woodstock: 'Woodstock'
     }
   }
 };

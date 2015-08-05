@@ -42,13 +42,24 @@
             condition: columnFilterContains
           },
           width: '*',
-          minWidth: 30
+          minWidth: 30,
+          cellTemplate: '<div class="ui-grid-cell-contents">{{ row.entity.title == "NULL" ? "" : row.entity.title }}</div>'
+        },
+        {
+          name: 'subject', type: 'string',
+          filter: {
+            condition: columnFilterContains
+          },
+          width: '*',
+          minWidth: 20,
+          cellTemplate: '<div class="ui-grid-cell-contents">{{ row.entity.subject == "NULL" ? "" : row.entity.subject }}</div>'
         },
         {
           name: 'author', type: 'string',
           filter: {
             condition: columnFilterContains
-          }
+          },
+          cellTemplate: '<div class="ui-grid-cell-contents">{{ row.entity.author == "NULL" ? "" : row.entity.author }}</div>'
         },
         {
           name: 'isbn',
@@ -57,13 +68,8 @@
           maxWidth: 130,
           filter: {
             condition: columnFilterContains
-          }
-        },
-        {
-          name: 'subject', type: 'string', visible: false,
-          filter: {
-            condition: columnFilterContains
-          }
+          },
+          cellTemplate: '<div class="ui-grid-cell-contents">{{ row.entity.isbn == "NULL" ? "" : row.entity.isbn }}</div>'
         },
         {
           name: 'type',
@@ -80,7 +86,8 @@
           maxWidth: 130,
           filter: {
             condition: columnFilterContains
-          }
+          },
+          cellTemplate: '<div class="ui-grid-cell-contents">{{ row.entity.patron == "NULL" ? "" : row.entity.patron }}</div>'
         },
         {
           name: 'createdAt',
@@ -279,15 +286,19 @@
     .controller('SuggestionsNewController', SuggestionsNewController);
 
   SuggestionsNewController.$inject = ['$scope', '$state', 'SuggestionFactory',
-                                      'ItemTypesFactory', 'toastr'];
+                                      'ItemTypesFactory', 'LocationsFactory', 'toastr'];
 
   function SuggestionsNewController($scope, $state, SuggestionFactory,
-                                    ItemTypesFactory, toastr) {
+                                    ItemTypesFactory, LocationsFactory, toastr) {
 
     $scope.createNewSuggestion = createNewSuggestion;
 
     ItemTypesFactory.get(function (itemtypes) {
       $scope.itemtypes = itemtypes;
+    });
+
+    LocationsFactory.get(function (locations) {
+      $scope.locations = locations;
     });
 
     function createNewSuggestion() {

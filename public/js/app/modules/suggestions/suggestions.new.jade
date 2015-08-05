@@ -5,20 +5,59 @@ div(ng-controller='SuggestionsNewController')
                                            autocomplete='off')
     fieldset
       legend New Suggestion
-      div.form-group.required(ng-class='{ "has-error": newSuggestionForm.title.$invalid && newSuggestionForm.title.$dirty }')
+      div.form-group
+        label.control-label.col-sm-3(for='suggestiontype-field') Suggestion Type
+        div.col-sm-9
+          select#suggestiontype-field.form-control(ng-model='suggestion.suggestionType',
+                                         ng-init='suggestion.suggestionType = "staff"')
+            option(value='staff') Staff
+            option(value='patron') Patron
+      div.form-group(ng-class='{ "has-error": newSuggestionForm.patron.$invalid && newSuggestionForm.patron.$dirty, "required": suggestion.suggestionType == "patron" }')
+        label.control-label.col-sm-3(for='patron-field') Patron Barcode
+        div.col-sm-9
+          div.input-group
+            span.input-group-addon #
+            input#patron-field.form-control(type='text',
+                                            name='patron',
+                                            ng-model='suggestion.patron',
+                                            ng-required='suggestion.suggestionType == "patron"')
+      div.form-group(ng-class='{ "has-error": newSuggestionForm.email.$invalid && newSuggestionForm.email.$dirty }')
+        label.control-label.col-sm-3(for='email-field') Email
+        div.col-sm-9
+          input#email-field.form-control(type='email',
+                                         name='email',
+                                         ng-model='suggestion.email')
+      div.form-group(ng-class='{ "has-error": newSuggestionForm.title.$invalid && newSuggestionForm.title.$dirty, "required": suggestion.suggestionType == "patron" }')
         label.control-label.col-sm-3(for='title-field') Title
         div.col-sm-9
           input#title-field.form-control(type='text',
                                          name='title',
                                          ng-model='suggestion.title',
-                                         required)
-      div.form-group.required(ng-class='{ "has-error": newSuggestionForm.author.$invalid && newSuggestionForm.author.$dirty}')
+                                         ng-required='suggestion.suggestionType == "patron"')
+      div.form-group
+        label.control-label.col-sm-3(for='type-field') Format
+        div.col-sm-9
+          select#type-field.form-control(ng-model='suggestion.type',
+                                         ng-init='suggestion.type = "book"',
+                                         ng-options="key as value for (key, value) in itemtypes")
+      div.form-group
+        label.control-label.col-sm-3(for='subject-field') Subject
+        div.col-sm-9
+          input#subject-field.form-control(type='text',
+                                           name='subject',
+                                           ng-model='suggestion.subject')
+      div.form-group(ng-class='{ "has-error": newSuggestionForm.author.$invalid && newSuggestionForm.author.$dirty, "required": suggestion.suggestionType == "patron" }')
         label.control-label.col-sm-3(for='author-field') Author
         div.col-sm-9
           input#author--field.form-control(type='text',
                                            name='author',
                                            ng-model='suggestion.author',
-                                           required)
+                                           ng-required='suggestion.suggestionType == "patron"')
+      div.form-group(ng-show='suggestion.suggestionType == "staff"')
+        label.control-label.col-sm-3(for='location-field') Location
+        div.col-sm-9
+          select#location-field.form-control(ng-model='suggestion.location',
+                                             ng-options="key as value for (key, value) in locations")
       div.form-group
         label.control-label.col-sm-3(for='publisher-field') Publisher
         div.col-sm-9
@@ -33,27 +72,20 @@ div(ng-controller='SuggestionsNewController')
             input#publisher-field.form-control(type='text',
                                                name='isbn',
                                                ng-model='suggestion.isbn')
-      div.form-group
-        label.control-label.col-sm-3(for='type-field') Type
-        div.col-sm-9
-          select#type-field.form-control(ng-model='suggestion.type',
-                                         ng-init='suggestion.type = "book"',
-                                         ng-options="key as value for (key, value) in itemtypes")
-      div.form-group
-        label.control-label.col-sm-3(for='subject-field') Subject
-        div.col-sm-9
-          input#subject-field.form-control(type='text',
-                                           name='subject',
-                                           ng-model='suggestion.subject')
-      div.form-group.required(ng-class='{ "has-error": newSuggestionForm.patron.$invalid && newSuggestionForm.patron.$dirty }')
-        label.control-label.col-sm-3(for='patron-field') Patron Barcode
+      div.form-group(ng-show='suggestion.suggestionType == "staff"')
+        label.control-label.col-sm-3(for='price-field') Price
         div.col-sm-9
           div.input-group
-            span.input-group-addon #
-            input#patron-field.form-control(type='text',
-                                            name='patron',
-                                            ng-model='suggestion.patron',
-                                            required)
+            span.input-group-addon $
+            input#price-field.form-control(type='text',
+                                           name='price',
+                                           ng-model='suggestion.price')
+      div.form-group(ng-show='suggestion.suggestionType == "staff"')
+        label.control-label.col-sm-3(for='notes-field') Notes
+        div.col-sm-9
+          textarea#notes-field.form-control(name='notes',
+                                           ng-model='suggestion.notes',
+                                           rows='2')
       div.form-group
         div.col-sm-12
           button.btn.pull-right(ng-click='createNewSuggestion()',

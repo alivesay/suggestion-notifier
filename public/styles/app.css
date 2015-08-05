@@ -370,9 +370,10 @@ body {
 }
 
 .ngdialog.ngdialog-theme-default {
-  padding-top: 96px !important;
+  padding-top: 38px !important;
   padding-bottom: 0px !important;
 }
+
 @media screen and (max-width: 768px) {
     .ngdialog.ngdialog-theme-default {
         padding-top: 0px !important;
@@ -392,8 +393,8 @@ body {
     border-radius: 5px;
     color: #444;
     font-family: 'Helvetica Neue', 'Helvetica', sans-serif;
-    font-size: 1.1em;
-    line-height: 1.5em;
+    font-size: 13px;
+    line-height: 13px;
     margin: 0 auto;
     max-width: 100%;
     width: 100%;
@@ -419,6 +420,14 @@ body {
   resize: none;
 }
 
+#new-suggestion-form #notes-field {
+  resize: none;
+}
+
 #send-notice-form #body-field {
     resize: none;
+}
+
+.ngdialog-content .form-group {
+  margin-bottom: 6px !important;
 }

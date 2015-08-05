@@ -30,7 +30,7 @@
 
     $scope.$state = $state;
     $scope.MODULE_PATH = APP_CONFIG.MODULE_PATH;
-    $scope.footerCollapsed = false;
+    $scope.footerCollapsed = true;
     $scope.settingsClick = settingsClick;
     $scope.logoutClick = logoutClick;
     $scope.consoleClick = consoleClick;
