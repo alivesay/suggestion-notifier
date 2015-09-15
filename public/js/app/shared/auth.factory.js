@@ -1,12 +1,14 @@
 (function(){
   'use strict';
 
-  angular.module('app.shared').factory('AuthFactory', EventFactory);
+  angular.module('app.shared').factory('AuthFactory', AuthFactory);
 
-  EventFactory.$inject = ['$resource'];
+  function AuthFactory() {
+    var auth = {
+      isLogged: false
+    };
 
-  function EventFactory($resource) {
-    return $resource('/api/events/:id');
+    return auth;
   }
 
 })();

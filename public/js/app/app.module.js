@@ -16,17 +16,18 @@
     'app.shared',
     'app.console',
     'app.suggestions',
-    'app.settings'
+    'app.settings',
+    'app.login'
   ]);
 
   angular.module('app')
     .controller('AppController', AppController);
 
-  AppController.$inject = ['$scope', '$state', 'toastr', 'ngDialog',
-                           'APP_CONFIG'];
+  AppController.$inject = ['$scope', '$state', '$window', '$location', 'toastr',
+                           'ngDialog', 'AuthFactory', 'UserFactory', 'APP_CONFIG'];
 
-  function AppController($scope, $state, toastr, ngDialog,
-                         APP_CONFIG) {
+  function AppController($scope, $state, $window, $location, toastr,
+                         ngDialog, AuthFactory, UserFactory, APP_CONFIG) {
 
     $scope.$state = $state;
     $scope.MODULE_PATH = APP_CONFIG.MODULE_PATH;
@@ -34,6 +35,7 @@
     $scope.settingsClick = settingsClick;
     $scope.logoutClick = logoutClick;
     $scope.consoleClick = consoleClick;
+    $scope.auth = AuthFactory;
 
     onLoad();
 
@@ -56,7 +58,20 @@
     }
 
     function logoutClick() {
-      toastr.error('Not implemented yet.');
+      if (AuthFactory.isLogged) {
+        UserFactory.logout().then(
+          function success (data) {
+            AuthFactory.isLogged = false;
+            delete $window.sessionStorage.token;
+            $location.path("/");
+            console.log('LOGGED OUT');
+          },
+          function error (status, data) {
+            console.log(status);
+            console.log(error);
+          }
+        );
+      }
     }
 
     function consoleClick() {
@@ -69,8 +84,6 @@
   SocketFactory.$inject = ['$rootScope', 'toastr'];
 
   function SocketFactory($rootScope, toastr) {
-    // DEBUG: localStorage.debug = '*';
-
     var socket = io.connect();
 
     socket.on('connect', function () {

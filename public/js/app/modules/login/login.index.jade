@@ -1,0 +1,19 @@
+div(ng-controller='LoginIndexController')
+  h1 LOGIN!
+  form.form-horizontal(role='form')
+    div.form-group
+      label.col-sm-4.control-label(for='username-field')
+      div.col-sm-4
+        input#username-field.form-control(type='text',
+                                          placeholder='Username',
+                                          ng-model='login.username')
+    div.form-group
+      label.col-sm-4.control-label(for='password-field')
+      div.col-sm-4
+        input#username-field.form-control(type='password',
+                                          placeholder='Password',
+                                          ng-model='login.password')
+    div.form-group
+      div.col-sm-offset-4.col-sm-10
+         button.btn.btn-default(type='submit',
+                                ng-click='login(login.username, login.password)') Login

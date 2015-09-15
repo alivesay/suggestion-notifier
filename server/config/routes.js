@@ -1,5 +1,3 @@
-'use strict';
-
 module.exports = function (handlers) {
   return [
     {
@@ -8,6 +6,9 @@ module.exports = function (handlers) {
         directory: {
           path: __dirname + '/../../.tmp/public'
         }
+      },
+      config: {
+        auth: false
       }
     }
   ];

@@ -1,8 +1,8 @@
 module.exports = function(sequelize, DataTypes) {
-  var Template = sequelize.define('Template', {
-    title: DataTypes.STRING,
-    body: DataTypes.STRING,
-    bibRequired: DataTypes.BOOLEAN
+  var User = sequelize.define('User', {
+    username: DataTypes.STRING,
+    password: DataTypes.STRING,
+    isAdmin: DataTypes.BOOLEAN
   }, {
     classMethods: {
       associate: function(models) {
@@ -10,5 +10,5 @@ module.exports = function(sequelize, DataTypes) {
       }
     }
   });
-  return Template;
+  return User;
 };

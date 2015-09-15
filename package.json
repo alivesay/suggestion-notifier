@@ -9,8 +9,13 @@
   },
   "dependencies": {
     "async": "^1.2.1",
+    "bcrypt": "^0.8.5",
     "handlebars": "^3.0.3",
-    "mentat": "*",
+    "hapi-auth-jwt2": "^5.0.6",
+    "inert": "^3.0.1",
+    "jsonwebtoken": "^5.0.5",
+    "mentat": "^1.0.1",
+    "redis": "^1.0.0",
     "request": "^2.57.0",
     "tiny-lr": "^0.1.5"
   },

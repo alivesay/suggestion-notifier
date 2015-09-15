@@ -1,7 +1,6 @@
 extends layout
 
 block content
-
   div#app-container.container-fluid.fill(data-ng-cloak)
     nav#app-navbar.navbar.navbar-default.navbar-fixed-top
       div.container-fluid
@@ -23,7 +22,8 @@ block content
                   a#settings-btn.btn.btn-xs.btn-default(data-ng-click='settingsClick()')
                     i.fa.fa-cog
                 div.btn-group
-                  a#logout-btn.btn.btn-xs.btn-default(data-ng-click='logoutClick()')
+                  a#logout-btn.btn.btn-xs.btn-default(data-ng-click='logoutClick()',
+                                                      data-ng-show='auth.isLogged')
                     i.fa.fa-sign-out
                     | &nbsp;Logout
 

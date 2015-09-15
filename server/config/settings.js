@@ -1,6 +1,8 @@
 'use strict';
 
 module.exports = {
+  authKey: '0x123456789',
+  tokenTTL: 1440,
   hapi: {
     serverOptions: {
       app: {

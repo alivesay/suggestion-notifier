@@ -1,4 +1,3 @@
-'use strict';
 module.exports = function(sequelize, DataTypes) {
   var Suggestion = sequelize.define('Suggestion', {
     title: DataTypes.STRING,

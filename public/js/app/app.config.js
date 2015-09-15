@@ -5,15 +5,19 @@
 
   angular.module('app').config(appConfig);
 
-  appConfig.$inject = ['$urlRouterProvider', 'toastrConfig'];
+  appConfig.$inject = ['$stateProvider', '$urlRouterProvider',
+                       '$httpProvider', 'toastrConfig'];
 
-  function appConfig($urlRouterProvider, toastrConfig) {
+  function appConfig($stateProvider, $urlRouterProvider,
+                     $httpProvider, toastrConfig) {
     $urlRouterProvider.otherwise('/suggestions');
 
     angular.extend(toastrConfig, {
       closeButton: true,
       progressBar: true
     });
+
+    $httpProvider.interceptors.push('TokenInterceptorFactory');
   }
 
   var APP_PATH = '/js/app/';
@@ -24,5 +28,18 @@
       DIRECTIVE_PATH: APP_PATH + 'directives/',
       MODULE_PATH: APP_PATH + 'modules/'
     });
+
+  angular.module('app').run(appRun);
+
+  appRun.$inject = ['$rootScope', '$state', 'AuthFactory'];
+
+  function appRun ($rootScope, $state, AuthFactory) {
+    $rootScope.$on('$locationChangeSuccess', function() {
+      if (!AuthFactory.isLogged) {
+        $state.go('login#index');
+      }
+    });
+  }
+
 
 })();
