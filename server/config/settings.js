@@ -33,7 +33,7 @@ module.exports = {
                     {   reporter: require('good-file'),
                         events: { error: '*' },
                         config: {
-                            path: 'mentat.log',
+                            path: 'mentat',
                             rotate: 'daily' 
                         }
                     }

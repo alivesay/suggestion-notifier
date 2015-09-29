@@ -34,6 +34,7 @@
     "gulp-nodemon": "^2.0.3",
     "gulp-order": "^1.1.1",
     "main-bower-files": "^2.8.0",
+    "sequelize": "^3.9.0",
     "sequelize-cli": "^1.7.0",
     "sqlite3": "^3.0.8",
     "wiredep": "^2.2.2"
