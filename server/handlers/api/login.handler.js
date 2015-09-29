@@ -2,9 +2,9 @@ var Mentat = require('mentat');
 var Boom = require('boom');
 var bcrypt = require('bcrypt');
 var jwt = require('jsonwebtoken');
-var redis = require('redis');
+//var redis = require('redis');
 
-var client = redis.createClient();
+//var client = redis.createClient();
 
 module.exports = new Mentat.Handler('Login', {
   routes: [

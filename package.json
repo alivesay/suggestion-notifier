@@ -10,11 +10,17 @@
   "dependencies": {
     "async": "^1.2.1",
     "bcrypt": "^0.8.5",
+    "boom": "^2.9.0",
+    "good": "^6.4.0",
+    "good-console": "^5.1.0",
+    "good-file": "^5.1.0",
     "handlebars": "^3.0.3",
+    "hapi": "^10.1.0",
     "hapi-auth-jwt2": "^5.0.6",
     "inert": "^3.0.1",
     "jsonwebtoken": "^5.0.5",
-    "mentat": "^1.0.1",
+    "lodash": "^3.10.1",
+    "mentat": "*",
     "redis": "^1.0.0",
     "request": "^2.57.0",
     "tiny-lr": "^0.1.5"
