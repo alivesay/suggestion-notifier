@@ -319,6 +319,7 @@ body {
 
 .panel {
   margin-bottom: 0 !important;
+   box-shadow: 0 0 30px black;
 }
 
 .panel-default > .panel-heading {

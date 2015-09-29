@@ -37,6 +37,7 @@
         $scope.logoutClick = logoutClick;
         $scope.consoleClick = consoleClick;
         $scope.auth = AuthFactory;
+        $scope.uiRouterState = $state;
 
         onLoad();
 

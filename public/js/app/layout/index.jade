@@ -30,7 +30,7 @@ block content
                     | &nbsp;Logout
 
     div#app-body.fill
-      div#app-main-view(ng-class='footerCollapsed || $state.current.name == "console#index" ? "app-main-view-full" : "app-main-view-default"')
+      div#app-main-view(ng-class='footerCollapsed || uiRouterState.current.name == "console#index" ? "app-main-view-full" : "app-main-view-default"')
         ui-view
       div#app-footer-view(ng-include='MODULE_PATH + "console/console.index.html"',
-                          ng-class='footerCollapsed || $state.current.name == "console#index" ? "app-footer-view-collapsed" : "app-footer-view-default"')
+                          ng-class='uiRouterState.current.name == "console#index" ? "app-footer-view-collapsed" : "app-footer-view-default"')
