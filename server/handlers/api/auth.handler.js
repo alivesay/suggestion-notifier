@@ -6,13 +6,13 @@ var redis = require('redis');
 
 var client = redis.createClient();
 
-module.exports = new Mentat.Handler('Login', {
+module.exports = new Mentat.Handler('Auth', {
     routes: [
-        { method: 'POST', path: '/api/login', auth: false },
-        { method: 'GET', path: '/api/logout' }
+        { method: 'POST', path: '/api/login', auth: false, handler: 'login' },
+        { method: 'GET', path: '/api/logout', handler: 'logout' }
     ],
 
-    POST: function (request, reply) {
+    login: function (request, reply) {
         Mentat.models.User
             .findOne({where: { username: request.payload.username }})
             .nodeify(function (err, user) {
@@ -40,7 +40,7 @@ module.exports = new Mentat.Handler('Login', {
             });
     },
 
-    GET: function (request, reply) {
+    logout: function (request, reply) {
         var authorization = request.headers['authorization'];
 
         if (authorization) {
