@@ -27,6 +27,11 @@ build/Release
 node_modules
 bower_components
 
+db
 db.development.sqlite
+db.development.sql
+db.development.db
+nohup.out
+
 .tmp
 .idea
