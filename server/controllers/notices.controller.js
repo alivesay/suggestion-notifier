@@ -73,6 +73,7 @@ function sendNotice(options, callback) {
 
   function _parallelTasksDone (err, results) {
     if (err) {
+      Mentat.server.log(['error'], err);
       return callback(err, null);
     }
 

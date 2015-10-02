@@ -9,7 +9,7 @@ module.exports = new Mentat.Handler('Notices', {
 
   POST: function (request, reply) {
     return Mentat.controllers.NoticesController.sendNotice({
-        patronId: 0, //request.payload.patronId,
+        patronId: request.payload.patronId,
         suggestionId: request.payload.suggestionId,
         template: request.payload.template,
         bibNumber: request.payload.bibNumber

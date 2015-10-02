@@ -6,11 +6,11 @@
 
   LoginIndexController.$inject = ['$scope', 'APP_CONFIG', '$location',
                                   '$window', 'AuthFactory', 'UserFactory',
-                                  'toastr'];
+                                  'toastr', 'socket'];
 
   function LoginIndexController($scope, APP_CONFIG, $location,
                                 $window, AuthFactory, UserFactory,
-                                toastr) {
+                                toastr, socket) {
     $scope.MODULE_PATH = APP_CONFIG.MODULE_PATH;
     $scope.login = login;
 
@@ -21,6 +21,9 @@
           function success (data) {
             AuthFactory.isLogged = true;
             $window.sessionStorage.token = data.token;
+
+            socket.emit('authenticate', { token: data.token });
+
             toastr.success('Logged in!');
             $location.path("/suggestions");
           },

@@ -23,6 +23,7 @@
     "mentat": "*",
     "redis": "^1.0.0",
     "request": "^2.57.0",
+    "ssl-root-cas": "^1.1.10",
     "tiny-lr": "^0.1.5"
   },
   "devDependencies": {

@@ -24,13 +24,13 @@
     angular.module('app')
         .controller('AppController', AppController);
 
-    AppController.$inject = ['$scope', '$state', '$window', '$location', 'toastr',
+    AppController.$inject = ['$scope', '$state', '$window', '$location', 'toastr', 'socket',
                              'ngDialog', 'AuthFactory', 'UserFactory', 'APP_CONFIG'];
 
-    function AppController($scope, $state, $window, $location, toastr,
+    function AppController($scope, $state, $window, $location, toastr, socket,
                            ngDialog, AuthFactory, UserFactory, APP_CONFIG) {
 
-        $scope.$stAe = $state;
+        $scope.$state = $state;
         $scope.MODULE_PATH = APP_CONFIG.MODULE_PATH;
         $scope.footerCollapsed = true;
         $scope.settingsClick = settingsClick;
@@ -65,6 +65,7 @@
                     function success () {
                         AuthFactory.isLogged = false;
                         delete $window.sessionStorage.token;
+                        socket.disconnect();
                         $location.path('/');
                     },
                     function error (status) {
@@ -82,33 +83,74 @@
 
     angular.module('app').factory('socket', SocketFactory);
 
-    SocketFactory.$inject = ['$rootScope', 'toastr'];
+    SocketFactory.$inject = ['$rootScope', '$window', 'toastr'];
 
-    function SocketFactory($rootScope, toastr) {
-        var socket = io.connect();
+    function SocketFactory($rootScope, $window, toastr) {
+        var self = this;
 
-        socket.on('connect', function () {
-            console.log('socket.io connected.');
-        });
+        self.socket = getSocket();
+        self.isAuthenticated = false;
+
+        function getSocket() {
+            if (self.socket) {
+                return self.socket;
+            }
+
+            var socket = io.connect('/', { forceNew: true });
+
+            socket.on('connect', function () {
+                console.log('socket.io connected.');
+                getSocket() 
+                    .on('authenticated', function () {
+                        console.log('socket.io authenticated.');
+                        self.isAuthenticated = true;
+                    })
+                    .on('error', function (error) {
+                        console.log(error);
+                    })
+                    .on('disconnect', function () {
+                        console.log('socket.io disconnected.');
+                        self.isAuthenticated = false;
+                        self.socket = undefined;
+                        self.socket = getSocket();
+                    });
+
+                if ($window.sessionStorage.token) {
+                    socket.emit('authenticate', { token: $window.sessionStorage.token });
+                }
+            });
+               
+            return socket;        
+        }
 
         return {
             on: function (eventName, callback) {
-                socket.on(eventName, function () {
+                getSocket().on(eventName, function () {
                     var args = arguments;
                     $rootScope.$apply(function () {
-                        callback.apply(socket, args);
+                        callback.apply(getSocket(), args);
                     });
                 });
             },
             emit: function (eventName, data, callback) {
-                socket.emit(eventName, data, function () {
+                if (!self.isAuthenticated && eventName !== 'authenticate') {
+                    console.log('socket emitted before auth: ' + eventName);
+                    return;
+                }
+
+                getSocket().emit(eventName, data, function () {
                     var args = arguments;
                     $rootScope.$apply(function () {
                         if (callback) {
-                            callback.apply(socket, args);
+                            callback.apply(getSocket(), args);
                         }
                     });
                 });
+            },
+            disconnect: function () {
+                if (self.socket) {
+                    self.socket.disconnect();
+                }
             }
         };
     }

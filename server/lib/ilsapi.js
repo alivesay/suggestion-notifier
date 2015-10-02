@@ -53,14 +53,19 @@ var ILSApi = {
 
     var self = this;
     var results = {};
-
-    var patronApiDumpUri = util.format('http://%s:%d/PATRONAPI/{%s}/dump',
-      settings.ilsOptions.catalog.hostname,
-      settings.ilsOptions.catalog.patronAPISSLPort,
-      record
-    );
-
-    request(patronApiDumpUri, function (error, response, body) {
+console.log(record)
+    var requestOptions = {
+      uri:  util.format('https://%s:%d/PATRONAPI/%s/dump',
+        settings.ilsOptions.catalog.hostname,
+        settings.ilsOptions.catalog.patronAPISSLPort,
+        record
+      ),
+      // TODO: hack
+      strictSSL: false,
+      rejectAuthorization: false
+    };
+ 
+    request(requestOptions, function (error, response, body) {
       if (error) {
         return callback(error, null);
       }
@@ -77,8 +82,11 @@ var ILSApi = {
         }
       });
 
-      return callback(null, results);
-
+      if (_.size(results) > 0) {
+        return callback(null, results);
+      }
+      
+      return callback('patron not found: ' + record, null);
     });
 
   }
