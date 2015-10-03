@@ -14,7 +14,8 @@
 
     angular.extend(toastrConfig, {
       closeButton: true,
-      progressBar: true
+      progressBar: true,
+      positionClass: 'toast-bottom-left'
     });
 
     $httpProvider.interceptors.push('TokenInterceptorFactory');
