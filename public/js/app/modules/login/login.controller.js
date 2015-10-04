@@ -28,9 +28,15 @@
             $location.path("/suggestions");
           },
           function error (status, data) {
+            if (status && status.data) {
+                if (status.data.message === 'invalid user') {
+                    $scope.login.username = '';
+                }
+                if (status.data.message === 'invalid password') {
+                    $scope.login.password = '';
+                }
+            }
             toastr.error('Login failed!');
-            console.log(status);
-            console.log(data);
           }
         );
       }

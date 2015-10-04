@@ -66,8 +66,10 @@ module.exports = function (socket) {
     };
 
     Mentat.controllers.EventsController.log({
-      type: 'chatroom:send:message',
-      body: message
+      event: {
+        type: 'chatroom:send:message',
+        body: message
+      }
     }, {
       logFields: [ 'source', 'text' ]
     });

@@ -2,7 +2,7 @@ extends layout
 
 block content
   div#app-container.container-fluid.fill(ng-cloak)
-    nav#app-navbar.navbar.navbar-default.navbar-fixed-top
+    nav#app-navbar.navbar.navbar-default.navbar-fixed-top(ng-show='auth.isLogged')
       div.container-fluid
         div.navbar-header
           div.navbar-brand
@@ -17,15 +17,12 @@ block content
               div.btn-toolbar
                 div.btn-group
                   a#console-btn.btn.btn-xs.btn-default(ng-click='consoleClick()',
-                                                       ng-class='{ "disabled": !footerCollapsed }',
-                                                       ng-show='auth.isLogged')
+                                                       ng-class='{ "disabled": !footerCollapsed }')
                     i.fa.fa-terminal
-                  a#settings-btn.btn.btn-xs.btn-default(ng-click='settingsClick()',
-                                                            ng-show='auth.isLogged')
+                  a#settings-btn.btn.btn-xs.btn-default(ng-click='settingsClick()')
                     i.fa.fa-cog
                 div.btn-group
-                  a#logout-btn.btn.btn-xs.btn-default(ng-click='logoutClick()',
-                                                      ng-show='auth.isLogged')
+                  a#logout-btn.btn.btn-xs.btn-default(ng-click='logoutClick()')
                     i.fa.fa-sign-out
                     | &nbsp;Logout
 
