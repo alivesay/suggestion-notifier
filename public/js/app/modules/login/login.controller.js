@@ -13,6 +13,7 @@
                                 toastr, socket) {
     $scope.MODULE_PATH = APP_CONFIG.MODULE_PATH;
     $scope.login = login;
+    $scope.AuthFactory = AuthFactory;
 
     function login(username, password) {
       if (username !== undefined && password !== undefined) {
@@ -34,6 +35,7 @@
                 }
                 if (status.data.message === 'invalid password') {
                     $scope.login.password = '';
+                    $scope.loginForm.passwordInput.$setValidity('required', false);
                 }
             }
             toastr.error('Login failed!');

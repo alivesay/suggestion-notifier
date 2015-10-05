@@ -2,16 +2,15 @@ div#login-controller.flexbox-container(ng-controller='LoginIndexController')
     div#login-form
         img(src='images/150_logo_0.png', height='81', width='300')
         form.form-horizontal(name='loginForm', role='form')
-            div.form-group(ng-class='{ "has-error": loginForm.usernameInput.$touched && loginForm.usernameInput.$invalid }')
+            div.form-group
                 div
                     input#login-username-field.form-control(type='text',
                                                             name='usernameInput',
                                                             placeholder='Username',
                                                             ng-model='login.username',
                                                             required,
-                                                            autofocus,
-                                                            validate-on='blur')
-            div.form-group(ng-class='{ "has-error": loginForm.passwordInput.$touched && loginForm.passwordInput.$invalid }')
+                                                            autofocus)
+            div.form-group
                 div
                     input#login-password-field.form-control(type='password',
                                                             name='passwordInput',
