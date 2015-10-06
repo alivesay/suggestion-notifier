@@ -32,11 +32,11 @@
 
   angular.module('app').run(appRun);
 
-  appRun.$inject = ['$rootScope', '$state', 'AuthFactory'];
+  appRun.$inject = ['$rootScope', '$state', '$window', 'AuthFactory'];
 
-  function appRun ($rootScope, $state, AuthFactory) {
+  function appRun ($rootScope, $state, $window, AuthFactory) {
     $rootScope.$on('$locationChangeSuccess', function() {
-      if (!AuthFactory.isLogged) {
+      if (AuthFactory.isLogged === false) {
         $state.go('login#index');
       }
     });

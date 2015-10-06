@@ -1,14 +1,17 @@
 (function(){
-  'use strict';
+    'use strict';
 
-  angular.module('app.shared').factory('AuthFactory', AuthFactory);
+    angular.module('app.shared').factory('AuthFactory', AuthFactory);
 
-  function AuthFactory() {
-    var auth = {
-      isLogged: false
-    };
-
-    return auth;
-  }
-
+    function AuthFactory() {
+        return {
+            get isLogged () {
+                return window.sessionStorage.getItem('isLogged') === 'true';
+            },
+            set isLogged (val) {
+                window.sessionStorage.setItem('isLogged', val);
+                return val;
+            }
+        };
+    }
 })();

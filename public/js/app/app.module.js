@@ -83,70 +83,96 @@
 
     angular.module('app').factory('socket', SocketFactory);
 
-    SocketFactory.$inject = ['$rootScope', '$window', 'toastr'];
+    SocketFactory.$inject = ['$rootScope', '$q', '$window', 'toastr'];
 
-    function SocketFactory($rootScope, $window, toastr) {
+    function SocketFactory($rootScope, $q, $window, toastr) {
         var self = this;
 
-        self.socket = getSocket();
+        self.queue = [];
+        self.socket = undefined;
         self.isAuthenticated = false;
 
-        function getSocket() {
-            if (self.socket) {
-                return self.socket;
+        function connectSocket() {
+            try {
+                self.socket = io.connect({ forceNew: true });
+            } catch (e) {
+                console.log('socket.io error: ' + e);
             }
 
-            var socket = io.connect('/', { forceNew: true });
-
-            socket.on('connect', function () {
+            self.socket.on('connect', function () {
                 console.log('socket.io connected.');
-                getSocket() 
+                self.socket
                     .on('authenticated', function () {
                         console.log('socket.io authenticated.');
                         self.isAuthenticated = true;
+                        self.queue.forEach(function (event) {
+                            switch (event.type) {
+                                case 'on':
+                                    on(event.eventName, event.callback);
+                                    break;
+                                case 'emit':
+                                    emit(event.eventName, event.data, event.callback);
+                                    break;
+                            }
+                        });
                     })
                     .on('error', function (error) {
                         console.log(error);
                     })
+                    .on('reconnect', function () {
+                        console.log('socket.io reconnected.');
+                    })
                     .on('disconnect', function () {
                         console.log('socket.io disconnected.');
                         self.isAuthenticated = false;
-                        self.socket = undefined;
-                        self.socket = getSocket();
+                        self.socket.connect();
                     });
 
                 if ($window.sessionStorage.token) {
-                    socket.emit('authenticate', { token: $window.sessionStorage.token });
+                    self.socket.emit('authenticate', { token: $window.sessionStorage.token });
                 }
             });
-               
-            return socket;        
         }
+
+        function on(eventName, callback) {
+            self.socket.on(eventName, function () {
+                var args = arguments;
+                $rootScope.$apply(function () {
+                    callback.apply(self.socket, args);
+                });
+            });
+        }
+
+        function emit(eventName, data, callback) {
+            self.socket.emit(eventName, data, function () {
+                var args = arguments;
+                $rootScope.$apply(function () {
+                    if (callback) {
+                        callback.apply(self.socket, args);
+                    }
+                });
+            });
+        }
+
+        connectSocket();
 
         return {
             on: function (eventName, callback) {
-                getSocket().on(eventName, function () {
-                    var args = arguments;
-                    $rootScope.$apply(function () {
-                        callback.apply(getSocket(), args);
-                    });
-                });
-            },
-            emit: function (eventName, data, callback) {
-                if (!self.isAuthenticated && eventName !== 'authenticate') {
-                    console.log('socket emitted before auth: ' + eventName);
-                    return;
+                if (self.isAuthenticated) {
+                    on(eventName, callback);
+                } else {
+                    self.queue.push({ type: 'on', eventName: eventName, callback: callback });
                 }
-
-                getSocket().emit(eventName, data, function () {
-                    var args = arguments;
-                    $rootScope.$apply(function () {
-                        if (callback) {
-                            callback.apply(getSocket(), args);
-                        }
-                    });
-                });
             },
+
+            emit: function (eventName, data, callback) {
+                if (self.isAuthenticated || eventName === 'authenticate') {
+                    emit(eventName, data, callback);
+               } else {
+                    self.queue.push({ type: 'emit', eventName: eventName, data: data, callback: callback });
+                }
+            },
+
             disconnect: function () {
                 if (self.socket) {
                     self.socket.disconnect();

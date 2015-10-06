@@ -40,7 +40,6 @@
     });
 
     socket.on('chatroom:send:message', function (message) {
-      console.dir(message);
       $scope.messages.push(message);
       updateMessages();
     });
