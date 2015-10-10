@@ -17,7 +17,11 @@ div#suggestions-view.container-fluid.fill(ng-controller='SuggestionsIndexControl
           div.btn-toolbar
             div.btn-group
               a.btn.btn-xs.btn-default(ng-click='refreshClick()')
-                i.fa.fa-refresh
+                  i.fa.fa-refresh
+            div.btn-group
+              a.btn.btn-xs.btn-default(ng-click='deleteClick()',
+                                       ng-disabled='suggestionsGridSelectionCount == 0')
+                | &nbsp;Delete
             div.btn-group
               a.btn.btn-xs.btn-default(ng-click='newSuggestionClick()')
                 | &nbsp;New Suggestion

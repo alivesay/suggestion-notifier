@@ -5,10 +5,10 @@
     .controller('SuggestionsIndexController', SuggestionsIndexController);
 
   SuggestionsIndexController.$inject = ['$scope', '$filter', '$q', 'socket', 'uiGridConstants',
-                                        'ngDialog', 'SuggestionFactory', 'APP_CONFIG'];
+                                        'ngDialog', 'toastr', 'SuggestionFactory', 'APP_CONFIG'];
 
   function SuggestionsIndexController($scope, $filter, $q, socket, uiGridConstants,
-                                      ngDialog, SuggestionFactory, APP_CONFIG) {
+                                      ngDialog, toastr, SuggestionFactory, APP_CONFIG) {
     $scope.suggestionsGridSelectionCount = 0;
     $scope.MODULE_PATH = APP_CONFIG.MODULE_PATH;
     $scope.isViewingReferred = false;
@@ -16,6 +16,7 @@
     $scope.newSuggestionClick = newSuggestionClick;
     $scope.notifyClick = notifyClick;
     $scope.referClick = referClick;
+    $scope.deleteClick = deleteClick;
     $scope.singleFilter = singleFilter;
     $scope.newCount = 0;
     $scope.referredCount = 0;
@@ -280,6 +281,26 @@
           $scope.suggestionsGridApi.selection.clearSelectedRows();
         });
     }
+
+    function deleteClick() {
+      var promises = [];
+
+      angular.forEach($scope.suggestionsGridApi.selection.getSelectedRows(), function (row) {
+          promises.push(SuggestionFactory.delete({id: row.id}).$promise);
+      });
+
+      $q
+        .all(promises)
+        .catch(function error(httpResponse) {
+          toastr.error('Oops, something went wrong!');
+          console.error('REST Error: ' + httpResponse.data.message);
+        })
+        .finally(function () {
+          $scope.suggestionsGridApi.selection.clearSelectedRows();
+        });
+    }
+
+
   }
 
   angular.module('app.suggestions')

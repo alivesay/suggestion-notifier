@@ -1,6 +1,7 @@
 'use strict';
 
 var Mentat = require('mentat');
+var _ = require('lodash');
 
 Mentat.models.Suggestion.hook('afterCreate', function (suggestion) {
     Mentat.controllers.EventsController.log({
@@ -64,9 +65,23 @@ function updateSuggestion(options, callback) {
     });
 }
 
+function destroySuggestion(options, callback) {
+    var queryOptions = _.defaultsDeep(options.queryOptions || {}, {
+        where: {
+            id: options.id
+        },
+        individualHooks: true
+    });
+
+    Mentat.models.Suggestion
+        .destroy(queryOptions)
+        .nodeify(callback);
+}
+
 module.exports = new Mentat.Controller('Suggestions', {
     getSuggestions: getSuggestions,
     getSuggestionById: getSuggestionById,
     createSuggestion: createSuggestion,
-    updateSuggestion: updateSuggestion
+    updateSuggestion: updateSuggestion,
+    destroySuggestion: destroySuggestion
 });
