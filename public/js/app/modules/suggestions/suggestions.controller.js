@@ -5,10 +5,12 @@
     .controller('SuggestionsIndexController', SuggestionsIndexController);
 
   SuggestionsIndexController.$inject = ['$scope', '$filter', '$q', 'socket', 'uiGridConstants',
-                                        'ngDialog', 'toastr', 'SuggestionFactory', 'APP_CONFIG'];
+                                        'ngDialog', 'toastr', 'SuggestionFactory', 'APP_CONFIG',
+                                        '$window'];
 
   function SuggestionsIndexController($scope, $filter, $q, socket, uiGridConstants,
-                                      ngDialog, toastr, SuggestionFactory, APP_CONFIG) {
+                                      ngDialog, toastr, SuggestionFactory, APP_CONFIG,
+                                      $window) {
     $scope.suggestionsGridSelectionCount = 0;
     $scope.MODULE_PATH = APP_CONFIG.MODULE_PATH;
     $scope.isViewingReferred = false;
@@ -285,22 +287,22 @@
     function deleteClick() {
       var promises = [];
 
-      angular.forEach($scope.suggestionsGridApi.selection.getSelectedRows(), function (row) {
-          promises.push(SuggestionFactory.delete({id: row.id}).$promise);
-      });
+      if ($window.confirm('Are you sure?')) {
+          angular.forEach($scope.suggestionsGridApi.selection.getSelectedRows(), function (row) {
+              promises.push(SuggestionFactory.delete({id: row.id}).$promise);
+          });
 
-      $q
-        .all(promises)
-        .catch(function error(httpResponse) {
-          toastr.error('Oops, something went wrong!');
-          console.error('REST Error: ' + httpResponse.data.message);
-        })
-        .finally(function () {
-          $scope.suggestionsGridApi.selection.clearSelectedRows();
-        });
+          $q
+            .all(promises)
+            .catch(function error(httpResponse) {
+              toastr.error('Oops, something went wrong!');
+              console.error('REST Error: ' + httpResponse.data.message);
+            })
+            .finally(function () {
+              $scope.suggestionsGridApi.selection.clearSelectedRows();
+            });
+      }
     }
-
-
   }
 
   angular.module('app.suggestions')
