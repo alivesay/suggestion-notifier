@@ -91,3 +91,4 @@ div(ng-controller='SuggestionsNewController')
           button.btn.pull-right(ng-click='createNewSuggestion()',
                                 ng-disabled='newSuggestionForm.$invalid',
                                 ng-class='newSuggestionForm.$invalid ? "btn-default" : "btn-primary"') Create
+          button.btn.pull-right.btn-default(ng-click='closeThisDialog()') Cancel

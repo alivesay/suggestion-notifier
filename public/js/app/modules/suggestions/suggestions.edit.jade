@@ -90,7 +90,8 @@ div(ng-controller='SuggestionsEditController')
                                            rows='2')
       div.form-group
         div.col-sm-offset-3.col-sm-9
-          button.btn.pull-righti.btn-danger(ng-click='deleteSuggestionClicked()') Delete
+          button.btn.btn-danger(ng-click='deleteSuggestionClicked()') Delete
           button.btn.pull-right(ng-click='saveSuggestionClicked()',
                                 ng-disabled='editSuggestionForm.$invalid',
                                 ng-class='editSuggestionForm.$invalid ? "btn-default" : "btn-primary"') Save
+          button.btn.pull-right.btn-default(ng-click='closeThisDialog()') Cancel

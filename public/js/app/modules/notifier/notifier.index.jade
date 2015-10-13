@@ -32,3 +32,4 @@ div(ng-controller='NotifierIndexController')
           button.btn.btn-primary.pull-right(ng-click='sendNoticeClicked()',
                                             ng-disabled='sendNoticeForm.$invalid',
                                             ng-class='sendNoticeForm.$invalid ? "btn-default" : "btn-primary"') Send
+          button.btn.pull-right.btn-default(ng-click='closeThisDialog()') Cancel
