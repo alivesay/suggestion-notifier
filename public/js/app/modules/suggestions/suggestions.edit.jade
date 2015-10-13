@@ -53,7 +53,7 @@ div(ng-controller='SuggestionsEditController')
                                            name='author',
                                            ng-model='suggestion.author',
                                            ng-required='suggestion.suggestionType == "patron"')
-      div.form-group(ng-show='suggestion.suggestionType == "staff"')
+      div.form-group
         label.control-label.col-sm-3(for='location-field') Location
         div.col-sm-9
           select#location-field.form-control(ng-model='suggestion.location',
@@ -74,7 +74,7 @@ div(ng-controller='SuggestionsEditController')
             input#publisher-field.form-control(type='text',
                                                name='isbn',
                                                ng-model='suggestion.isbn')
-      div.form-group(ng-show='suggestion.suggestionType == "staff"')
+      div.form-group
         label.control-label.col-sm-3(for='price-field') Price
         div.col-sm-9
           div.input-group
@@ -82,7 +82,7 @@ div(ng-controller='SuggestionsEditController')
             input#price-field.form-control(type='text',
                                            name='price',
                                            ng-model='suggestion.price')
-      div.form-group(ng-show='suggestion.suggestionType == "staff"')
+      div.form-group
         label.control-label.col-sm-3(for='notes-field') Notes
         div.col-sm-9
           textarea#notes-field.form-control(name='notes',
