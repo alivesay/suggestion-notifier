@@ -13,7 +13,7 @@
     function uiOnLongPress($timeout, APP_CONFIG) {
         return {
             restrict: 'A',
-            link: function uoOnLongPressLink (scope, element, attrs) {
+            link: function uiOnLongPressLink (scope, element, attrs) {
                 var timeoutPromise = undefined;
                 var handlerCalled = false;
 
