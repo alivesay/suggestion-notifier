@@ -19,15 +19,22 @@ div#suggestions-view.container-fluid.fill(ng-controller='SuggestionsIndexControl
               a.btn.btn-xs.btn-default(ng-click='refreshClick()')
                   i.fa.fa-refresh
             div.btn-group
-              a.btn.btn-xs.btn-default(ng-click='deleteClick()',
-                                       ng-disabled='suggestionsGridSelectionCount == 0')
+              a.btn.btn-xs(ng-click='deleteClick()',
+                           ng-disabled='suggestionsGridSelectionCount == 0',
+                           ng-class='suggestionsGridSelectionCount == 0 ? "btn-default" : "btn-danger"')
                 | &nbsp;Delete
             div.btn-group
               a.btn.btn-xs.btn-default(ng-click='newSuggestionClick()')
                 | &nbsp;New Suggestion
               a.btn.btn-xs.btn-default(ng-click='referClick()',
-                                       ng-disabled='suggestionsGridSelectionCount == 0')
+                                       ng-disabled='suggestionsGridSelectionCount == 0',
+                                       ng-hide='isViewingReferred')
                 | &nbsp;Refer
+              a.btn.btn-xs.btn-default(ng-click='holdClick()',
+                                       ng-disabled='suggestionsGridSelectionCount == 0',
+                                       ng-show='isViewingReferred')
+                | &nbsp;Hold
+
     div.panel-body
       div.fill(ui-grid='suggestionsGrid',
                ui-grid-selection,
@@ -40,5 +47,5 @@ div#suggestions-view.container-fluid.fill(ng-controller='SuggestionsIndexControl
             a.btn.btn-xs.btn-default.pull-right(ng-click='notifyClick()',
                                                 ng-disabled='suggestionsGridSelectionCount == 0',
                                                 ng-class='suggestionsGridSelectionCount == 0 ? "btn-default" : "btn-primary"')
-              i.fa.fa-envelope
+              i.fa.fa-envelope(ui-on-long-press)
               | &nbsp;Send Notice{{ suggestionsGridSelectionCount > 1 ? 's' : '' }}

@@ -13,7 +13,8 @@
     'app.config',
     'app.shared',
     'app.console',
-    'app.notifier'
+    'app.notifier',
+    'ui.on-long-press'
   ]);
 
 })();

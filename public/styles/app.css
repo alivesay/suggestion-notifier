@@ -79,6 +79,45 @@ body {
   line-height: 1 !important;
 }
 
+@-webkit-keyframes color_change {
+    from { background-color: #ddd; color: #333; }
+    90% { background-color: #29d; color: #fff; }
+    95% { background-color: #fff; color: #29d; }
+    100% { background-color: #29d; color: #fff; }
+}
+@-moz-keyframes color_change {
+    from { background-color: #ddd; color: #333; }
+    90% { background-color: #29d; color: #fff; }
+    95% { background-color: #fff; color: #29d; }
+    100% { background-color: #29d; color: #fff; }
+}
+@-ms-keyframes color_change {
+    from { background-color: #ddd; color: #333; }
+    90% { background-color: #29d; color: #fff; }
+    95% { background-color: #fff; color: #29d; }
+    100% { background-color: #29d; color: #fff; }
+}
+@-o-keyframes color_change {
+    from { background-color: #ddd; color: #333; }
+    90% { background-color: #29d; color: #fff; }
+    95% { background-color: #fff; color: #29d; }
+    100% { background-color: #29d; color: #fff; }
+}
+@keyframes color_change {
+    from { background-color: #ddd; color: #333; }
+    90% { background-color: #29d; color: #fff; }
+    95% { background-color: #fff; color: #29d; }
+    100% { background-color: #29d; color: #fff; }
+}
+
+.ui-grid-row:active .ui-grid-cell {
+  -webkit-animation: color_change 600ms 1 alternate;
+  -moz-animation: color_change 600ms 1 alternate;
+  -ms-animation: color_change 600ms 1 alternate;
+  -o-animation: color_change 600ms 1 alternate;
+  animation: color_change 600ms 1 alternate;
+}
+
 .ui-grid-row.ui-grid-row-selected > [ui-grid-row] > .ui-grid-cell {
   background: #29d !important;
   color: white;

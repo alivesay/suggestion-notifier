@@ -5,10 +5,10 @@
 
   angular.module('app').config(appConfig);
 
-  appConfig.$inject = ['$stateProvider', '$urlRouterProvider',
+  appConfig.$inject = ['$stateProvider', '$urlRouterProvider', '$logProvider',
                        '$httpProvider', 'toastrConfig'];
 
-  function appConfig($stateProvider, $urlRouterProvider,
+  function appConfig($stateProvider, $urlRouterProvider, $logProvider,
                      $httpProvider, toastrConfig) {
     $urlRouterProvider.otherwise('/suggestions');
 
@@ -19,6 +19,8 @@
     });
 
     $httpProvider.interceptors.push('TokenInterceptorFactory');
+
+    $logProvider.debugEnabled(true);
   }
 
   var APP_PATH = '/js/app/';

@@ -60,9 +60,9 @@ function updateSuggestion(options, callback) {
             .update(options.suggestion, options.queryOptions)
             .nodeify(callback);
         })
-    .catch(function (err) {
-        return callback(err, null);
-    });
+        .catch(function (err) {
+            return callback(err, null);
+        });
 }
 
 function destroySuggestion(options, callback) {

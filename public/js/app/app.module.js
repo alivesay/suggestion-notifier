@@ -61,18 +61,18 @@
 
         function logoutClick() {
             if (AuthFactory.isLogged) {
-                UserFactory.logout().then(
-                    function success () {
+                UserFactory.logout()
+                    .then(
+                        function success () { },
+                        function error (status) {
+                            console.log('Error: ' + status.data.error + ': ' + status.data.message);
+                        })
+                    .finally(function () {
                         AuthFactory.isLogged = false;
                         delete $window.sessionStorage.token;
                         socket.disconnect();
                         $location.path('/');
-                    },
-                    function error (status) {
-                        console.log(status);
-                        console.log(error);
-                    }
-                );
+                    });
             }
         }
 

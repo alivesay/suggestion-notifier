@@ -18,8 +18,10 @@
     $scope.newSuggestionClick = newSuggestionClick;
     $scope.notifyClick = notifyClick;
     $scope.referClick = referClick;
+    $scope.holdClick = holdClick;
     $scope.deleteClick = deleteClick;
     $scope.singleFilter = singleFilter;
+    $scope.onLongPressEnd = onLongPressEnd;
     $scope.newCount = 0;
     $scope.referredCount = 0;
 
@@ -46,7 +48,7 @@
           },
           width: '*',
           minWidth: 30,
-          cellTemplate: '<div class="ui-grid-cell-contents">{{ row.entity.title == "NULL" ? "" : row.entity.title }}</div>'
+          cellTemplate: '<div class="ui-grid-cell-contents" ui-on-long-press="grid.appScope.onLongPressEnd(row)">{{ row.entity.title == "NULL" ? "" : row.entity.title }}</div>'
         },
         {
           name: 'subject', type: 'string',
@@ -55,14 +57,14 @@
           },
           width: '*',
           minWidth: 20,
-          cellTemplate: '<div class="ui-grid-cell-contents">{{ row.entity.subject == "NULL" ? "" : row.entity.subject }}</div>'
+          cellTemplate: '<div class="ui-grid-cell-contents" ui-on-long-press="grid.appScope.onLongPressEnd(row)">{{ row.entity.subject == "NULL" ? "" : row.entity.subject }}</div>'
         },
         {
           name: 'author', type: 'string',
           filter: {
             condition: columnFilterContains
           },
-          cellTemplate: '<div class="ui-grid-cell-contents">{{ row.entity.author == "NULL" ? "" : row.entity.author }}</div>'
+          cellTemplate: '<div class="ui-grid-cell-contents" ui-on-long-press="grid.appScope.onLongPressEnd(row)">{{ row.entity.author == "NULL" ? "" : row.entity.author }}</div>'
         },
         {
           name: 'isbn',
@@ -72,7 +74,7 @@
           filter: {
             condition: columnFilterContains
           },
-          cellTemplate: '<div class="ui-grid-cell-contents">{{ row.entity.isbn == "NULL" ? "" : row.entity.isbn }}</div>'
+          cellTemplate: '<div class="ui-grid-cell-contents" ui-on-long-press="grid.appScope.onLongPressEnd(row)">{{ row.entity.isbn == "NULL" ? "" : row.entity.isbn }}</div>'
         },
         {
           name: 'type',
@@ -81,7 +83,8 @@
           filter: {
             condition: columnFilterStartsWith
           },
-          width: 95
+          width: 95,
+          cellTemplate: '<div class="ui-grid-cell-contents" ui-on-long-press="grid.appScope.onLongPressEnd(row)">{{ row.entity.type }}</div>'
         },
         {
           name: 'patron',
@@ -90,17 +93,17 @@
           filter: {
             condition: columnFilterContains
           },
-          cellTemplate: '<div class="ui-grid-cell-contents">{{ row.entity.patron == "NULL" ? "" : row.entity.patron }}</div>'
+          cellTemplate: '<div class="ui-grid-cell-contents" ui-on-long-press="grid.appScope.onLongPressEnd(row)">{{ row.entity.patron == "NULL" ? "" : row.entity.patron }}</div>'
         },
         {
           name: 'createdAt',
           type: 'date',
           displayName: 'Date',
-          cellFilter: 'date:"yyyy-MM-dd"',
           width: 90,
           filter: {
             condition: columnFilterContains
-          }
+          },
+          cellTemplate: '<div class="ui-grid-cell-contents" ui-on-long-press="grid.appScope.onLongPressEnd(row)">{{ row.entity.createdAt | date:"yyyy-MM-dd" }}</div>'
         }
       ],
       onRegisterApi: onRegisterApi
@@ -133,7 +136,6 @@
         }
 
         $scope.suggestionsGridApi.core.notifyDataChange(uiGridConstants.dataChange.EDIT);
-        console.log($scope.suggestionsGridSelectionCount)
       });
 
       socket.on('suggestions:deleted', function (suggestion) {
@@ -264,11 +266,19 @@
     }
 
     function referClick() {
+      setReferred(true);
+    }
+
+    function holdClick() {
+      setReferred(false);
+    }
+
+    function setReferred(isReferred) {
       var promises = [];
 
       angular.forEach($scope.suggestionsGridApi.selection.getSelectedRows(), function (row) {
         SuggestionFactory.get({id: row.id}, function (suggestion) {
-          suggestion.isReferred = true;
+          suggestion.isReferred = isReferred;
           promises.push(suggestion.$save());
         })
       });
@@ -303,6 +313,15 @@
             });
       }
     }
+
+    function onLongPressEnd(row) {
+        ngDialog.open({
+            template: APP_CONFIG.MODULE_PATH + 'suggestions/suggestions.edit.html',
+            className: 'ngdialog-theme-default',
+            scope: $scope,
+            data: { id: row.entity.id }
+        });
+    }
   }
 
   angular.module('app.suggestions')
@@ -327,6 +346,55 @@
     function createNewSuggestion() {
       SuggestionFactory.save($scope.suggestion, function success(value, responseHeaders) {
         $state.go('suggestions#index');
+      }, function error(httpResponse) {
+        toastr.error('Oops, something went wrong!');
+        console.error('REST Error: ' + httpResponse.data.message);
+      });
+
+      $scope.closeThisDialog();
+    }
+  }
+
+
+  angular.module('app.suggestions')
+    .controller('SuggestionsEditController', SuggestionsEditController);
+
+  SuggestionsEditController.$inject = ['$scope', '$state', 'toastr',
+                                       'SuggestionFactory', 'ItemTypesFactory', 'LocationsFactory'];
+
+  function SuggestionsEditController($scope, $state, toastr,
+                                     SuggestionFactory, ItemTypesFactory, LocationsFactory) {
+
+    $scope.saveSuggestionClicked = saveSuggestionClicked;
+
+    ItemTypesFactory.get(function (itemtypes) {
+      $scope.itemtypes = itemtypes;
+    });
+
+    LocationsFactory.get(function (locations) {
+      $scope.locations = locations;
+    });
+
+    onLoad();
+
+    function onLoad() {
+      SuggestionFactory.get({
+        id: $scope.ngDialogData.id
+      }, getSuggestionSuccess, getSuggestionError);
+
+      function getSuggestionSuccess(value, responseHeaders) {
+        $scope.suggestion = value;
+      }
+
+      function getSuggestionError(httpResponse) {
+        toastr.error('Oops, something went wrong!');
+        console.error('REST Error: ' + httpResponse.data.message);
+      }
+    }
+
+    function saveSuggestionClicked() {
+      $scope.suggestion.$save({}, function success(value, responseHeaders) {
+        toastr.success('Suggestion updated.');
       }, function error(httpResponse) {
         toastr.error('Oops, something went wrong!');
         console.error('REST Error: ' + httpResponse.data.message);
