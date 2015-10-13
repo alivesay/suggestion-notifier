@@ -359,13 +359,14 @@
   angular.module('app.suggestions')
     .controller('SuggestionsEditController', SuggestionsEditController);
 
-  SuggestionsEditController.$inject = ['$scope', '$state', 'toastr',
+  SuggestionsEditController.$inject = ['$scope', '$state', '$window', 'toastr',
                                        'SuggestionFactory', 'ItemTypesFactory', 'LocationsFactory'];
 
-  function SuggestionsEditController($scope, $state, toastr,
+  function SuggestionsEditController($scope, $state, $window, toastr,
                                      SuggestionFactory, ItemTypesFactory, LocationsFactory) {
 
     $scope.saveSuggestionClicked = saveSuggestionClicked;
+    $scope.deleteSuggestionClicked = deleteSuggestionClicked;
 
     ItemTypesFactory.get(function (itemtypes) {
       $scope.itemtypes = itemtypes;
@@ -402,6 +403,20 @@
 
       $scope.closeThisDialog();
     }
+
+    function deleteSuggestionClicked() {
+      if ($window.confirm('Are you sure?')) {
+          $scope.suggestion.$delete({}, function success(value, responseHeaders) {
+            toastr.success('Suggestion deleted.');
+          }, function error(httpResponse) {
+            toastr.error('Oops, something went wrong!');
+            console.error('REST Error: ' + httpResponse.data.message);
+          });
+
+          $scope.closeThisDialog();
+      }
+    }
+
   }
 
 })();
