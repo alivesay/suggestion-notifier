@@ -19,7 +19,7 @@
 
 @media screen and (min-width: 768px) {
     .ngdialog-content {
-        width: 584px !important;
+        width: 684px !important;
     }
 
     body.notLogged {

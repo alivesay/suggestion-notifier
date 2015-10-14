@@ -54,7 +54,6 @@
         function settingsClick() {
             ngDialog.open({
                 template: APP_CONFIG.MODULE_PATH + 'settings/settings.index.html',
-                className: 'ngdialog-theme-default',
                 scope: $scope
             });
         }
