@@ -492,6 +492,11 @@ body {
   padding-bottom: 6px !important;
 }
 
+.ngdialog-content .form-group textarea {
+  resize: none;
+  overflow-y: scroll;
+}
+
 .flexbox-container {
     display: -ms-flexbox;
     display: -webkit-flex;
