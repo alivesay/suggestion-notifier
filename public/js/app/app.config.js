@@ -6,10 +6,10 @@
   angular.module('app').config(appConfig);
 
   appConfig.$inject = ['$stateProvider', '$urlRouterProvider', '$logProvider',
-                       '$httpProvider', 'toastrConfig'];
+                       '$httpProvider', 'toastrConfig', 'ngDialogProvider'];
 
   function appConfig($stateProvider, $urlRouterProvider, $logProvider,
-                     $httpProvider, toastrConfig) {
+                     $httpProvider, toastrConfig, ngDialogProvider) {
     $urlRouterProvider.otherwise('/suggestions');
 
     angular.extend(toastrConfig, {
@@ -21,6 +21,13 @@
     $httpProvider.interceptors.push('TokenInterceptorFactory');
 
     $logProvider.debugEnabled(true);
+
+    ngDialogProvider.setForceHtmlReload(true);
+    ngDialogProvider.setForceBodyReload(true);
+    ngDialogProvider.setDefaults({
+        closeByDocument: false,
+        className: 'ngdialog-theme-default ngdialog-overlay',
+    });
   }
 
   var APP_PATH = '/js/app/';

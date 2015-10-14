@@ -251,7 +251,6 @@
     function newSuggestionClick() {
       ngDialog.open({
         template: APP_CONFIG.MODULE_PATH + 'suggestions/suggestions.new.html',
-        className: 'ngdialog-theme-default',
         scope: $scope
       });
     }
@@ -259,7 +258,6 @@
     function notifyClick() {
       ngDialog.open({
         template: APP_CONFIG.MODULE_PATH + 'notifier/notifier.index.html',
-        className: 'ngdialog-theme-default',
         scope: $scope,
         data: $scope.suggestionsGridApi.selection.getSelectedRows()
       });
@@ -317,7 +315,6 @@
     function onLongPressEnd(row) {
         ngDialog.open({
             template: APP_CONFIG.MODULE_PATH + 'suggestions/suggestions.edit.html',
-            className: 'ngdialog-theme-default',
             scope: $scope,
             data: { id: row.entity.id }
         });

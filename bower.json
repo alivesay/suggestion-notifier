@@ -27,7 +27,7 @@
     "font-awesome": "~4.3.0",
     "hammerjs": "~2.0.4",
     "jquery": "~2.1.4",
-    "ngDialog": "~0.4.0"
+    "ng-dialog": "ngDialog#0.5.5"
   },
   "resolutions": {
     "angular": "~1.4.0"
