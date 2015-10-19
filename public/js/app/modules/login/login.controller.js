@@ -20,7 +20,7 @@
 
         UserFactory.login(username, password).then(
           function success (data) {
-            AuthFactory.isLogged = true;
+            AuthFactory.isAuthenticated = true;
             $window.sessionStorage.token = data.token;
 
             socket.emit('authenticate', { token: data.token });

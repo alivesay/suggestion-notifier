@@ -5,11 +5,11 @@
 
     function AuthFactory() {
         return {
-            get isLogged () {
-                return window.sessionStorage.getItem('isLogged') === 'true';
+            get isAuthenticated () {
+                return window.sessionStorage.getItem('isAuthenticated') === 'true';
             },
-            set isLogged (val) {
-                window.sessionStorage.setItem('isLogged', val);
+            set isAuthenticated (val) {
+                window.sessionStorage.setItem('isAuthenticated', val);
                 return val;
             }
         };

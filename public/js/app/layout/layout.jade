@@ -13,7 +13,7 @@ html(data-ng-app='app')
     // inject:css
     // endinject
 
-  body(data-ng-controller='AppController', ng-class='{ notLogged: !auth.isLogged }')
+  body(data-ng-controller='AppController', ng-class='{ notLogged: !auth.isAuthenticated }')
     block content
     script(src='/socket.io/socket.io.js')
     // bower:js

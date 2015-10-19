@@ -59,7 +59,7 @@
         }
 
         function logoutClick() {
-            if (AuthFactory.isLogged) {
+            if (AuthFactory.isAuthenticated) {
                 UserFactory.logout()
                     .then(
                         function success () { },
@@ -67,7 +67,7 @@
                             console.log('Error: ' + status.data.error + ': ' + status.data.message);
                         })
                     .finally(function () {
-                        AuthFactory.isLogged = false;
+                        AuthFactory.isAuthenticated = false;
                         delete $window.sessionStorage.token;
                         socket.disconnect();
                         $location.path('/');

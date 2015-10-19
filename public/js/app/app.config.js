@@ -45,7 +45,7 @@
 
   function appRun ($rootScope, $state, $window, AuthFactory) {
     $rootScope.$on('$locationChangeSuccess', function() {
-      if (AuthFactory.isLogged === false) {
+      if (AuthFactory.isAuthenticated === false) {
         $state.go('login#index');
       }
     });
