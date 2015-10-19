@@ -28,10 +28,11 @@
 
   function UiChatroomController ($scope, socket) {
     $scope.messages = [];
+    $scope.users = [];
 
     socket.on('chatroom:init', function (data) {
       $scope.name = data.name;
-      $scope.users = data.users;
+      $scope.users = data.users || $scope.users;
     });
 
     socket.on('chatroom:send:name', function (data) {
