@@ -47,7 +47,7 @@ var userNames = (function () {
 }());
 
 module.exports = function (socket) {
-  var name = userNames.getGuestName();
+  var name = socket.decoded_token.username || userNames.getGuestName();
 
   socket.emit('chatroom:init', {
     name: name,
