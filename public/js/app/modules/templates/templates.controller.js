@@ -9,7 +9,7 @@
 
   function TemplatesIndexController($scope, $window, TemplateFactory, ngDialog,
                                     toastr, socket, APP_CONFIG) {
-
+    $scope.templatesForm = {};
     $scope.addTemplateClicked = addTemplateClicked;
     $scope.editTemplateClicked = editTemplateClicked;
     $scope.deleteTemplateClicked = deleteTemplateClicked;
