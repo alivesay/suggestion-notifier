@@ -11,6 +11,7 @@
     "async": "^1.2.1",
     "bcrypt": "^0.8.5",
     "boom": "^2.9.0",
+    "cheerio": "^0.19.0",
     "good": "^6.4.0",
     "good-console": "^5.1.0",
     "good-file": "^5.1.0",
