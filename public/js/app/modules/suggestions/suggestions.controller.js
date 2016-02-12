@@ -199,7 +199,6 @@
       $scope.suggestionsGridApi = gridApi;
       $scope.suggestionsGridApi.grid.registerRowsProcessor($scope.singleFilter, 75);
 
-
       $scope.refreshClick = function refreshClick () {
         refreshGridView();
       };
@@ -211,6 +210,9 @@
       gridApi.selection.on.rowSelectionChangedBatch($scope, function (rows) {
         $scope.suggestionsGridSelectionCount = gridApi.selection.getSelectedRows().length;
       });
+
+      resizeGrid();
+      $($window).resize(resizeGrid);
     }
 
     function refreshGridView () {
@@ -318,6 +320,27 @@
             scope: $scope,
             data: { id: row.entity.id }
         });
+    }
+
+    function setColumnsVisibility(indices, visibility) {
+        angular.forEach(indices, function (index) {
+            $scope.suggestionsGrid.columnDefs[index].visible = visibility;
+        });
+        $scope.suggestionsGridApi.core.notifyDataChange(uiGridConstants.dataChange.COLUMN);
+    }
+
+
+    function resizeGrid() {
+        var responsiveColumns = [4,5,6,7]; // ISBN, Format, Patron, Date
+        var responsiveWidth = 768;
+
+        if ($window.innerWidth < responsiveWidth) {
+            if ($scope.suggestionsGrid.columnDefs[responsiveColumns[0]].visible !== false) {
+                setColumnsVisibility(responsiveColumns, false);
+            }
+        } else if ($scope.suggestionsGrid.columnDefs[responsiveColumns[0]].visible !== true) {
+            setColumnsVisibility(responsiveColumns, true);
+        }
     }
   }
 

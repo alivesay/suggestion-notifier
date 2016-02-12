@@ -7,11 +7,11 @@ block content
         div.navbar-header
           div.navbar-brand
             img(src='images/logo.png')
+          button.navbar-toggle(type="button" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1")
+            span.sr-only Toggle navigation
+            span.fa.fa-bars.fa-fw
+
         div.collapse.navbar-collapse
-          ul.nav.navbar-nav.pull-left
-            li
-              p.navbar-text
-                a(ui-sref='suggestions#index') notify
           ul.nav.navbar-nav.pull-right
             li
               div.btn-toolbar

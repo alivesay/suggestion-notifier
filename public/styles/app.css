@@ -15,6 +15,16 @@
         background-attachment: fixed !important;
         background-size: cover !important;
     }
+
+    #app-navbar .navbar-toggle {
+        padding: 1px 0px 0px 0px !important;
+        margin-top: 6px !important;
+        margin-right: 20px !important;
+    }
+
+    #app-navbar .navbar > .container .navbar-brand, .navbar > .container-fluid .navbar-brand {
+        margin-left: 15px !important;
+    }
 }
 
 @media screen and (min-width: 768px) {
@@ -79,33 +89,33 @@ body {
 
 @-webkit-keyframes color_change {
     from { background-color: #ddd; color: #333; }
-    90% { background-color: #29d; color: #fff; }
-    95% { background-color: #fff; color: #29d; }
-    100% { background-color: #29d; color: #fff; }
+    90% { background-color: #25a8f3; color: #fff; }
+    95% { background-color: #fff; color: #25a8f3; }
+    100% { background-color: #25a8f3; color: #fff; }
 }
 @-moz-keyframes color_change {
     from { background-color: #ddd; color: #333; }
-    90% { background-color: #29d; color: #fff; }
-    95% { background-color: #fff; color: #29d; }
-    100% { background-color: #29d; color: #fff; }
+    90% { background-color: #25a8f3; color: #fff; }
+    95% { background-color: #fff; color: #25a8f3; }
+    100% { background-color: #25a8f3; color: #fff; }
 }
 @-ms-keyframes color_change {
     from { background-color: #ddd; color: #333; }
-    90% { background-color: #29d; color: #fff; }
-    95% { background-color: #fff; color: #29d; }
-    100% { background-color: #29d; color: #fff; }
+    90% { background-color: #25a8f3; color: #fff; }
+    95% { background-color: #fff; color: #25a8f3; }
+    100% { background-color: #25a8f3; color: #fff; }
 }
 @-o-keyframes color_change {
     from { background-color: #ddd; color: #333; }
-    90% { background-color: #29d; color: #fff; }
-    95% { background-color: #fff; color: #29d; }
-    100% { background-color: #29d; color: #fff; }
+    90% { background-color: #25a8f3; color: #fff; }
+    95% { background-color: #fff; color: #25a8f3; }
+    100% { background-color: #25a8f3; color: #fff; }
 }
 @keyframes color_change {
     from { background-color: #ddd; color: #333; }
-    90% { background-color: #29d; color: #fff; }
-    95% { background-color: #fff; color: #29d; }
-    100% { background-color: #29d; color: #fff; }
+    90% { background-color: #25a8f3; color: #fff; }
+    95% { background-color: #fff; color: #25a8f3; }
+    100% { background-color: #25a8f3; color: #fff; }
 }
 
 .ui-grid-row:active .ui-grid-cell {
@@ -117,7 +127,7 @@ body {
 }
 
 .ui-grid-row.ui-grid-row-selected > [ui-grid-row] > .ui-grid-cell {
-  background: #29d !important;
+  background: #25a8f3 !important;
   color: white;
 }
 
@@ -343,7 +353,7 @@ body {
 }
 
 .btn-primary {
-  background: #29d !important;
+  background: #25a8f3 !important;
   color: #fff !important;
   border-color: #2a88d9 !important;
 }
@@ -372,7 +382,7 @@ body {
 }
 
 .panel-heading .nav > li.active .badge {
-  background: #29d !important;
+  background: #25a8f3 !important;
   color: #fff !important;
 }
 

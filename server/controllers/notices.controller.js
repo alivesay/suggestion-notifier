@@ -82,6 +82,10 @@ function sendNotice(options, callback) {
       return callback('Patron not found.', null);
     }
 
+    if (!results['patron']['emailAddress']) {
+      return callback('No email found for patron.', null);
+    }
+
     if (results['suggestion'] === null || results['suggestion'] === undefined) {
       return callback('Suggestion not found.', null);
     }
