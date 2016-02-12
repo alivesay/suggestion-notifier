@@ -30,7 +30,7 @@ module.exports = new Mentat.Handler('Auth', {
                     };
 
                     var token = jwt.sign(tokenPayload, Mentat.settings.auth.key, {
-                        expiresInMinutes: Mentat.settings.auth.tokenTTL
+                        expiresIn: Mentat.settings.auth.tokenTTL
                     });
 
                     return reply({token: token});
@@ -45,7 +45,7 @@ module.exports = new Mentat.Handler('Auth', {
 
         if (authorization) {
             var token = authorization.substr(authorization.indexOf(' ') + 1);
-            client.setex([ token, Mentat.settings.auth.tokenTTL * 60,  { expired: true } ], function (err) {
+            client.setex([ token, Mentat.settings.auth.tokenTTL,  { expired: true } ], function (err) {
                 if (err) {
                     return reply(Boom.badImplementation('redis broke', err));
                 }
