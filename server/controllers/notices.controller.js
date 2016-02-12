@@ -14,13 +14,25 @@ function sendNotice(options, callback) {
     from: Mentat.server.settings.app.notices.fromAddress
   }, options.mailOptions);
 
-  async.parallel({
-    patron: _getPatron ,
-    suggestion: _getSuggestion
-  }, _parallelTasksDone);
+  if (options.bibNumber) {
+      async.parallel({
+        patron: _getPatron ,
+        suggestion: _getSuggestion,
+        bib: _getBib
+      }, _parallelTasksDone);
+  } else {
+    async.parallel({
+      patron: _getPatron ,
+      suggestion: _getSuggestion,
+    }, _parallelTasksDone);
+  }
 
   function _getPatron(_callback) {
     return ilsapi.getPatron(options.patronId, _callback);
+  }
+
+  function _getBib(_callback) {
+    return ilsapi.getBib(options.bibNumber, _callback);
   }
 
   function _getSuggestion(_callback) {
@@ -90,7 +102,12 @@ function sendNotice(options, callback) {
       return callback('Suggestion not found.', null);
     }
 
+    if (options.bibNumber && results['bib'] === null || results['bib'] === undefined) {
+      return callback('Bib record not found.', null);
+    }
+
     noticeScope.suggestion = results['suggestion'].dataValues;
+    noticeScope.bib = results['bib'];
 
     async.series([ _sendEmail, _deleteSuggestion ], _sendNoticeDone);
   }
