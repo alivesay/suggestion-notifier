@@ -35,3 +35,6 @@ nohup.out
 
 .tmp
 .idea
+
+*.swp
+*.swo
