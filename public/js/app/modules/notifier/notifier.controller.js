@@ -76,7 +76,7 @@
           toastr.success('All sent!');
         })
         .catch(function(reason) {
-          toastr.error('Oops, something went wrong.');
+          toastr.error('Error: ' + reason);
           console.error(reason);
         })
         .finally(function() {
