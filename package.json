@@ -1,7 +1,7 @@
 {
   "name": "suggestion-notifier",
   "description": "Helps to to notify patrons when suggested items become available.",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "license": "MIT",
   "publish": false,
   "repository": {
@@ -21,6 +21,7 @@
     "hapi-auth-jwt2": "^5.0.6",
     "inert": "^3.0.1",
     "jsonwebtoken": "^5.0.5",
+    "ldapjs": "^1.0.0",
     "lodash": "^3.10.1",
     "mentat": "*",
     "redis": "^1.0.0",
