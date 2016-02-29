@@ -44,10 +44,12 @@
         function onLoad() {
             $scope.$on('console:closed', function () {
                 $scope.footerCollapsed = true;
+                $scope.$broadcast('console:wasclosed');
             });
 
             $scope.$on('console:minimized', function () {
                 $scope.footerCollapsed = false;
+                $scope.$broadcast('console:minimized');
             });
         }
 
@@ -77,6 +79,7 @@
 
         function consoleClick() {
             $scope.footerCollapsed = false;
+            $scope.$broadcast('console:wasopened');
         }
     }
 

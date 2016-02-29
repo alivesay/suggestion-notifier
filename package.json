@@ -1,7 +1,7 @@
 {
   "name": "suggestion-notifier",
   "description": "Helps to to notify patrons when suggested items become available.",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "license": "MIT",
   "publish": false,
   "repository": {

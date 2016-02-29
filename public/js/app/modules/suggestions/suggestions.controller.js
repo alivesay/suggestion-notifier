@@ -112,8 +112,15 @@
     onLoad();
 
     function onLoad() {
-
       fetchSuggestions();
+
+      // hack to fix auto-resize issues
+      function _resizeHack() {
+          $scope.suggestionsGridApi.core.scrollTo($scope.suggestionsGrid.data[0], $scope.suggestionsGrid.columnDefs[0]);
+      }
+      $scope.$on('console:wasclosed', _resizeHack);
+      $scope.$on('console:wasminimized', _resizeHack);
+      $scope.$on('console:wasopened', _resizeHack);
 
       socket.on('suggestions:created', function (suggestion) {
         $scope.suggestionsGrid.data.push(new SuggestionFactory(suggestion));
