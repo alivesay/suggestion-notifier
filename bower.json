@@ -21,7 +21,7 @@
     "angular-resource": "~1.4.0",
     "angular-toastr": "~1.4.1",
     "angular-ui-grid": "3.0.6",
-    "angular-ui-router": "~0.2.15",
+    "angular-ui-router": "0.2.18",
     "autofill-event": "~1.0.0",
     "bootstrap": "3.3.4",
     "font-awesome": "~4.3.0",

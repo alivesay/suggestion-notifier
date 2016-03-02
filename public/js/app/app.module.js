@@ -49,7 +49,7 @@
 
             $scope.$on('console:minimized', function () {
                 $scope.footerCollapsed = false;
-                $scope.$broadcast('console:minimized');
+                $scope.$broadcast('console:wasminimized');
             });
         }
 
@@ -70,9 +70,10 @@
                         })
                     .finally(function () {
                         AuthFactory.isAuthenticated = false;
+                        socket.isAuthenticated = false;
                         delete $window.sessionStorage.token;
-                        socket.disconnect();
-                        $location.path('/');
+                        socket.reconnect();
+                        $state.go('login#index');
                     });
             }
         }
@@ -83,11 +84,11 @@
         }
     }
 
-    angular.module('app').factory('socket', SocketFactory);
+    angular.module('app').service('socket', SocketFactory);
 
-    SocketFactory.$inject = ['$rootScope', '$q', '$window', 'toastr'];
+    SocketFactory.$inject = ['$rootScope', '$timeout', '$q', '$window', 'toastr'];
 
-    function SocketFactory($rootScope, $q, $window, toastr) {
+    function SocketFactory($rootScope, $timeout, $q, $window, toastr) {
         var self = this;
 
         self.queue = [];
@@ -96,63 +97,69 @@
 
         function connectSocket() {
             try {
-                self.socket = io.connect({ forceNew: true });
+                self.socket = io.connect({ forceNew: false });
             } catch (e) {
                 console.log('socket.io error: ' + e);
             }
 
             self.socket.on('connect', function () {
                 console.log('socket.io connected.');
-                self.socket
-                    .on('authenticated', function () {
-                        console.log('socket.io authenticated.');
-                        self.isAuthenticated = true;
-                        self.queue.forEach(function (event) {
-                            switch (event.type) {
-                                case 'on':
-                                    on(event.eventName, event.callback);
-                                    break;
-                                case 'emit':
-                                    emit(event.eventName, event.data, event.callback);
-                                    break;
-                            }
-                        });
-                    })
-                    .on('error', function (error) {
-                        console.log(error);
-                    })
-                    .on('reconnect', function () {
-                        console.log('socket.io reconnected.');
-                    })
-                    .on('disconnect', function () {
-                        console.log('socket.io disconnected.');
-                        self.isAuthenticated = false;
-                        self.socket.connect();
-                    });
-
-                if ($window.sessionStorage.token) {
-                    self.socket.emit('authenticate', { token: $window.sessionStorage.token });
-                }
+                tryAuth();
             });
+
+            self.socket.on('authenticated', function () {
+                console.log('socket.io authenticated.');
+                self.isAuthenticated = true;
+                self.queue.forEach(function (event) {
+                    switch (event.type) {
+                        case 'on':
+                            on(event.eventName, event.callback);
+                            break;
+                        case 'emit':
+                            emit(event.eventName, event.data, event.callback);
+                            break;
+                    }
+                });
+            });
+
+            self.socket.on('error', function (error) {
+                toastr.error('Socket error.  Try refreshing the page.');
+                console.log(error);
+            });
+
+            self.socket.on('reconnect', function () {
+                console.log('socket.io reconnected.');
+            });
+
+            self.socket.on('disconnect', function () {
+                console.log('socket.io disconnected.');
+                self.isAuthenticated = false;
+            });
+        }
+
+        function tryAuth() {
+            if ($window.sessionStorage.token) {
+                self.socket.emit('authenticate', { token: $window.sessionStorage.token });
+            }
         }
 
         function on(eventName, callback) {
             self.socket.on(eventName, function () {
                 var args = arguments;
-                $rootScope.$apply(function () {
+                $timeout(function () {
                     callback.apply(self.socket, args);
-                });
+                }, 0);
             });
         }
 
         function emit(eventName, data, callback) {
             self.socket.emit(eventName, data, function () {
                 var args = arguments;
-                $rootScope.$apply(function () {
-                    if (callback) {
+                if (callback) {
+                    $timeout(function () {
                         callback.apply(self.socket, args);
-                    }
-                });
+                    }, 0);
+                }
             });
         }
 
@@ -161,7 +168,7 @@
         return {
             on: function (eventName, callback) {
                 if (self.isAuthenticated) {
-                    on(eventName, callback);
+                    self.socket.on(eventName, callback);
                 } else {
                     self.queue.push({ type: 'on', eventName: eventName, callback: callback });
                 }
@@ -169,16 +176,19 @@
 
             emit: function (eventName, data, callback) {
                 if (self.isAuthenticated || eventName === 'authenticate') {
-                    emit(eventName, data, callback);
+                    self.socket.emit(eventName, data, callback);
                } else {
                     self.queue.push({ type: 'emit', eventName: eventName, data: data, callback: callback });
                 }
             },
 
-            disconnect: function () {
-                if (self.socket) {
-                    self.socket.disconnect();
-                }
+            getSocket: function () {
+                return self.socket;
+            },
+
+            reconnect: function () {
+                self.socket.disconnect();
+                connectSocket();
             }
         };
     }

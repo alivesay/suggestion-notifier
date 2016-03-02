@@ -41,8 +41,10 @@
     });
 
     socket.on('chatroom:send:message', function (message) {
-      $scope.messages.push(message);
-      updateMessages();
+      $scope.$apply(function () {
+          $scope.messages.push(message);
+          updateMessages();
+      });
     });
 
     socket.on('chatroom:user:join', function (data) {

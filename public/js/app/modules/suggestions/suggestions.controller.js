@@ -11,6 +11,7 @@
   function SuggestionsIndexController($scope, $filter, $q, socket, uiGridConstants,
                                       ngDialog, toastr, SuggestionFactory, APP_CONFIG,
                                       $window) {
+
     $scope.suggestionsGridSelectionCount = 0;
     $scope.MODULE_PATH = APP_CONFIG.MODULE_PATH;
     $scope.isViewingReferred = false;

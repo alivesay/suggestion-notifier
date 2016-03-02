@@ -10,8 +10,8 @@
   function ConsoleIndexController($scope, $state, $timeout,
                                   socket, EventFactory) {
 
-    $scope.$state = $state;
     $scope.messages = [];
+    $scope.maximizeClick = maximizeClick;
     $scope.minimizeClick = minimizeClick;
     $scope.closeClick = closeClick;
 
@@ -111,11 +111,17 @@
       });
     }
 
+    function maximizeClick() {
+      $state.go('console#index');
+    }
+
     function minimizeClick() {
+      $state.go('suggestions#index');
       $scope.$emit('console:minimized', $state.current.name)
     }
 
     function closeClick() {
+      $state.go('suggestions#index');
       $scope.$emit('console:closed', $state.current.name)
     }
   }

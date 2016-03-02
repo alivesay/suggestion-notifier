@@ -5,12 +5,13 @@
 
   angular.module('app').config(appConfig);
 
-  appConfig.$inject = ['$stateProvider', '$urlRouterProvider', '$logProvider',
+  appConfig.$inject = ['$stateProvider', '$urlRouterProvider', '$logProvider', '$locationProvider',
                        '$httpProvider', 'toastrConfig', 'ngDialogProvider'];
 
-  function appConfig($stateProvider, $urlRouterProvider, $logProvider,
+  function appConfig($stateProvider, $urlRouterProvider, $logProvider, $locationProvider,
                      $httpProvider, toastrConfig, ngDialogProvider) {
     $urlRouterProvider.otherwise('/suggestions');
+    $locationProvider.html5Mode(true);
 
     angular.extend(toastrConfig, {
       closeButton: true,

@@ -4,15 +4,13 @@ div#console-view.fill(data-ng-controller='ConsoleIndexController')
       div.panel-heading Console
         div.btn-toolbar.pull-right
           div.btn-group
-            a.btn.btn-xs.btn-default(ui-sref='console#index',
+            a.btn.btn-xs.btn-default(ng-click='maximizeClick()',
                                      ng-hide='$state.current.name == "console#index"')
               i.fa.fa-caret-square-o-up
             a.btn.btn-xs.btn-default(ng-click='minimizeClick()',
-                                     ui-sref='suggestions#index',
                                      ng-show='$state.current.name == "console#index"')
               i.fa.fa-caret-square-o-down
-            a.btn.btn-xs.btn-default(ng-click='closeClick()',
-                                     ui-sref='suggestions#index')
+            a.btn.btn-xs.btn-default(ng-click='closeClick()')
               i.fa.fa-close
       div.panel-body
         div.chatroom-message-list.fill

@@ -30,5 +30,6 @@ block content
       div#app-main-view(ng-class='footerCollapsed || uiRouterState.current.name == "console#index" ? "app-main-view-full" : "app-main-view-default"')
         ui-view
       div.fill(ng-if='auth.isAuthenticated')
-          div#app-footer-view(ng-include='MODULE_PATH + "console/console.index.html"',
-                              ng-class='footerCollapsed || uiRouterState.current.name == "console#index" ? "app-footer-view-collapsed" : "app-footer-view-default"')
+        div#app-footer-view(ng-class='footerCollapsed || uiRouterState.current.name == "console#index" ? "app-footer-view-collapsed" : "app-footer-view-default"')
+          include ../modules/console/console.index.jade
+
