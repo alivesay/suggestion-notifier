@@ -44,7 +44,6 @@
 
     socket.forward('chatroom:send:message', $scope);
     $scope.$on('socket:chatroom:send:message', function (ev, message) {
-        console.log(message);
       $scope.$apply(function () {
           $scope.messages.push(message);
           updateMessages();
