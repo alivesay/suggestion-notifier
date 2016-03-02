@@ -6,26 +6,73 @@ var nodemon = require('gulp-nodemon');
 var wiredep = require('wiredep');
 var mainBowerFiles = require('main-bower-files');
 var flatten = require('gulp-flatten');
+var gutil = require('gulp-util');
+var gulpif = require('gulp-if');
+var minimist = require('minimist');
+var uglify = require('gulp-uglify');
+var concat = require('gulp-concat');
+var clean = require('gulp-clean');
+var debug = require('gulp-debug');
 
-var config = {
-  publicDir: '.tmp/public'
+var knownOpts = {
+    string: 'env',
+    default: { env: process.env.NODE_ENV || 'development' }
 };
 
-gulp.task('hapi', function() {
-  nodemon({ script : './app.js', ext : 'js' });
+var options = minimist(process.argv.slice(2), knownOpts);
+
+var config = {
+  publicDir: '.tmp/public',
+  isProduction: options.env === 'production',
+  includeOrder: [
+      'js/app/app.module.js',
+      'js/app/app.config.js',
+      'js/app/shared/**/*.js',
+      'js/app/directives/**/*.js',
+      'js/app/modules/**/*.module.js',
+      'js/app/modules/**/*.config.js',
+      'js/app/modules/**/*.controller.js',
+      'js/app/modules/**/*.factory.js',
+      'js/app/modules/**/*.service.js',
+      'styles/lib/bootstrap.min.css',
+      'styles/lib/*.css',
+      'styles/lib/app.css'
+    ],
+    uglifyOptions: {
+        mangle: false,
+        source_map: true
+    }
+};
+
+gulp.task('clean', function () {
+    return gulp
+              .src(config.publicDir, {read: false})
+              .pipe(clean());
 });
 
-gulp.task('bowerjs', function () {
+gulp.task('hapi', ['index'], function(cb) {
+  var started = false;
+
+  return nodemon({ script : './app.js', ext : 'js' })
+    .on('start', function () {
+        if (!started) {
+            cb();
+            started = true;
+        }
+    });;
+});
+
+gulp.task('bowerjs', ['clean'], function () {
   return gulp.src(wiredep().js)
     .pipe(gulp.dest(config.publicDir + '/js/vendor'))
 });
 
-gulp.task('bowercss', function () {
+gulp.task('bowercss', ['clean'], function () {
   return gulp.src(wiredep().css)
     .pipe(gulp.dest(config.publicDir + '/styles/vendor'))
 });
 
-gulp.task('bowerfiles', function () {
+gulp.task('bowerfiles', ['clean'], function () {
   // Workaround for: https://github.com/zont/gulp-bower/issues/30
 
   gulp.src('./bower_components/**/*.css.map')
@@ -43,19 +90,25 @@ gulp.task('bowerfiles', function () {
     .pipe(gulp.dest(config.publicDir + '/styles/vendor'));
 });
 
-gulp.task('copyimages', function() {
+gulp.task('copyimages', ['clean'], function() {
   return gulp.src(['public/images/**/*.*'])
     .pipe(gulp.dest(config.publicDir + '/images'));
 });
 
-gulp.task('copyjs', function() {
-  return gulp.src(['public/js/**/*.js', 'public/js/**/*.map'])
-    .pipe(order(['public/js/**/*.js',
-                 'public/js/**/*.map']))
+gulp.task('copyjs', ['clean'], function() {
+  return gulp
+    .src(['public/js/**/*.js', 'public/js/**/*.map'], { base: config.isProduction ? process.cwd() : undefined })
+    .pipe(gulpif(!config.isProduction, order(['public/js/**/*.js',
+                                              'public/js/**/*.map'])))
+    .pipe(gulpif(config.isProduction, order(config.includeOrder.map(function(el) {
+        return 'public/' + el;
+    }))))
+    .pipe(gulpif(config.isProduction, concat('app.min.js')))
+    .pipe(gulpif(config.isProduction, uglify(config.uglifyOptions).on('error', gutil.log)))
     .pipe(gulp.dest(config.publicDir + '/js'))
 });
 
-gulp.task('copystyles', function() {
+gulp.task('copystyles', ['clean'], function() {
   return gulp.src([
     'public/styles/**/*.{css,ttf,woff,eot,svg,woff2}',
     'public/fonts/**/*.*'
@@ -63,7 +116,7 @@ gulp.task('copystyles', function() {
     .pipe(gulp.dest(config.publicDir + '/styles'));
 });
 
-gulp.task('layout', function () {
+gulp.task('layout', ['clean'], function () {
   return gulp.src([
       'public/js/app/layout/**/*.jade',
       'public/**/*.jade',
@@ -95,35 +148,21 @@ gulp.task('wiredep', ['bowerjs', 'bowercss'], function () {
     .pipe(gulp.dest(config.publicDir));
 });
 
-gulp.task('index', ['copyjs', 'copystyles', 'layout'], function () {
+gulp.task('index', ['copyjs', 'copystyles', 'layout', 'copyimages'], function () {
   var sources = gulp.src([
       '**/*.{js,css}',
       '!js/vendor/**/*',
       '!styles/vendor/**/*'
     ]
     , { cwd: config.publicDir })
-    .pipe(order([
-      'js/app/app.module.js',
-      'js/app/app.config.js',
-      'js/app/shared.module.js',
-      'js/app/shared/**/*.js',
-      'js/app/directives/**/*.js',
-      'js/app/modules/**/*.module.js',
-      'js/app/modules/**/*.config.js',
-      'js/app/modules/**/*.controller.js',
-      'js/app/modules/**/*.factory.js',
-      'js/app/modules/**/*.service.js',
-      'styles/lib/bootstrap.min.css',
-      'styles/lib/*.css',
-      'styles/lib/app.css'
-    ]));
+    .pipe(order(config.includeOrder));
 
   return gulp.src(config.publicDir + '/index.html')
     .pipe(inject(sources))
     .pipe(gulp.dest(config.publicDir))
 });
 
-gulp.task('watch', function () {
+gulp.task('watch', ['clean', 'hapi'], function () {
   gulp.watch('bower_components/**/*', ['bowerfiles', 'bowerjs', 'bowercss', 'wiredep']);
   gulp.watch('public/images/**/*.*', ['copyimages']);
   gulp.watch('public/js/app/**/*.jade', ['layout', 'index', 'wiredep']);
@@ -132,6 +171,7 @@ gulp.task('watch', function () {
 });
 
 gulp.task('default', [
+  'clean',
   'bowerfiles',
   'copyimages',
   'copyjs',
