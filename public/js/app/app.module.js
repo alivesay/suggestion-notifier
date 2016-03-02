@@ -95,6 +95,15 @@
         self.socket = undefined;
         self.isAuthenticated = false;
 
+        var asyncAngularify = function (socket, callback) {
+            return callback ? function () {
+                var args = arguments;
+                $timeout(function () {
+                    callback.apply(socket, args);
+                }, 0);
+            } : angular.noop;
+        };
+
         function connectSocket() {
             try {
                 self.socket = io.connect({ forceNew: false });
@@ -163,6 +172,26 @@
             });
         }
 
+        function forward(events, scope) {
+            if (events instanceof Array === false) {
+                events = [events];
+            }
+            if (!scope) {
+                scope = $rootScope;
+            }
+            events.forEach(function (eventName) {
+                var prefixedEvent = 'socket:' + eventName;
+                var forwardBroadcast = asyncAngularify(self.socket, function () {
+                    Array.prototype.unshift.call(arguments, prefixedEvent);
+                    scope.$broadcast.apply(scope, arguments);
+                });
+                scope.$on('$destroy', function () {
+                    self.socket.removeListener(eventName, forwardBroadcast);
+                });
+                self.socket.on(eventName, forwardBroadcast);
+            });
+        }
+
         connectSocket();
 
         return {
@@ -172,6 +201,10 @@
                 } else {
                     self.queue.push({ type: 'on', eventName: eventName, callback: callback });
                 }
+            },
+
+            forward: function (events, scope) {
+                forward(events, scope);
             },
 
             emit: function (eventName, data, callback) {

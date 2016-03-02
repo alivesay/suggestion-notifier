@@ -69,7 +69,8 @@
 
       angular.forEach($scope.consoleEvents, function listenAndPushEvent (value, key) {
         if (value.disableListener !== true) {
-          socket.on(key, function consoleEventCallback(body) {
+          socket.forward(key, $scope);
+          $scope.$on('socket:' + key, function consoleEventCallback(ev, body) {
             displayEventMessage({type: key, body: body}, refreshMessageList);
           });
         }

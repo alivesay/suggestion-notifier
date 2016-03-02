@@ -19,9 +19,12 @@
     function onLoad() {
       fetchTemplates();
 
-      socket.on('templates:created', onTemplatesChanged);
-      socket.on('templates:deleted', onTemplatesChanged);
-      socket.on('templates:updated', onTemplatesChanged);
+      socket.forward('templates:created', $scope);
+      $scope.$on('socket:templates:created', onTemplatesChanged);
+      socket.forward('templates:deleted', $scope);
+      $scope.$on('socket:templates:deleted', onTemplatesChanged);
+      socket.forward('templates:updated', $scope);
+      $scopet.$on('socket:templates:updated', onTemplatesChanged);
 
       function fetchTemplates() {
         TemplateFactory.query(function (data) {
@@ -30,7 +33,7 @@
         });
       }
 
-      function onTemplatesChanged (template) {
+      function onTemplatesChanged (ev, template) {
         fetchTemplates();
       }
     }

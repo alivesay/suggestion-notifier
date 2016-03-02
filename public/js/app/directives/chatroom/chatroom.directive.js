@@ -30,24 +30,29 @@
     $scope.messages = [];
     $scope.users = [];
 
-    socket.on('chatroom:init', function (data) {
+    socket.forward('chatroom:init', $scope);
+    $scope.$on('socket:chatroom:init', function (ev, data) {
       $scope.name = data.name;
       $scope.users = data.users || $scope.users;
     });
 
-    socket.on('chatroom:send:name', function (data) {
+    socket.forward('chatroom:send:name', $scope);
+    $scope.$on('socket:chatroom:send:name', function (ev, data) {
       $scope.name = data.name;
       updateMessages();
     });
 
-    socket.on('chatroom:send:message', function (message) {
+    socket.forward('chatroom:send:message', $scope);
+    $scope.$on('socket:chatroom:send:message', function (ev, message) {
+        console.log(message);
       $scope.$apply(function () {
           $scope.messages.push(message);
           updateMessages();
       });
     });
 
-    socket.on('chatroom:user:join', function (data) {
+    socket.forward('chatroom:user:join', $scope);
+    $scope.$on('socket:chatroom:user:join', function (ev, data) {
       $scope.messages.push({
         source: 'chatroom',
         text: 'User ' + data.name + ' has joined.',
@@ -57,7 +62,8 @@
       updateMessages();
     });
 
-    socket.on('chatroom:user:left', function (data) {
+    socket.forward('chatroom:user:left', $scope);
+    $scope.$on('socket:chatroom:user:left', function (ev, data) {
       $scope.messages.push({
         source: 'chatroom',
         text: 'User ' + data.name + ' has left.',

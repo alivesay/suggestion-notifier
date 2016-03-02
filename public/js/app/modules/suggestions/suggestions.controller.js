@@ -123,12 +123,14 @@
       $scope.$on('console:wasminimized', _resizeHack);
       $scope.$on('console:wasopened', _resizeHack);
 
-      socket.on('suggestions:created', function (suggestion) {
+      socket.forward('suggestions:created', $scope);
+      $scope.$on('socket:suggestions:created', function (ev, suggestion) {
         $scope.suggestionsGrid.data.push(new SuggestionFactory(suggestion));
         $scope.suggestionsGridApi.core.notifyDataChange(uiGridConstants.dataChange.EDIT);
       });
 
-      socket.on('suggestions:updated', function (suggestion) {
+      socket.forward('suggestions:updated', $scope);
+      $scope.$on('socket:suggestions:updated', function (ev, suggestion) {
         var foundSuggestion = false;
 
         for(var i = 0; i < $scope.suggestionsGrid.data.length; ++i) {
@@ -146,7 +148,8 @@
         $scope.suggestionsGridApi.core.notifyDataChange(uiGridConstants.dataChange.EDIT);
       });
 
-      socket.on('suggestions:deleted', function (suggestion) {
+      socket.forward('suggestions:deleted', $scope);
+      $scope.$on('socket:suggestions:deleted', function (ev, suggestion) {
         angular.forEach($scope.suggestionsGrid.data, function (suggestionRow, key) {
           if (suggestionRow.id === suggestion.id) {
             $scope.suggestionsGridApi.selection.unSelectRow(suggestionRow);
@@ -156,7 +159,8 @@
         });
       });
 
-      socket.on('notices:sent', function () {
+      socket.forward('notices:sent', $scope);
+      $scope.$on('socket:notices:sent', function () {
         $scope.suggestionsGridApi.selection.clearSelectedRows();
         fetchSuggestions();
       });
