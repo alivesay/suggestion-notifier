@@ -19,12 +19,10 @@
     function onLoad() {
       fetchTemplates();
 
-      socket.forward('templates:created', $scope);
-      $scope.$on('socket:templates:created', onTemplatesChanged);
-      socket.forward('templates:deleted', $scope);
-      $scope.$on('socket:templates:deleted', onTemplatesChanged);
-      socket.forward('templates:updated', $scope);
-      $scope.$on('socket:templates:updated', onTemplatesChanged);
+      ['created', 'deleted', 'updated'].forEach(function (e) {
+          socket.forward('templates:' + e, $scope);
+          $scope.$on('socket:templates:' + e, onTemplatesChanged);
+      });
 
       function fetchTemplates() {
         TemplateFactory.query(function (data) {

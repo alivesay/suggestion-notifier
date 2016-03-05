@@ -24,10 +24,22 @@ div(ng-controller='TemplatesEditController')
       div.form-group.required(ng-class='{ "has-error": editTemplateForm.body.$invalid && editTemplateForm.body.$dirty }')
         label.control-label.col-sm-2(for='body-field') Body
         div.col-sm-10
-          textarea#body-field.form-control(name='body',
-                                           ng-model='template.body',
-                                           rows='12',
-                                           required)
+          ul.nav.nav-tabs
+            li.active
+              a(data-target='#template-text', data-toggle='tab') Text
+            li
+              a(data-target='#template-html', data-toggle='tab') HTML
+              
+          div.tab-content
+            div#template-text.tab-pane.active
+              textarea#body-field.form-control(name='body',
+                                               ng-model='template.body',
+                                               rows='12',
+                                               required)
+            div#template-html.tab-pane
+              textarea#html-field.form-control(name='html',
+                                               ng-model='template.html',
+                                               rows='12')
       div.form-group
         div.col-sm-12
           button.btn.pull-right(ng-click='saveTemplateClicked()',
