@@ -27,6 +27,7 @@
     $scope.referredCount = 0;
 
     $scope.suggestionsGrid = {
+      enableColumnMenus: false,
       enableFiltering: true,
       enableRowSelection: true,
       enableRowHeaderSelection: false,
