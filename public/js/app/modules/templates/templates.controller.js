@@ -24,7 +24,7 @@
       socket.forward('templates:deleted', $scope);
       $scope.$on('socket:templates:deleted', onTemplatesChanged);
       socket.forward('templates:updated', $scope);
-      $scopet.$on('socket:templates:updated', onTemplatesChanged);
+      $scope.$on('socket:templates:updated', onTemplatesChanged);
 
       function fetchTemplates() {
         TemplateFactory.query(function (data) {
