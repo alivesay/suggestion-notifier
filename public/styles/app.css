@@ -530,6 +530,7 @@ div.ngdialog > div.ngdialog-overlay {
 }
 
 #login-form {
+  color: #f0f2e2;
   width: 330px;
   margin: auto;
   padding: 25px 15px 10px 15px;

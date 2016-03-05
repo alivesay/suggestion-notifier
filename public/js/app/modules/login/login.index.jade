@@ -23,5 +23,6 @@ div#login-controller.flexbox-container(ng-controller='LoginIndexController')
                                             ng-disabled='loginForm.$invalid',
                                             ng-class='loginForm.$invalid ? "btn-default" : "btn-primary"',
                                             ng-click='login(login.username, login.password)') Login
-        span.pull-right
-          a Forgot your password?
+            span.pull-right
+                | v{{ APP_VERSION }}
+

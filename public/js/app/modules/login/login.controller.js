@@ -6,14 +6,16 @@
 
   LoginIndexController.$inject = ['$scope', 'APP_CONFIG', '$location',
                                   '$window', 'AuthFactory', 'UserFactory',
-                                  'toastr', 'socket'];
+                                  'VersionService', 'toastr', 'socket'];
 
   function LoginIndexController($scope, APP_CONFIG, $location,
                                 $window, AuthFactory, UserFactory,
-                                toastr, socket) {
+                                VersionService, toastr, socket) {
     $scope.MODULE_PATH = APP_CONFIG.MODULE_PATH;
     $scope.login = login;
     $scope.AuthFactory = AuthFactory;
+    
+    VersionService.injectAppVersion($scope);
 
     function login(username, password) {
       if (username !== undefined && password !== undefined) {
