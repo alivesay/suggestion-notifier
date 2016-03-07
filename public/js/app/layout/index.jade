@@ -2,18 +2,18 @@ extends layout
 
 block content
   div#app-container.container-fluid.fill(ng-cloak)
-    nav#app-navbar.navbar.navbar-default.navbar-fixed-top(ng-show='auth.isAuthenticated')
+    div#app-navbar.navbar.navbar-default.navbar-fixed-top(ng-show='auth.isAuthenticated')
       div.container-fluid
         div.navbar-header
           div.navbar-brand
             img(src='images/logo.png')
-          button.navbar-toggle(type="button" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1")
+          button.navbar-toggle(type="button" data-toggle="collapse" data-target="#app-main-menu")
             span.sr-only Toggle navigation
             span.fa.fa-bars.fa-fw
 
-        div.collapse.navbar-collapse
+        div#app-main-menu.collapse.navbar-collapse
           ul.nav.navbar-nav.pull-right
-            li
+            li.only-when-expanded
               div.btn-toolbar
                 div.btn-group
                   a#console-btn.btn.btn-xs.btn-default(ng-click='consoleClick()',
@@ -25,6 +25,12 @@ block content
                   a#logout-btn.btn.btn-xs.btn-default(ng-click='logoutClick()')
                     i.fa.fa-sign-out
                     | &nbsp;Logout
+            li.only-when-collapsed(ng-hide='!footerCollapsed')
+              a(ng-click='consoleClick()' data-toggle='collapse' data-target='#app-main-menu') Console
+            li.only-when-collapsed
+              a(ng-click='settingsClick()' data-toggle='collapse' data-target='#app-main-menu') Settings
+            li.only-when-collapsed
+              a(ng-click='logoutClick()' data-toggle='collapse' data-target='#app-main-menu') Logout
 
     div#app-body.fill
       div#app-main-view(ng-class='footerCollapsed || uiRouterState.current.name == "console#index" ? "app-main-view-full" : "app-main-view-default"')

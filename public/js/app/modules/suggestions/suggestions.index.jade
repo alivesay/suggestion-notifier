@@ -22,18 +22,26 @@ div#suggestions-view.container-fluid.fill(ng-controller='SuggestionsIndexControl
               a.btn.btn-xs(ng-click='deleteClick()',
                            ng-disabled='suggestionsGridSelectionCount == 0',
                            ng-class='suggestionsGridSelectionCount == 0 ? "btn-default" : "btn-danger"')
-                | &nbsp;Delete
+                span.only-when-expanded
+                  | &nbsp;Delete
+                i.fa.fa-trash.only-when-collapsed
             div.btn-group
               a.btn.btn-xs.btn-default(ng-click='newSuggestionClick()')
-                | &nbsp;New Suggestion
+                span.only-when-expanded
+                  | &nbsp;New Suggestion
+                i.fa.fa-book.only-when-collapsed
               a.btn.btn-xs.btn-default(ng-click='referClick()',
                                        ng-disabled='suggestionsGridSelectionCount == 0',
                                        ng-hide='isViewingReferred')
-                | &nbsp;Refer
+                span.only-when-expanded
+                  | &nbsp;Refer
+                i.fa.fa-step-forward.only-when-collapsed  
               a.btn.btn-xs.btn-default(ng-click='holdClick()',
                                        ng-disabled='suggestionsGridSelectionCount == 0',
                                        ng-show='isViewingReferred')
-                | &nbsp;Hold
+                span.only-when-expanded
+                  | &nbsp;Hold
+                i.fa.fa-step-backward.only-when-collapsed
 
     div.panel-body
       div.fill(ui-grid='suggestionsGrid',
