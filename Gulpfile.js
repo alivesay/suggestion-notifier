@@ -148,7 +148,7 @@ gulp.task('wiredep', ['bowerjs', 'bowercss'], function () {
     .pipe(gulp.dest(config.publicDir));
 });
 
-gulp.task('index', ['copyjs', 'copystyles', 'layout', 'copyimages'], function () {
+gulp.task('index', ['copyjs', 'copystyles', 'layout', 'copyimages', 'bowerfiles'], function () {
   var sources = gulp.src([
       '**/*.{js,css}',
       '!js/vendor/**/*',
