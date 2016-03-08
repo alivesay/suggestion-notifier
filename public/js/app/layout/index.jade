@@ -16,13 +16,13 @@ block content
             li.only-when-expanded
               div.btn-toolbar
                 div.btn-group
-                  a#console-btn.btn.btn-xs.btn-default(ng-click='consoleClick()',
+                  a#console-btn.btn.btn-xs.btn-default(ng-click='consoleClick()', title='Console',
                                                        ng-class='{ "disabled": !footerCollapsed }')
                     i.fa.fa-terminal
-                  a#settings-btn.btn.btn-xs.btn-default(ng-click='settingsClick()')
+                  a#settings-btn.btn.btn-xs.btn-default(ng-click='settingsClick()', title='Settings')
                     i.fa.fa-cog
                 div.btn-group
-                  a#logout-btn.btn.btn-xs.btn-default(ng-click='logoutClick()')
+                  a#logout-btn.btn.btn-xs.btn-default(ng-click='logoutClick()', title='Logout')
                     i.fa.fa-sign-out
                     | &nbsp;Logout
             li.only-when-collapsed(ng-hide='!footerCollapsed')

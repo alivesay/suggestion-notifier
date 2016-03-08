@@ -2,41 +2,43 @@ div#suggestions-view.container-fluid.fill(ng-controller='SuggestionsIndexControl
   div#suggestions-panel.panel.panel-default.fill
     div.panel-heading.clearfix
       ul.nav.nav-pills
-        li(role='presentation') Suggestions
+        li(role='presentation')
+          div.only-when-expanded
+            Suggestions
         li(role='presentation',
            ng-class='{ "active": isViewingReferred === false }')
-          a(ng-click='suggestionTabClick("new")')
+          a(ng-click='suggestionTabClick("new")', title='New Suggestions')
             | New
             span#suggestions-count-badge.badge {{ newCount }}
         li(role='presentation',
            ng-class='{ "active": isViewingReferred === true }')
-          a(ng-click='suggestionTabClick("referred")')
+          a(ng-click='suggestionTabClick("referred")', title='Referred Suggestions')
             | Referred
             span#suggestions-count-badge.badge {{ referredCount }}
         li.pull-right(role='presentation')
           div.btn-toolbar
             div.btn-group
-              a.btn.btn-xs.btn-default(ng-click='refreshClick()')
+              a.btn.btn-xs.btn-default(ng-click='refreshClick()', title='Refresh')
                   i.fa.fa-refresh
             div.btn-group
-              a.btn.btn-xs(ng-click='deleteClick()',
+              a.btn.btn-xs(ng-click='deleteClick()', title='Delete',
                            ng-disabled='suggestionsGridSelectionCount == 0',
                            ng-class='suggestionsGridSelectionCount == 0 ? "btn-default" : "btn-danger"')
                 span.only-when-expanded
                   | &nbsp;Delete
                 i.fa.fa-trash.only-when-collapsed
             div.btn-group
-              a.btn.btn-xs.btn-default(ng-click='newSuggestionClick()')
+              a.btn.btn-xs.btn-default(ng-click='newSuggestionClick()', title='New Suggestion')
                 span.only-when-expanded
                   | &nbsp;New Suggestion
                 i.fa.fa-book.only-when-collapsed
-              a.btn.btn-xs.btn-default(ng-click='referClick()',
+              a.btn.btn-xs.btn-default(ng-click='referClick()', title='Refer',
                                        ng-disabled='suggestionsGridSelectionCount == 0',
                                        ng-hide='isViewingReferred')
                 span.only-when-expanded
                   | &nbsp;Refer
                 i.fa.fa-step-forward.only-when-collapsed  
-              a.btn.btn-xs.btn-default(ng-click='holdClick()',
+              a.btn.btn-xs.btn-default(ng-click='holdClick()', title='Hold',
                                        ng-disabled='suggestionsGridSelectionCount == 0',
                                        ng-show='isViewingReferred')
                 span.only-when-expanded
