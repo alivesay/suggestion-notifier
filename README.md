@@ -26,6 +26,11 @@ gulp
         * `patronAPISSLPort:` - SSL port for the Patron API (Default: `54620`)
     * `itemTypes:` - key/value map for item types mapping item identifiers to display text (eg, {book: 'Book'})
     * `locations:` - key/value map for locations mapping location identifiers to display text (eg, {central: 'Central'})
+
+*  `notices:` - various notification settings
+    *  `fromAddress:` - *From:* address for email notices sent to patrons
+    *  `subjectPrefix:` - *Subject:* for email notices sent to patrons (Default: `Purchase Suggestion Notice`)
+
 * `auth:`
     * `key:` - private key for JWT signing
     * `tokenTTL:` - JWT token lifespan in seconds (Default: `86400`)
@@ -41,10 +46,6 @@ gulp
 
 * `hapi:` - settings for Hapi/Mentat. See [hapi](https://github.com/hapijs/hapi) documentation for more options.
     *  `serverOptions:`
-        *  `app:`
-            *  `notices:`
-                *  `fromAddress:` - *From:* address for email notices sent to patrons
-                *  `subjectPrefix:` - *Subject:* for email notices sent to patrons (Default: `Purchase Suggestion Notice`)
         *   `connectionOptions:` - see [hapi](https://github.com/hapijs/hapi) documentation for more options
             * `host:` - IP address to listen on (Default: `0.0.0.0`)
             * `port:` - port to listen on (Default: `8080`)

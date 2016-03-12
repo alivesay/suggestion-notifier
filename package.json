@@ -1,7 +1,7 @@
 {
   "name": "suggestion-notifier",
-  "description": "Helps to to notify patrons when suggested items become available.",
-  "version": "0.0.7",
+  "description": "Notifies library patrons when suggested items become available.",
+  "version": "0.0.9",
   "license": "Unlicense",
   "author": "Andrew Livesay",
   "bugs": {

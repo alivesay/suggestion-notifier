@@ -3,17 +3,19 @@
 module.exports = {
     auth: {
         key: '0x123456789',
-        tokenTTL: 1440
+        tokenTTL: 86400,
+        useLDAP: true,
+        ldap: {
+            server: 'auth.multco.us',
+            port: 636,
+            rootDN: 'DC=yourlibrary,DC=or',
+            serviceAccountDN: 'ldap_query',
+            serviceAccountPassword: 'ldap_query_password',
+            ldapFilterAttribute: 'sAMAccountName',
+            rejectUnauthorized: false
+        }
     },
     hapi: {
-        serverOptions: {
-            app: {
-                notices: {
-                    fromAddress: 'example@gmail.com',
-                    subjectPrefix: 'Purchase Suggestion Notice:'
-                }
-            }
-        },
         connectionOptions: {
             host: '0.0.0.0',
             port: 8080,
@@ -41,16 +43,19 @@ module.exports = {
             }
         }
     },
-    nodemailerOptions: {
-        service: 'Gmail',
-        auth: {
-            user: 'something@example.com  ',
-            pass: 'somepassword'
+    notices: {
+        email: {
+          fromAddress: 'notifer@yourlibrary.org',
+          subjectPrefix: 'Purchase Suggestion Notice:'
         }
+    },
+    nodemailerOptions: {
+        host: '127.0.0.1',
+    	port: 25
     },
     ilsOptions: {
         catalog: {
-            hostname: 'localhost',
+            hostname: 'catalog.yourlibrary.org',
             patronAPISSLPort: 54620
         },
         itemTypes: {
@@ -68,26 +73,8 @@ module.exports = {
             other: 'Other'
         },
         locations: {
-            albina: 'Albina',
-            belmont: 'Belmont',
-            capitol_hill: 'Capitol Hill',
             central: 'Central',
-            fairview: 'Fairview',
-            gregory_heights: 'Gregory Heights',
-            gresham: 'Gresham',
-            hillsdale: 'Hillsdale',
-            holgate: 'Holgate',
-            hollywood: 'Hollywood',
-            kenton: 'Kenton',
-            los: 'Library Outreach Services',
-            midland: 'Midland',
-            north_portland: 'North Portland',
-            northwest: 'Northwest',
-            rockwood: 'Rockwood',
-            st_johns: 'St. Johns',
-            sellwood: 'Sellwood',
-            troutdale: 'Troutdale',
-            woodstock: 'Woodstock'
+            east: 'East'
         }
     }
 };
