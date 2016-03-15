@@ -1,6 +1,7 @@
 # suggestion-notifier
 
 ![Notifier Screenshot](docs/images/screenshot1.png)
+![Notifier Screenshot](docs/images/screenshot2.png)
 
 Notify patrons via templated emails when their purchase suggestions are ordered, denied, etc.
 
