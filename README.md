@@ -54,3 +54,26 @@ gulp
 * `nodemailerOptions:` - see [nodemailer](https://github.com/nodemailer/nodemailer) docs for more options
     * `host:` - mailserver host to use (Default: `127.0.0.1`)
     * `post:` - mailserver port to use (Default: `25`)
+
+## Creating Templates
+
+Click the gear icon to manage notification templates.  The following values are available for use within your templates:
+```
+patron.patronName
+patron.emailAddress
+patron.homeLibrary
+
+suggestion.title
+suggestion.author
+suggestion.patron
+suggestion..publisher
+suggestion.isbn
+suggestion.type
+suggestion.subject
+suggestion.type
+suggestion.price
+suggestion.notes
+
+bib.title
+bib.recordURI
+```
