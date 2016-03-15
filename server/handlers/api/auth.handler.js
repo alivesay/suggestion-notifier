@@ -75,7 +75,6 @@ function ldapAuthResponder(username, password, callback) {
             return callback(createJwtToken(username));
         }
 
-        console.log('XXX: ' + err);
         return callback(Boom.unauthorized(err));
     });
 }
