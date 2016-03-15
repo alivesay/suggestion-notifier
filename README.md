@@ -66,7 +66,7 @@ patron.homeLibrary
 suggestion.title
 suggestion.author
 suggestion.patron
-suggestion..publisher
+suggestion.publisher
 suggestion.isbn
 suggestion.type
 suggestion.subject
