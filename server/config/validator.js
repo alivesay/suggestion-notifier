@@ -57,6 +57,8 @@ module.exports = function (decoded, request, callback) {
   Mentat.models.User
     .findOne({where: { username: decoded.username }})
     .nodeify(function (err, user) {
+      Mentat.Namespace.set('username', decoded.username);
+
       if (user && !err) {
         return callback(null, true);
       }

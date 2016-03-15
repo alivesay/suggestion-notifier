@@ -5,7 +5,7 @@
   "license": "Unlicense",
   "author": "Andrew Livesay",
   "bugs": {
-      "url": "https://github.com/alivesay/suggestion-notifier/issues"
+    "url": "https://github.com/alivesay/suggestion-notifier/issues"
   },
   "publish": false,
   "repository": {
@@ -27,7 +27,7 @@
     "jsonwebtoken": "5.5.4",
     "ldapjs": "1.0.0",
     "lodash": "3.10.1",
-    "mentat": "2.0.20",
+    "mentat": "2.0.22",
     "redis": "1.0.0",
     "request": "2.69.0",
     "ssl-root-cas": "1.1.10",

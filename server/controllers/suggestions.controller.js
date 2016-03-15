@@ -7,7 +7,7 @@ Mentat.models.Suggestion.hook('afterCreate', function (suggestion) {
     Mentat.controllers.EventsController.log({
         event: {
             type: 'suggestions:created',
-            body: suggestion
+            body: suggestion.dataValues
         },
         logFields: [ 'title' ]
     });
@@ -17,7 +17,7 @@ Mentat.models.Suggestion.hook('afterUpdate', function (suggestion) {
     Mentat.controllers.EventsController.log({
         event: {
             type: 'suggestions:updated',
-            body: suggestion
+            body: suggestion.dataValues
         },
         logFields: [ 'title' ]
     });
@@ -28,7 +28,7 @@ Mentat.models.Suggestion.hook('afterDestroy', function (suggestion) {
     Mentat.controllers.EventsController.log({
         event: {
             type: 'suggestions:deleted',
-            body: suggestion
+            body: suggestion.dataValues
         },
         logFields: [ 'title' ]
     });

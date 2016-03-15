@@ -85,7 +85,7 @@
 
     function displayEventMessage(event, callback) {
       var message = {
-        source: event.body.source || 'SYSTEM',
+        source: event.body.source || event.body.generatedBy || 'SYSTEM',
         text: $scope.consoleEvents[event.type]
           ? $scope.consoleEvents[event.type].toString(event)
           : '[' + event.type + '] ' + JSON.stringify(event.body),

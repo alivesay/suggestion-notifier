@@ -7,7 +7,7 @@ Mentat.models.Template.hook('afterCreate', function (template, options) {
   Mentat.controllers.EventsController.log({
     event: {
       type: 'templates:created',
-      body: template
+      body: template.dataValues
     },
     logFields: [ 'title' ]
   });
@@ -17,7 +17,7 @@ Mentat.models.Template.hook('afterUpdate', function (template, options) {
   Mentat.controllers.EventsController.log({
     event: {
       type: 'templates:updated',
-      body: template
+      body: template.dataValues
     },
     logFields: [ 'title' ]
   });
@@ -27,7 +27,7 @@ Mentat.models.Template.hook('afterDestroy', function (template, options) {
   Mentat.controllers.EventsController.log({
     event: {
       type: 'templates:deleted',
-      body: template
+      body: template.dataValues
     },
     logFields: [ 'title' ]
   });
