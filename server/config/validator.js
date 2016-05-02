@@ -60,7 +60,11 @@ module.exports = function (decoded, request, callback) {
       Mentat.Namespace.set('username', decoded.username);
 
       if (user && !err) {
-        return callback(null, true);
+        if (user.isAuthorized) {
+            return callback(null, true);
+        } else {
+            return callback(null, false);
+        }
       }
 
       if (Mentat.settings.auth.useLDAP) {
