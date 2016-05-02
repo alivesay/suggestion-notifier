@@ -23,7 +23,10 @@ function log (options) {
   }
 
   function _emitEvent(result, _callback) {
-    var socketBody = options.event.body;
+    var socketBody = _.cloneDeep(options.event.body);
+
+    delete socketBody.password;
+
     socketBody.generatedBy = Mentat.Namespace.get('username');
     Mentat.io.sockets.emit(options.event.type, socketBody);
     return _callback(null, null);

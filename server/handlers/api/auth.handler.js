@@ -91,6 +91,26 @@ function createJwtToken(username) {
     return { token: token };
 }
 
+function _ldapAuthAndCreate(username, password, callback) {
+    ldapAuth(username, password, function (isValid, err) {
+        if (isValid) {
+            Mentat.models.User
+                .create({
+                    username: username,
+                    password: ''
+                })
+                .nodeify(function (err, user) {
+                    if (err) {
+                        return callback.Boom.unauthorized(err);
+                    }
+                    return callback(Boom.unauthorized('unauthorized account'));
+                });
+            } else {
+                return callback(Boom.unauthorized(err));
+            }
+    });
+}
+
 module.exports = new Mentat.Handler('Auth', {
     routes: [
         { method: 'POST', path: '/api/login', auth: false, handler: 'login' },
@@ -104,17 +124,27 @@ module.exports = new Mentat.Handler('Auth', {
                 if (err) {
                     return reply(Boom.unauthorized(err));
                 }
-
+                
                 if (!user) {
+                    // create user in DB if LDAP auth is valid, otherwise deny
                     if (!!Mentat.settings.auth.useLDAP) {
-                       return ldapAuthResponder(request.payload.username, request.payload.password, reply); 
+                        return _ldapAuthAndCreate(request.payload.username, request.payload.password, reply);
                     } else {
                         return reply(Boom.unauthorized('invalid user'));
                     }
                 }
+                
+                if (!!user.isAuthorized === false) {
+                    // TODO: send email to admin
+                    return reply(Boom.unauthorized('unauthorized account'));
+                }
 
-                if (bcrypt.compareSync(request.payload.password, user.password)) {
+                if (user.password !== '' && bcrypt.compareSync(request.payload.password, user.password)) {
                     return reply(createJwtToken(user.username));
+                }
+
+                if (!!Mentat.settings.auth.useLDAP) {
+                   return ldapAuthResponder(request.payload.username, request.payload.password, reply);
                 } 
 
                 return reply(Boom.unauthorized('invalid password'));

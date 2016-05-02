@@ -1,3 +1,10 @@
 div(ng-controller='SettingsIndexController')
-  ng-include(src='MODULE_PATH + "templates/templates.index.html"')
-  ng-include(src='MODULE_PATH + "settings/users.index.html"')
+  form.form-horizontal(novalidate='')
+    legend Settings
+    fieldset
+      ng-include(src='MODULE_PATH + "templates/templates.index.html"')
+    fieldset
+      ng-include(src='MODULE_PATH + "users/users.index.html"')
+    div.form-group
+      div.col-sm-12
+        button.btn.pull-right.btn-primary(ng-click='closeThisDialog()') Close

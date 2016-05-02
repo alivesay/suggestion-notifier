@@ -8,6 +8,7 @@ module.exports = {
         id: 1,
         username: 'admin',
         isAdmin: 1,
+        isAuthorized: 1,
 	password: bcrypt.hashSync('default', 10),
 	createdAt: '1978-08-14 00:00:00.000 +00:00',
 	updatedAt: '1978-08-14 00:00:00.000 +00:00'

@@ -25,10 +25,10 @@
         .controller('AppController', AppController);
 
     AppController.$inject = ['$scope', '$state', '$window', '$location', 'toastr', 'socket',
-                             'ngDialog', 'AuthFactory', 'UserFactory', 'APP_CONFIG'];
+                             'ngDialog', 'AuthFactory', 'APP_CONFIG'];
 
     function AppController($scope, $state, $window, $location, toastr, socket,
-                           ngDialog, AuthFactory, UserFactory, APP_CONFIG) {
+                           ngDialog, AuthFactory, APP_CONFIG) {
 
         $scope.$state = $state;
         $scope.MODULE_PATH = APP_CONFIG.MODULE_PATH;
@@ -62,7 +62,7 @@
 
         function logoutClick() {
             if (AuthFactory.isAuthenticated) {
-                UserFactory.logout()
+                AuthFactory.logout()
                     .then(
                         function success () { },
                         function error (status) {

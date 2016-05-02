@@ -687,3 +687,8 @@ div.ngdialog > div.ngdialog-overlay {
 input:-webkit-autofill { 
     -webkit-box-shadow: 0 0 0px 1000px #f0f2e2 inset !important;
 }
+
+#users-form ul {
+    max-height: 300px;
+    overflow-y: scroll;
+}

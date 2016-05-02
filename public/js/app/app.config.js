@@ -45,6 +45,7 @@
   appRun.$inject = ['$rootScope', '$state', '$window', 'AuthFactory'];
 
   function appRun ($rootScope, $state, $window, AuthFactory) {
+
     $rootScope.$on('$locationChangeSuccess', function() {
       if (AuthFactory.isAuthenticated === false) {
         $state.go('login#index');

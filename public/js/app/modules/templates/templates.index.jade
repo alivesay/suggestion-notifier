@@ -1,23 +1,18 @@
 div(ng-controller='TemplatesIndexController')
-  form#templates-form.form-horizontal(name='templatesForm',
-                                      role='form',
-                                      novalidate)
-    legend Settings
-    fieldset
-      div.form-group
-        label.control-label.col-sm-3 Templates
-        div.col-sm-9
-          div.form-inline
-            div
-              select.form-control(ng-model='templatesForm.id',
-                                  ng-options='template.id as template.title for template in templates',
-                                  required)
-                option(value='') New Notification Template
-              div.btn-group(ng-switch='templatesForm.id', role='group')
-                div(ng-switch-when='undefined')
-                  button.btn.btn-primary(type='button', ng-click='addTemplateClicked()') Add
-                div.btn-group(ng-switch-default)
-                  button.btn.btn-primary.form-control(type='button',
-                                                      ng-click='editTemplateClicked()') Edit
-                  button.btn.btn-danger.form-control(type='button',
-                                                     ng-click='deleteTemplateClicked()') Delete
+  div#templates-form.form-group
+    label.control-label.col-sm-3 Templates
+    div.col-sm-9
+      div.form-inline
+        div
+          select.form-control(ng-model='templatesForm.id',
+                              ng-options='template.id as template.title for template in templates',
+                              required)
+            option(value='') New Notification Template
+          div.btn-group(ng-switch='templatesForm.id', role='group')
+            div(ng-switch-when='undefined')
+              button.btn.btn-primary(type='button', ng-click='addTemplateClicked()') Add
+            div.btn-group(ng-switch-default)
+              button.btn.btn-primary.form-control(type='button',
+                                                  ng-click='editTemplateClicked()') Edit
+              button.btn.btn-danger.form-control(type='button',
+                                                 ng-click='deleteTemplateClicked()') Delete

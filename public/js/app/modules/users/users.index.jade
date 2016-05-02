@@ -1,0 +1,17 @@
+div(ng-controller='UsersIndexController')
+  div#users-form.form-group
+    label.control-label.col-sm-3 Users
+    div.col-sm-9
+      div.form-inline
+        div
+          ul.list-group
+            li.list-group-item(ng-repeat='user in users')
+              div.btn-toolbar
+                | {{user.username}}
+                div.btn-group.pull-right
+                  a.btn.btn-xs.btn-default(ng-class='user.isAuthorized ? "btn-success" : "btn-default"',
+                                           ng-click='onIsAuthorizedClicked(user)')
+                    i.fa(ng-class='user.isAuthorized ? "fa-unlock-alt" : "fa-lock"')
+                  a.btn.btn-xs(ng-class='user.isAdmin ? "btn-danger" : "btn-default"',
+                               ng-click='onIsAdminClicked(user)')
+                    i.fa(ng-class='user.isAdmin ? "fa-user-plus" : "fa-user"')

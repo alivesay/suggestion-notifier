@@ -1,11 +1,11 @@
 (function() {
   'use strict';
 
-  angular.module('app.settings', [
+  angular.module('app.users', [
     'app.config',
     'app.shared',
-    'app.templates',
-    'app.users'
+    'ngResource',
+    'ngDialog'
   ]);
 
 })();

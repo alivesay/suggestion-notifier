@@ -5,11 +5,11 @@
     .controller('LoginIndexController', LoginIndexController);
 
   LoginIndexController.$inject = ['$scope', 'APP_CONFIG', '$location',
-                                  '$window', 'AuthFactory', 'UserFactory',
+                                  '$window', 'AuthFactory',
                                   'VersionService', 'toastr', 'socket'];
 
   function LoginIndexController($scope, APP_CONFIG, $location,
-                                $window, AuthFactory, UserFactory,
+                                $window, AuthFactory, 
                                 VersionService, toastr, socket) {
     $scope.MODULE_PATH = APP_CONFIG.MODULE_PATH;
     $scope.login = login;
@@ -20,7 +20,7 @@
     function login(username, password) {
       if (username !== undefined && password !== undefined) {
 
-        UserFactory.login(username, password).then(
+        AuthFactory.login(username, password).then(
           function success (data) {
             AuthFactory.isAuthenticated = true;
             $window.sessionStorage.token = data.token;
