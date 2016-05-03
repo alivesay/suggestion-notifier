@@ -1,5 +1,5 @@
 div(ng-controller='UsersIndexController')
-  div#users-form.form-group
+  div#users-form
     label.control-label.col-sm-3 Users
     div.col-sm-9
       div.form-inline
@@ -9,7 +9,7 @@ div(ng-controller='UsersIndexController')
               div.btn-toolbar
                 | {{user.username}}
                 div.btn-group.pull-right
-                  a.btn.btn-xs.btn-default(ng-class='user.isAuthorized ? "btn-success" : "btn-default"',
+                  a.btn.btn-xs.btn-default(ng-class='user.isAuthorized ? "btn-primary" : "btn-default"',
                                            ng-click='onIsAuthorizedClicked(user)')
                     i.fa(ng-class='user.isAuthorized ? "fa-unlock-alt" : "fa-lock"')
                   a.btn.btn-xs(ng-class='user.isAdmin ? "btn-danger" : "btn-default"',
