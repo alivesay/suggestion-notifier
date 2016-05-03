@@ -16,6 +16,11 @@ block content
             li.only-when-expanded
               div.btn-toolbar
                 div.btn-group
+                  a#notifications-btn.btn.btn-xs.btn-default(ng-click='notificationsClick()',
+                                                             title='Desktop Notifications')
+                    i.fa(ng-class='hasNotifications ? "fa-toggle-on" : "fa-toggle-off"')
+                    | &nbsp;
+                    i.fa.fa-bell-o
                   a#console-btn.btn.btn-xs.btn-default(ng-click='consoleClick()', title='Console',
                                                        ng-class='{ "disabled": !footerCollapsed }')
                     i.fa.fa-terminal

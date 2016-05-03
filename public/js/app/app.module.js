@@ -10,7 +10,8 @@
         'ngResource',
         'ngAnimate',
         'ngDialog',
-        'ui.router'
+        'ui.router',
+        'angular-web-notification'
     ]);
 
     angular.module('app', [
@@ -36,8 +37,10 @@
         $scope.settingsClick = settingsClick;
         $scope.logoutClick = logoutClick;
         $scope.consoleClick = consoleClick;
+        $scope.notificationsClick = notificationsClick;
         $scope.auth = AuthFactory;
         $scope.uiRouterState = $state;
+        $scope.hasNotifications = false;
 
         onLoad();
 
@@ -51,6 +54,8 @@
                 $scope.footerCollapsed = false;
                 $scope.$broadcast('console:wasminimized');
             });
+
+            $scope.hasNotifications = $window.localStorage['showDesktopNotifications'] === 'true' && Notification.permission === 'granted';
         }
 
         function settingsClick() {
@@ -81,6 +86,36 @@
         function consoleClick() {
             $scope.footerCollapsed = false;
             $scope.$broadcast('console:wasopened');
+        }
+
+        function disableNotifications() {
+             $window.localStorage.showDesktopNotifications = 'false';
+             $scope.hasNotifications = false;
+        }
+
+        function enableNotifications() {
+             $window.localStorage.showDesktopNotifications = 'true';
+             $scope.hasNotifications = true;
+        }
+
+        function notificationsClick() {
+            if ($scope.hasNotifications) {
+                disableNotifications();
+            } else {
+                if (Notification.permission === 'granted') {
+                    enableNotifications();
+                } else {
+                    Notification.requestPermission(function (permission) {
+                        if (permission === 'granted') {
+                            enableNotifications();
+                            return;
+                        }
+
+                        $window.alert('You have disabled desktop notifications for this site.\n\nPlease enable through your browser settings.');
+
+                    });
+                }
+            }
         }
     }
 

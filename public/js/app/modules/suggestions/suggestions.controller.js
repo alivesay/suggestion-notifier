@@ -6,11 +6,11 @@
 
   SuggestionsIndexController.$inject = ['$scope', '$filter', '$q', 'socket', 'uiGridConstants',
                                         'ngDialog', 'toastr', 'SuggestionFactory', 'APP_CONFIG',
-                                        '$window'];
+                                        '$window', 'WebNotifyFactory'];
 
   function SuggestionsIndexController($scope, $filter, $q, socket, uiGridConstants,
                                       ngDialog, toastr, SuggestionFactory, APP_CONFIG,
-                                      $window) {
+                                      $window, WebNotifyFactory) {
 
     $scope.suggestionsGridSelectionCount = 0;
     $scope.MODULE_PATH = APP_CONFIG.MODULE_PATH;
@@ -128,6 +128,7 @@
       $scope.$on('socket:suggestions:created', function (ev, suggestion) {
         $scope.suggestionsGrid.data.push(new SuggestionFactory(suggestion));
         $scope.suggestionsGridApi.core.notifyDataChange(uiGridConstants.dataChange.EDIT);
+        WebNotifyFactory.show('New Suggestion', suggestion.title);
       });
 
       socket.forward('suggestions:updated', $scope);

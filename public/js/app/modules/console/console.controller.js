@@ -56,7 +56,20 @@
           return event.body.text;
         },
         disableListener: true
+      },
+      'users:updated': {
+        toString: function (event) {
+            return "User settings changed for '" + event.body.username + 
+                "': [ isAdmin: " + event.body.isAdmin + ' isAuthorized: ' +
+                event.body.isAuthorized + ' ]';
+        }
+      },
+      'users:created': {
+        toString: function (event) {
+            return "User created: " + event.body.username;
+        }
       }
+
     };
 
     onLoad();
