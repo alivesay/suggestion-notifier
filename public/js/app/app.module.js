@@ -91,11 +91,13 @@
         function disableNotifications() {
              $window.localStorage.showDesktopNotifications = 'false';
              $scope.hasNotifications = false;
+             toastr.success('Desktop notifications disabled.');
         }
 
         function enableNotifications() {
              $window.localStorage.showDesktopNotifications = 'true';
              $scope.hasNotifications = true;
+             toastr.success('Desktop notifications enabled.');
         }
 
         function notificationsClick() {
