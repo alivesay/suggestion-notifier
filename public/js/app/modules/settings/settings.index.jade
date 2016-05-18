@@ -1,10 +1,23 @@
 div(ng-controller='SettingsIndexController')
-  form.form-horizontal(novalidate='')
+  form#settings-form.form-horizontal(novalidate='')
     legend Settings
     fieldset
       ng-include(src='MODULE_PATH + "templates/templates.index.html"')
     fieldset
       ng-include(src='MODULE_PATH + "users/users.index.html"')
+    fieldset
+      div
+        label.control-label.col-sm-3 Config
+        div.col-sm-9  
+          div#settings-form-configs
+            div.form-group.row
+              label.col-sm-3.control-label(for='config-app-settings-admin-email') Admin Email:
+              div.col-sm-9
+                  input.form-control#config-app-settings-admin-email.form-control(type='text', placeholder='your-admin-email@example.org',
+                                                                                  ng-model='appSettings.adminEmail',
+                                                                                  ng-model-options='{debounce: 750 }',
+                                                                                  ng-change='saveAppSettings()')
+    hr
     div.form-group
       div.col-sm-12
         button.btn.pull-right.btn-primary(ng-click='closeThisDialog()') Close

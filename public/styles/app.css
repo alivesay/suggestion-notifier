@@ -700,3 +700,7 @@ input:-webkit-autofill {
 #toast-container .toast-error {
     background-color: #d9534f !important;
 }
+
+#settings-form #settings-form-configs .control-label {
+    font-weight: normal !important;
+}
