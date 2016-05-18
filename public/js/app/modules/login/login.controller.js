@@ -32,12 +32,20 @@
           },
           function error (status, data) {
             if (status && status.data) {
-                if (status.data.message === 'invalid user') {
-                    $scope.login.username = '';
-                }
-                if (status.data.message === 'invalid password') {
-                    $scope.login.password = '';
-                    $scope.loginForm.passwordInput.$setValidity('required', false);
+                switch (status.data.message) {
+                    case 'invalid user':
+                        $scope.login.username = '';
+                        break;
+                    case 'invalid password':
+                        $scope.login.password = '';
+                        $scope.loginForm.passwordInput.$setValidity('required', false);
+                        break;
+                    case 'unauthorized account':
+                        toastr.warning('Your account requires admin activation.');
+                    default:
+                        $scope.login.username = '';
+                        $scope.login.password = '';
+                        break;
                 }
             }
             toastr.error('Login failed!');
