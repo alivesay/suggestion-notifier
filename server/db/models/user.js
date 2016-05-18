@@ -3,7 +3,8 @@ module.exports = function(sequelize, DataTypes) {
     username: DataTypes.STRING,
     password: DataTypes.STRING,
     isAdmin: DataTypes.BOOLEAN,
-    isAuthorized: DataTypes.BOOLEAN
+    isAuthorized: DataTypes.BOOLEAN,
+    email: DataTypes.STRING
   }, {
     classMethods: {
       associate: function(models) {

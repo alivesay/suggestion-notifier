@@ -30,6 +30,7 @@ function ldapAuth(username, password, callback) {
     var targetDN;
     var serviceAccountDN = Mentat.settings.auth.ldap.serviceAccountDN;
     var serviceAccountPassword = Mentat.settings.auth.ldap.serviceAccountPassword;
+    var object;
 
     client.bind(serviceAccountDN, serviceAccountPassword, function initialBindDone (err) {
         if (err) {
@@ -46,23 +47,24 @@ function ldapAuth(username, password, callback) {
             });
 
             result.on('searchEntry', function onSearchEntry (entry) {
+                object = entry.object;
                 targetDN = entry.objectName;
             });
 
             result.on('end', function onSearchEnd (entry) {
 
                 if (!targetDN) {
-                    return callback(false, 'invalid user');
+                    return callback(null, 'invalid user');
                 }
 
                 client.bind(targetDN, password, function ldapBindDone (err) {
                     client.unbind();
 
                     if (err) {
-                        return callback(false, 'invalid password');
+                        return callback(null, 'invalid password');
                     }
-
-                    return callback(true);
+    
+                    return callback(object);
                 });
             });
         });
@@ -92,11 +94,12 @@ function createJwtToken(username) {
 }
 
 function _ldapAuthAndCreate(username, password, callback) {
-    ldapAuth(username, password, function (isValid, err) {
-        if (isValid) {
+    ldapAuth(username, password, function (object, err) {
+        if (object) {
             Mentat.models.User
                 .create({
                     username: username,
+                    email: object.mail,
                     password: ''
                 })
                 .nodeify(function (err, user) {
