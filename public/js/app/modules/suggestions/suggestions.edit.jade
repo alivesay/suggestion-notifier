@@ -83,6 +83,12 @@ div(ng-controller='SuggestionsEditController')
                                            name='price',
                                            ng-model='suggestion.price')
       div.form-group
+        label.control-label.col-sm-3(for='listRef-field') List #
+        div.col-sm-9
+          input#listref-field.form-control(type='text',
+                                           name='listRef',
+                                           ng-model='suggestion.listRef')
+      div.form-group
         label.control-label.col-sm-3(for='notes-field') Notes
         div.col-sm-9
           textarea#notes-field.form-control(name='notes',

@@ -80,6 +80,12 @@ div(ng-controller='SuggestionsNewController')
             input#price-field.form-control(type='text',
                                            name='price',
                                            ng-model='suggestion.price')
+      div.form-group
+        label.control-label.col-sm-3(for='listRef-field') List #
+        div.col-sm-9
+          input#listref-field.form-control(type='text',
+                                           name='listRef',
+                                           ng-model='suggestion.listRef')
       div.form-group(ng-show='suggestion.suggestionType == "staff"')
         label.control-label.col-sm-3(for='notes-field') Notes
         div.col-sm-9

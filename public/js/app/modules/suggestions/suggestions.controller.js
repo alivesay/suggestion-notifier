@@ -85,8 +85,20 @@
           filter: {
             condition: columnFilterStartsWith
           },
+          minWidth: 60,
           width: 95,
           cellTemplate: '<div class="ui-grid-cell-contents" ui-on-long-press="grid.appScope.onLongPressEnd(row)">{{ row.entity.type }}</div>'
+        },
+        {
+          name: 'listRef',
+          type: 'string',
+          displayName: 'List #',
+          filter: {
+            condition: columnFilterContains
+          },
+          minWidth: 60,
+          maxWidth: 95,
+          cellTemplate: '<div class="ui-grid-cell-contents" ui-on-long-press="grid.appScope.onLongPressEnd(row)">{{ row.entity.listRef }}</div>'
         },
         {
           name: 'patron',

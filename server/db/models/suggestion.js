@@ -12,7 +12,8 @@ module.exports = function(sequelize, DataTypes) {
     notes: DataTypes.STRING,
     email: DataTypes.STRING,
     location: DataTypes.STRING,
-    suggestionType: DataTypes.STRING
+    suggestionType: DataTypes.STRING,
+    listRef: DataTypes.STRING
   }, {
     classMethods: {
       associate: function(models) {
