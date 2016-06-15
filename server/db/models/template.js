@@ -3,7 +3,8 @@ module.exports = function(sequelize, DataTypes) {
     title: DataTypes.STRING,
     body: DataTypes.STRING,
     html: DataTypes.STRING,
-    bibRequired: DataTypes.BOOLEAN
+    bibRequired: DataTypes.BOOLEAN,
+    sendCopy: DataTypes.BOOLEAN
   }, {
     classMethods: {
       associate: function(models) {

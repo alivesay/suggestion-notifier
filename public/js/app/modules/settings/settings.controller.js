@@ -20,7 +20,6 @@
         $http.get('/api/config/app.settings')
             .then(function success(response) {
                 $scope.appSettings = JSON.parse(response.data.value);
-                console.log($scope.appSettings);
             }, function error(response) {
                 console.log('Error: failed to fetch app.settings');
             });

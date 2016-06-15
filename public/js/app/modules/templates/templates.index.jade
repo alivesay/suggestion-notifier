@@ -10,9 +10,7 @@ div(ng-controller='TemplatesIndexController')
             option(value='') New Notification Template
           div.btn-group(ng-switch='templatesForm.id', role='group')
             div(ng-switch-when='undefined')
-              button.btn.btn-primary(type='button', ng-click='addTemplateClicked()') Add
+              a.btn.btn-primary(ng-click='addTemplateClicked()') Add
             div.btn-group(ng-switch-default)
-              button.btn.btn-primary.form-control(type='button',
-                                                  ng-click='editTemplateClicked()') Edit
-              button.btn.btn-danger.form-control(type='button',
-                                                 ng-click='deleteTemplateClicked()') Delete
+              a.btn.btn-primary.form-control(ng-click='editTemplateClicked()') Edit
+              a.btn.btn-danger.form-control(ng-click='deleteTemplateClicked()') Delete

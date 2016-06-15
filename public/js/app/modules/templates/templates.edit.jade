@@ -21,6 +21,14 @@ div(ng-controller='TemplatesEditController')
                                       ng-model='template.bibRequired',
                                       ng-init='template.bibRequired = template.bibRequired || false')
               | Require bib # when sending this notice?
+          div.checkbox
+            label
+              input#sendcopy-field(type='checkbox',
+                                      name='sendcopy',
+                                      ng-model='template.sendCopy',
+                                      ng-init='template.sendCopy = false')
+              | Send copy to selector?
+ 
       div.form-group.required(ng-class='{ "has-error": editTemplateForm.body.$invalid && editTemplateForm.body.$dirty }')
         label.control-label.col-sm-2(for='body-field') Body
         div.col-sm-10
