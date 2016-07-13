@@ -4,10 +4,10 @@
   angular.module('app.notifier')
     .controller('NotifierIndexController', NotifierIndexController);
 
-  NotifierIndexController.$inject = ['$scope', 'TemplateFactory', 'ngDialog',
+  NotifierIndexController.$inject = ['$scope', 'TemplateFactory', 'UsersFactory', 'ngDialog',
                                      'APP_CONFIG'];
 
-  function NotifierIndexController($scope, TemplateFactory, ngDialog,
+  function NotifierIndexController($scope, TemplateFactory, UsersFactory, ngDialog,
                                    APP_CONFIG) {
 
     $scope.notice = {};
@@ -17,6 +17,7 @@
 
     function onLoad() {
       fetchTemplates();
+      fetchUsers();
     }
 
     function fetchTemplates() {
@@ -27,6 +28,14 @@
       });
     }
 
+    function fetchUsers() {
+        UsersFactory.query(function (data) {
+            $scope.users = data.filter(function (user) {
+                return user.email && user.email.length > 0
+            });
+        });
+    }
+ 
     function sendNoticeClicked() {
       ngDialog.open({
         template: APP_CONFIG.MODULE_PATH + 'notifier/notifier.sending.html',

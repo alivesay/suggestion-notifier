@@ -10,6 +10,10 @@ div(ng-controller='NotifierIndexController')
           select#template-field.form-control(ng-model='notice.template',
                                              ng-options='template.title for template in templates',
                                              required)
+      div.form-group.required(ng-show='notice.template.sendCopy == true')
+        label.control-label.col-sm-2(for='copyemail-field') CC
+        div.col-sm-10
+          select#copyemail-field.form-control(ng-model='notice.template.copyEmail', ng-options='user.email as user.email for user in users' required)
       div.form-group.required(ng-class='{ "has-error": sendNoticeForm.patron.$invalid && sendNoticeForm.patron.$dirty }'
                               ng-show='notice.template.bibRequired == true')
         label.control-label.col-sm-2(for='patron-field') Bib #

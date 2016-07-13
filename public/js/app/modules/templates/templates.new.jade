@@ -27,7 +27,7 @@ div(ng-controller='TemplatesNewController')
                                       name='sendcopy',
                                       ng-model='template.sendCopy',
                                       ng-init='template.sendCopy = false')
-              | Send copy to selector?
+              | Require copy to selector?
  
       div.form-group.required(ng-class='{ "has-error": newTemplateForm.body.$invalid && newTemplateForm.body.$dirty }')
         label.control-label.col-sm-2(for='body-field') Body
