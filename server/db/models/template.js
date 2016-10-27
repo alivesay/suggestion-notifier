@@ -4,7 +4,8 @@ module.exports = function(sequelize, DataTypes) {
     body: DataTypes.STRING,
     html: DataTypes.STRING,
     bibRequired: DataTypes.BOOLEAN,
-    sendCopy: DataTypes.BOOLEAN
+    sendCopy: DataTypes.BOOLEAN,
+    copyEmail: DataTypes.STRING
   }, {
     classMethods: {
       associate: function(models) {
