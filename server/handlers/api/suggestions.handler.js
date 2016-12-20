@@ -1,6 +1,8 @@
 'use strict';
 
 var Mentat = require('mentat');
+var redis = require('redis');
+var client = redis.createClient();
 
 module.exports = new Mentat.Handler('Suggestions', {
     routes: [
@@ -24,20 +26,49 @@ module.exports = new Mentat.Handler('Suggestions', {
     },
 
     createOrUpdate: function (request, reply) {
+        // TODO: refactor
+        let midnight = new Date();
+        midnight.setHours(24 + 8, 0, 0, 0);
+
         if (request.params.id) {
             return Mentat.controllers.SuggestionsController.updateSuggestion({
                 suggestion: request.payload
             },
             Mentat.Handler.buildDefaultResponder(reply));
         }
+        
+        if (request.payload.patron && request.payload.suggestionType === 'patron') {
+            let key = 'patronlimit_' + request.payload.patron;
+            client.incr(key, function (err, val) {
 
-        return Mentat.controllers.SuggestionsController.createSuggestion({
-                suggestion: request.payload
-            },
-            Mentat.Handler.buildDefaultResponder(reply, {
-                notFoundOnNull: false
-            })
-        );
+                if (err) {
+                    return reply(Boom.badImplementation('redis broke', err));
+                }
+
+                client.expireat(key, midnight.valueOf() / 1000);
+
+               if (val > 5) {
+                   return reply(Boom.forbidden('limit reached'));
+               }
+
+                return Mentat.controllers.SuggestionsController.createSuggestion({
+                        suggestion: request.payload
+                    },
+                    Mentat.Handler.buildDefaultResponder(reply, {
+                        notFoundOnNull: false
+                    })
+                );
+            });
+        } else {
+            return Mentat.controllers.SuggestionsController.createSuggestion({
+                    suggestion: request.payload
+                },
+                Mentat.Handler.buildDefaultResponder(reply, {
+                    notFoundOnNull: false
+                })
+            );
+        }
+
     },
 
     delete: function (request, reply) {
