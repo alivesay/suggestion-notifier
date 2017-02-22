@@ -38,11 +38,11 @@ div#suggestions-view.container-fluid.fill(ng-controller='SuggestionsIndexControl
                 span.only-when-expanded
                   | &nbsp;Refer
                 i.fa.fa-step-forward.only-when-collapsed  
-              a.btn.btn-xs.btn-default(ng-click='holdClick()', title='Hold',
+              a.btn.btn-xs.btn-default(ng-click='holdClick()', title='Restore',
                                        ng-disabled='suggestionsGridSelectionCount == 0',
                                        ng-show='isViewingReferred')
                 span.only-when-expanded
-                  | &nbsp;Hold
+                  | &nbsp;Restore
                 i.fa.fa-step-backward.only-when-collapsed
 
     div.panel-body
