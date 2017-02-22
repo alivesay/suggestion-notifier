@@ -110,6 +110,16 @@
           cellTemplate: '<div class="ui-grid-cell-contents" ui-on-long-press="grid.appScope.onLongPressEnd(row)">{{ row.entity.patron == "NULL" ? "" : row.entity.patron }}</div>'
         },
         {
+          name: 'email',
+          type: 'string',
+          maxWidth: 130,
+          filter: {
+            condition: columnFilterContains
+          },
+          cellTemplate: '<div class="ui-grid-cell-contents" ui-on-long-press="grid.appScope.onLongPressEnd(row)">{{ row.entity.email == "NULL" ? "" : row.entity.email }}</div>'
+        },
+ 
+        {
           name: 'createdAt',
           type: 'date',
           displayName: 'Date',
