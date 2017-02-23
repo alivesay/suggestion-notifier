@@ -3,6 +3,7 @@
 var Mentat = require('mentat');
 var redis = require('redis');
 var client = redis.createClient();
+var Boom = require('boom');
 
 module.exports = new Mentat.Handler('Suggestions', {
     routes: [
@@ -48,7 +49,7 @@ module.exports = new Mentat.Handler('Suggestions', {
                 client.expireat(key, midnight.valueOf() / 1000);
 
                if (val > 5) {
-                   return reply(Boom.forbidden('limit reached'));
+                   return reply(Boom.create(402, 'limit reached'));
                }
 
                 return Mentat.controllers.SuggestionsController.createSuggestion({
