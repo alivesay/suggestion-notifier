@@ -11,12 +11,12 @@ function sendNotice(options, callback) {
   var noticeScope = {};
 
   var mailOptions = _.defaults({
-    from: Mentat.server.settings.app.notices.fromAddress
+    from: Mentat.settings.notices.email.fromAddress
   }, options.mailOptions);
 
   if (options.bibNumber) {
       async.parallel({
-        patron: _getPatron ,
+       patron: _getPatron ,
         suggestion: _getSuggestion,
         bib: _getBib
       }, _parallelTasksDone);
@@ -41,30 +41,48 @@ function sendNotice(options, callback) {
       .nodeify(_callback);
   }
 
+  function _sendCopy(_callback) {
+    if (options.template.sendCopy) {
+        mailOptions.to = options.template.copyEmail;
+        mailOptions.subject = "Suggestion: " + noticeScope.suggestion.patron;
+        mailOptions.text = JSON.stringify(noticeScope.suggestion, null, 4).replace(/[{}",]/g,'');
+        return Mentat.transporter.sendMail(mailOptions, _callback);
+    }
+
+    return _callback(null)
+  }
+
   function _sendEmail(_callback) {
-    var subjectPrefix = Mentat.server.settings.app.notices.subjectPrefix;
+    var subjectPrefix = Mentat.settings.notices.email.subjectPrefix;
 
-    mailOptions.to = noticeScope.patron.emailAddress;
-    mailOptions.subject = subjectPrefix + noticeScope.patron.patronName;
+    mailOptions.to = noticeScope.suggestion.email || noticeScope.patron.emailAddress;
 
-    var textTemplate = Handlebars.compile(options.template.body); // TODO: errors?
-    mailOptions.text = textTemplate(noticeScope);
+    if (!mailOptions.to) {
+        return _callback('No email for sueggestion: ' + options.suggestionId, null);
+    } 
 
-    // if template requires bibnumber...
+    mailOptions.subject = subjectPrefix;
+
+    try {
+      var textTemplate = Handlebars.compile(options.template.body);
+      mailOptions.text = textTemplate(noticeScope);
+
+      if (options.template.html.length !== 0 && options.template.html.trim()) {
+        var htmlTemplate = Handlebars.compile(options.template.html);
+        mailOptions.html = htmlTemplate(noticeScope);
+      }
+    } catch (e) {
+        Mentat.server.log(['error'], e);
+        return callback('Parse error in template!', null);
+    }
+
     return Mentat.transporter.sendMail(mailOptions, _callback);
   }
 
   function _deleteSuggestion(_callback) {
-    Mentat.models.Suggestion
-      .findById(noticeScope.suggestion.id)
-      .then(function (template) {
-        template
-          .destroy()
-          .nodeify(_callback);
-      })
-      .catch(function (err) {
-        return _callback(err, null);
-      });
+    Mentat.controllers.SuggestionsController.destroySuggestion({
+        id: noticeScope.suggestion.id
+    }, _callback);
   }
 
   function _sendNoticeDone(err, response) {
@@ -94,22 +112,18 @@ function sendNotice(options, callback) {
       return callback('Patron not found.', null);
     }
 
-    if (!results['patron']['emailAddress']) {
-      return callback('No email found for patron.', null);
-    }
-
     if (results['suggestion'] === null || results['suggestion'] === undefined) {
       return callback('Suggestion not found.', null);
     }
-
-    if (options.bibNumber && results['bib'] === null || results['bib'] === undefined) {
+    
+    if (options.bibNumber && (results['bib'] === null || results['bib'] === undefined)) {
       return callback('Bib record not found.', null);
     }
 
     noticeScope.suggestion = results['suggestion'].dataValues;
     noticeScope.bib = results['bib'];
 
-    async.series([ _sendEmail, _deleteSuggestion ], _sendNoticeDone);
+    async.series([_sendCopy,  _sendEmail, _deleteSuggestion ], _sendNoticeDone);
   }
 }
 
