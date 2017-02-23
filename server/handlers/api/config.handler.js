@@ -15,7 +15,6 @@ module.exports = new Mentat.Handler('Configs', {
   },
 
   POST: function (request, reply) {
-      console.log('PAYLOAD: \n\n', request.payload);
     return Mentat.controllers.ConfigsController
       .set({ key: request.params.key , value: request.payload },
            Mentat.Handler.buildDefaultResponder(reply));
