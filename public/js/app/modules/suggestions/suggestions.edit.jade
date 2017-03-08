@@ -43,9 +43,9 @@ div(ng-controller='SuggestionsEditController')
       div.form-group
         label.control-label.col-sm-3(for='subject-field') Subject
         div.col-sm-9
-          input#subject-field.form-control(type='text',
-                                           name='subject',
-                                           ng-model='suggestion.subject')
+          textarea#subject-field.form-control(name='subject',
+                                              ng-model='suggestion.subject',
+                                              rows='3')
       div.form-group(ng-class='{ "has-error": newSuggestionForm.author.$invalid && newSuggestionForm.author.$dirty, "required": suggestion.suggestionType == "patron" }')
         label.control-label.col-sm-3(for='author-field') Author
         div.col-sm-9
